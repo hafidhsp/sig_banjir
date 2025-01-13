@@ -12,13 +12,13 @@
     <title>Dorne - Directory &amp; Listing Template</title>
 
     <!-- Favicon -->
-    <link rel="icon" href="{{asset ('assets/img/core-img/favicon.icon')}}">
+    <link rel="icon" href="{{ asset('image/logo.jpeg') }}" type="image/x-icon">
 
     <!-- Core Stylesheet -->
-    <link href="{{asset ('assets/style.css')}}" rel="stylesheet">
+    <link href="{{ asset('assets/style.css') }}" rel="stylesheet">
 
     <!-- Responsive CSS -->
-    <link href="{{asset ('assets/responsive/responsive.css')}}" rel="stylesheet">
+    <link href="{{ asset('assets/responsive/responsive.css') }}" rel="stylesheet">
 
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css">
 </head>
@@ -35,7 +35,8 @@
                         <i class="pe-7s-close-circle" aria-hidden="true"></i>
                     </div>
                     <form action="#" method="get">
-                        <input type="search" name="caviarSearch" id="search" placeholder="Search Your Desire Destinations or Events">
+                        <input type="search" name="caviarSearch" id="search"
+                            placeholder="Search Your Desire Destinations or Events">
                         <input type="submit" class="d-none" value="submit">
                     </form>
                 </div>
@@ -49,16 +50,23 @@
             <div class="row h-100">
                 <div class="col-12 h-100">
                     <nav class="h-100 navbar navbar-expand-lg">
-                        <a class="navbar-brand" href="index.html"><img src="../img/core-img/logo.png" alt=""></a>
-                        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#dorneNav" aria-controls="dorneNav" aria-expanded="false" aria-label="Toggle navigation"><span class="fa fa-bars"></span></button>
+                        <a class="navbar-brand" href="index.html"><img src="../img/core-img/logo.png"
+                                alt=""></a>
+                        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#dorneNav"
+                            aria-controls="dorneNav" aria-expanded="false" aria-label="Toggle navigation"><span
+                                class="fa fa-bars"></span></button>
                         <!-- Nav -->
                         <div class="collapse navbar-collapse" id="dorneNav">
                             <ul class="navbar-nav mr-auto" id="dorneMenu">
                                 <li class="nav-item active">
-                                    <a class="nav-link" href="index.html">Home <span class="sr-only">(current)</span></a>
+                                    <a class="nav-link" href="index.html">Home <span
+                                            class="sr-only">(current)</span></a>
                                 </li>
                                 <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Explore <i class="fa fa-angle-down" aria-hidden="true"></i></a>
+                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
+                                        role="button" data-toggle="dropdown" aria-haspopup="true"
+                                        aria-expanded="false">Explore <i class="fa fa-angle-down"
+                                            aria-hidden="true"></i></a>
                                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                         <a class="dropdown-item" href="index.html">Home</a>
                                         <a class="dropdown-item" href="explore.html">Explore</a>
@@ -68,7 +76,10 @@
                                     </div>
                                 </li>
                                 <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown2" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Listings <i class="fa fa-angle-down" aria-hidden="true"></i></a>
+                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown2"
+                                        role="button" data-toggle="dropdown" aria-haspopup="true"
+                                        aria-expanded="false">Listings <i class="fa fa-angle-down"
+                                            aria-hidden="true"></i></a>
                                     <div class="dropdown-menu" aria-labelledby="navbarDropdown2">
                                         <a class="dropdown-item" href="index.html">Home</a>
                                         <a class="dropdown-item" href="explore.html">Explore</a>
@@ -83,11 +94,12 @@
                             </ul>
                             <!-- Search btn -->
                             <div class="dorne-search-btn">
-                                <a id="search-btn" href="#"><i class="fa fa-search" aria-hidden="true"></i> Search</a>
+                                <a id="search-btn" href="#"><i class="fa fa-search" aria-hidden="true"></i>
+                                    Search</a>
                             </div>
                             <!-- Signin btn -->
                             <div class="dorne-signin-btn">
-                                <a href="{{ route('login') }}">Sign in  or Register</a>
+                                <a href="{{ route('login') }}">Sign in or Register</a>
                             </div>
                             <!-- Add listings btn -->
                             <div class="dorne-add-listings-btn">
@@ -102,6 +114,7 @@
     <!-- ***** Header Area End ***** -->
 
     <!-- ***** Welcome Area Start ***** -->
+
     <section class="dorne-welcome-area bg-img bg-overlay" style="background-image: url(./img/bg-img/hero-1.jpg);">
         <div class="container h-100">
             <div class="row h-100 align-items-center justify-content-center">
@@ -114,12 +127,16 @@
                     <div class="hero-search-form">
                         <!-- Tabs -->
                         <div class="nav nav-tabs" id="heroTab" role="tablist">
-                            <a class="nav-item nav-link active" id="nav-places-tab" data-toggle="tab" href="#nav-places" role="tab" aria-controls="nav-places" aria-selected="true">Places</a>
-                            <a class="nav-item nav-link" id="nav-events-tab" data-toggle="tab" href="#nav-events" role="tab" aria-controls="nav-events" aria-selected="false">Events</a>
+                            <a class="nav-item nav-link active" id="nav-places-tab" data-toggle="tab"
+                                href="#nav-places" role="tab" aria-controls="nav-places"
+                                aria-selected="true">Places</a>
+                            <a class="nav-item nav-link" id="nav-events-tab" data-toggle="tab" href="#nav-events"
+                                role="tab" aria-controls="nav-events" aria-selected="false">Events</a>
                         </div>
                         <!-- Tabs Content -->
                         <div class="tab-content" id="nav-tabContent">
-                            <div class="tab-pane fade show active" id="nav-places" role="tabpanel" aria-labelledby="nav-places-tab">
+                            <div class="tab-pane fade show active" id="nav-places" role="tabpanel"
+                                aria-labelledby="nav-places-tab">
                                 <h6>What are you looking for?</h6>
                                 <form action="#" method="get">
                                     <select class="custom-select">
@@ -142,10 +159,12 @@
                                         <option value="2">$500 - $999</option>
                                         <option value="3">$1000 - $4999</option>
                                     </select>
-                                    <button type="submit" class="btn dorne-btn"><i class="fa fa-search pr-2" aria-hidden="true"></i> Search</button>
+                                    <button type="submit" class="btn dorne-btn"><i class="fa fa-search pr-2"
+                                            aria-hidden="true"></i> Search</button>
                                 </form>
                             </div>
-                            <div class="tab-pane fade" id="nav-events" role="tabpanel" aria-labelledby="nav-events-tab">
+                            <div class="tab-pane fade" id="nav-events" role="tabpanel"
+                                aria-labelledby="nav-events-tab">
                                 <h6>What are you looking for?</h6>
                                 <form action="#" method="get">
                                     <select class="custom-select">
@@ -168,7 +187,8 @@
                                         <option value="2">$500 - $999</option>
                                         <option value="3">$1000 - $4999</option>
                                     </select>
-                                    <button type="submit" class="btn dorne-btn"><i class="fa fa-search pr-2" aria-hidden="true"></i> Search</button>
+                                    <button type="submit" class="btn dorne-btn"><i class="fa fa-search pr-2"
+                                            aria-hidden="true"></i> Search</button>
                                 </form>
                             </div>
                         </div>
@@ -265,18 +285,16 @@
 
     <!-- ***** About Area Start ***** -->
     <section class="dorne-about-area">
-    <div id="map" style="height: 600px;"></div>
+        <div id="map" style="height: 600px;"></div>
 
-<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-<script>
-        var map = L.map('map').setView([-7.6982991, 109.023521], 10);
+        <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+        <script>
+            var map = L.map('map').setView([-7.6982991, 109.023521], 10);
 
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        }).addTo(map);
-
-
-    </script>
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+        </script>
     </section>
     <!-- ***** About Area End ***** -->
 
@@ -561,7 +579,8 @@
     <!-- ***** Features Restaurant Area End ***** -->
 
     <!-- ***** Features Events Area Start ***** -->
-    <section class="dorne-features-events-area bg-img bg-overlay-9 section-padding-100-50" style="background-image: url(img/bg-img/hero-3.jpg)">
+    <section class="dorne-features-events-area bg-img bg-overlay-9 section-padding-100-50"
+        style="background-image: url(img/bg-img/hero-3.jpg)">
         <div class="container">
             <div class="row">
                 <div class="col-12">
@@ -575,7 +594,8 @@
 
             <div class="row">
                 <div class="col-12 col-lg-6">
-                    <div class="single-feature-events-area d-sm-flex align-items-center wow fadeInUpBig" data-wow-delay="0.2s">
+                    <div class="single-feature-events-area d-sm-flex align-items-center wow fadeInUpBig"
+                        data-wow-delay="0.2s">
                         <div class="feature-events-thumb">
                             <img src="img/bg-img/event-1.jpg" alt="">
                             <div class="date-map-area d-flex">
@@ -594,7 +614,8 @@
                     </div>
                 </div>
                 <div class="col-12 col-lg-6">
-                    <div class="single-feature-events-area d-sm-flex align-items-center wow fadeInUpBig" data-wow-delay="0.3s">
+                    <div class="single-feature-events-area d-sm-flex align-items-center wow fadeInUpBig"
+                        data-wow-delay="0.3s">
                         <div class="feature-events-thumb">
                             <img src="img/bg-img/event-2.jpg" alt="">
                             <div class="date-map-area d-flex">
@@ -613,7 +634,8 @@
                     </div>
                 </div>
                 <div class="col-12 col-lg-6">
-                    <div class="single-feature-events-area d-sm-flex align-items-center wow fadeInUpBig" data-wow-delay="0.4s">
+                    <div class="single-feature-events-area d-sm-flex align-items-center wow fadeInUpBig"
+                        data-wow-delay="0.4s">
                         <div class="feature-events-thumb">
                             <img src="img/bg-img/event-3.jpg" alt="">
                             <div class="date-map-area d-flex">
@@ -632,7 +654,8 @@
                     </div>
                 </div>
                 <div class="col-12 col-lg-6">
-                    <div class="single-feature-events-area d-sm-flex align-items-center wow fadeInUpBig" data-wow-delay="0.5s">
+                    <div class="single-feature-events-area d-sm-flex align-items-center wow fadeInUpBig"
+                        data-wow-delay="0.5s">
                         <div class="feature-events-thumb">
                             <img src="img/bg-img/event-4.jpg" alt="">
                             <div class="date-map-area d-flex">
@@ -651,7 +674,8 @@
                     </div>
                 </div>
                 <div class="col-12 col-lg-6">
-                    <div class="single-feature-events-area d-sm-flex align-items-center wow fadeInUpBig" data-wow-delay="0.6s">
+                    <div class="single-feature-events-area d-sm-flex align-items-center wow fadeInUpBig"
+                        data-wow-delay="0.6s">
                         <div class="feature-events-thumb">
                             <img src="img/bg-img/event-5.jpg" alt="">
                             <div class="date-map-area d-flex">
@@ -670,7 +694,8 @@
                     </div>
                 </div>
                 <div class="col-12 col-lg-6">
-                    <div class="single-feature-events-area d-sm-flex align-items-center wow fadeInUpBig" data-wow-delay="0.7s">
+                    <div class="single-feature-events-area d-sm-flex align-items-center wow fadeInUpBig"
+                        data-wow-delay="0.7s">
                         <div class="feature-events-thumb">
                             <img src="img/bg-img/event-6.jpg" alt="">
                             <div class="date-map-area d-flex">
@@ -719,8 +744,14 @@
                     <div class="footer-text">
                         <p>
                             <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | Made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a> &amp; distributed by <a href="https://themewagon.com" target="_blank">ThemeWagon</a>
-<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                            Copyright &copy;
+                            <script>
+                                document.write(new Date().getFullYear());
+                            </script> All rights reserved | Made with <i class="fa fa-heart-o"
+                                aria-hidden="true"></i> by <a href="https://colorlib.com"
+                                target="_blank">Colorlib</a> &amp; distributed by <a href="https://themewagon.com"
+                                target="_blank">ThemeWagon</a>
+                            <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
                         </p>
                     </div>
                     <div class="footer-social-btns">
@@ -737,15 +768,15 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
     <!-- ****** Footer Area End ****** -->
 
     <!-- jQuery-2.2.4 js -->
-    <script src="{{asset ('assets/js/jquery/jquery-2.2.4.min.js')}}"></script>
+    <script src="{{ asset('assets/js/jquery/jquery-2.2.4.min.js') }}"></script>
     <!-- Popper js -->
-    <script src="{{asset ('assets/js/bootstrap/popper.min.js')}}"></script>
+    <script src="{{ asset('assets/js/bootstrap/popper.min.js') }}"></script>
     <!-- Bootstrap-4 js -->
-    <script src="{{asset ('assets/js/bootstrap/bootstrap.min.js')}}"></script>
+    <script src="{{ asset('assets/js/bootstrap/bootstrap.min.js') }}"></script>
     <!-- All Plugins js -->
-    <script src="{{asset ('assets/js/others/plugins.js')}}"></script>
+    <script src="{{ asset('assets/js/others/plugins.js') }}"></script>
     <!-- Active JS -->
-    <script src="{{asset ('assets/js/active.js')}}"></script>
+    <script src="{{ asset('assets/js/active.js') }}"></script>
 </body>
 
 </html>

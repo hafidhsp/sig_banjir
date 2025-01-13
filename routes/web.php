@@ -5,6 +5,11 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\lokasibanjirController;
 
+// Livewire
+use App\Livewire\Landing\Index as LandingIndex;
+use App\Livewire\Login\Index as LoginIndex;
+use App\Livewire\Dashboard\Index as DashboardIndex;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -19,15 +24,18 @@ use App\Http\Controllers\lokasibanjirController;
 // Route::get('/', function () {
 //     return view('landing');
 // });
-Route::get('/',[DashboardController::class, 'landing']);
-Route::get('/dashboard',[DashboardController::class, 'dashboard']);
+Route::get('/',LandingIndex::class);
 
 //login
-Route::get('/login',[LoginController::class, 'index'])->name('login');
+Route::get('/login',LoginIndex::class)->name('login');
 Route::get('/logout',[LoginController::class, 'logout'])->name('logout');
 Route::get('/register',[LoginController::class, 'register'])->name('register');
 Route::post('/auth-login',[LoginController::class, 'auth_login']);
 Route::post('/actionregister',[LoginController::class, 'actionregister'])->name('actionregister');
+
+Route::get('/dashboard',DashboardIndex::class)->name('dashboard_2');
+// Route::get('/dashboard',[DashboardController::class,'dashboard'])->name('dashboard');
+
 
 //lokasi banjir
 Route::get('/formlokasibanjir',[lokasibanjirController::class, 'formlokasibanjir'])->name('formlokasibanjir');

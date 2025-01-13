@@ -15,7 +15,7 @@ class DashboardController extends Controller
     public function landing(){
         {
             $sejarah_banjir = sejarah_banjir::all();
-            return view('index', compact('sejarah_banjir'));
+            return view('livewire/pages/landing/index', compact('sejarah_banjir'));
         }
     }
 }
