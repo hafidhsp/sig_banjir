@@ -1,18 +1,13 @@
 <div>
     <section class="ftco-section">
-        {{-- <section class=""> --}}
         <div class="container">
-            {{-- <div class="row justify-content-center">
-                <div class="col-md-6 text-center mb-5">
-                </div>
-            </div> --}}
             <div class="row justify-content-center">
                 <div class="col-md-6 col-lg-6">
                     <div class="login-wrap  p-md-4">
                         <div class="icon d-flex align-items-center justify-content-center">
                             <span class="fa fa-user-o"></span>
                         </div>
-                        <form wire:submit.prevent="auth_login" class="login-form">
+                        <form wire:submit.prevent="tambah_akun" class="login-form">
                             <div class="d-flex align-items-center justify-content-center p-3">
                                 <h2 class="heading-section text-login fw-bold">Masuk</h2>
                             </div>
@@ -21,23 +16,27 @@
                                     {{ session('error') }}
                                 </div>
                             @endif
-                            @if (session('success'))
-                                <div class="alert alert-success" role="alert">
-                                    {{ session('success') }}
-                                </div>
-                            @endif
                             <div class="form-group">
-                                <input id="email" type="email" wire:model.defer="email" name="email"
-                                    class="form-control rounded-left @error('email') is-invalid @enderror"
-                                    placeholder="Email" required>
+                                <input type="text"
+                                    class="form-control rounded-left  @error('nama_lengkap') is-invalid @enderror"
+                                    wire:model.defer="nama_lengkap" placeholder="Nama Lengkap" name="nama_lengkap"
+                                    required>
+                                @error('nama_lengkap')
+                                    <label class="text-danger">{{ $message }}</label>
+                                @enderror
+                            </div>
+                            <div class="form-group">
+                                <input type="email"
+                                    class="form-control rounded-left  @error('email') is-invalid @enderror"
+                                    wire:model.defer="email" placeholder="Email" name="email" required>
                                 @error('email')
                                     <label class="text-danger">{{ $message }}</label>
                                 @enderror
                             </div>
                             <div class="form-group">
-                                <input id="password" type="password" wire:model.defer="password" name="password"
-                                    class="form-control rounded-left @error('password') is-invalid @enderror"
-                                    placeholder="Password" required>
+                                <input type="password"
+                                    class="form-control rounded-left  @error('email') is-invalid @enderror"
+                                    wire:model.defer="password" placeholder="Password" name="password" required>
                                 @error('password')
                                     <label class="text-danger">{{ $message }}</label>
                                 @enderror
@@ -47,11 +46,11 @@
                                     <a href="{{ url('') }}">Kembali</a>
                                 </div>
                                 <div class="w-100 text-md-right">
-                                    <a href="{{ url('/register') }}">Daftar Akun</a>
+                                    <a href="{{ url('/login') }}">Masuk</a>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <button type="submit" class="btn btn-primary rounded submit p-3 px-5">Masuk</button>
+                                <button type="submit" class="btn btn-primary rounded submit p-3 px-5">Simpan</button>
                             </div>
                         </form>
                     </div>
@@ -59,5 +58,4 @@
             </div>
         </div>
     </section>
-
 </div>

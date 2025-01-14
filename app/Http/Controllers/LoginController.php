@@ -31,8 +31,9 @@ class LoginController extends Controller
     if (Auth::attempt($login)) {
         // Jika autentikasi berhasil
         return redirect('dashboard'); // Ganti dengan halaman yang ingin diredirect setelah login berhasil
-    }else
+    }else{
     return redirect()->route('login');
+    }
 }
 
     public function logout()
@@ -40,7 +41,7 @@ class LoginController extends Controller
         Auth::logout();
         return redirect()->route('login');
     }
-    
+
     public function register()
     {
         return view('pages.register.register');

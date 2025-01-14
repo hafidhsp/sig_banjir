@@ -8,6 +8,7 @@ use App\Http\Controllers\lokasibanjirController;
 // Livewire
 use App\Livewire\Landing\Index as LandingIndex;
 use App\Livewire\Login\Index as LoginIndex;
+use App\Livewire\Register\Index as RegisterIndex;
 use App\Livewire\Dashboard\Index as DashboardIndex;
 
 /*
@@ -24,16 +25,21 @@ use App\Livewire\Dashboard\Index as DashboardIndex;
 // Route::get('/', function () {
 //     return view('landing');
 // });
-Route::get('/',LandingIndex::class);
+Route::get('/',LandingIndex::class)->middleware(['IsLogout']);
 
 //login
-Route::get('/login',LoginIndex::class)->name('login');
-Route::get('/logout',[LoginController::class, 'logout'])->name('logout');
-Route::get('/register',[LoginController::class, 'register'])->name('register');
+// Route::get('/login',LoginIndex::class)->name('login');
+// Route::get('/register',LoginController::class)->name('register');
+// Route::get('/register',[LoginController::class, 'register'])->name('register');
 Route::post('/auth-login',[LoginController::class, 'auth_login']);
 Route::post('/actionregister',[LoginController::class, 'actionregister'])->name('actionregister');
+Route::get('/logout',[LoginController::class, 'logout'])->name('logout');
 
-Route::get('/dashboard',DashboardIndex::class)->name('dashboard_2');
+//login Livewire
+Route::get('/login',LoginIndex::class)->name('login')->middleware(['IsLogout']);
+Route::get('/register',RegisterIndex::class)->name('register')->middleware(['IsLogout']);
+
+Route::get('/dashboard',DashboardIndex::class)->name('dashboard_2')->middleware(['IsLogin']);
 // Route::get('/dashboard',[DashboardController::class,'dashboard'])->name('dashboard');
 
 
