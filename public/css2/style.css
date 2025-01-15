@@ -10656,7 +10656,8 @@ a {
     -webkit-transition: 0.3s all ease;
     -o-transition: 0.3s all ease;
     transition: 0.3s all ease;
-    color: #8d448b;
+    /* color: #8d448b; */
+    color: #283c9c;
 }
 a:hover,
 a:focus {
@@ -10664,7 +10665,7 @@ a:focus {
     outline: none !important;
     -webkit-box-shadow: none;
     box-shadow: none;
-    color: #8d448b;
+    color: #283c9c;
 }
 
 h1,
@@ -10684,7 +10685,7 @@ h5,
 }
 
 .bg-primary {
-    background: #8d448b !important;
+    background: #283c9c !important;
 }
 
 .ftco-section {
@@ -10723,12 +10724,12 @@ h5,
 .login-wrap h3 {
     font-weight: 700;
     font-size: 20px;
-    color: #8d448b;
+    color: #283c9c;
 }
 .login-wrap .icon {
     width: 80px;
     height: 80px;
-    background: #8d448b;
+    background: #283c9c;
     border-radius: 50%;
     font-size: 30px;
     margin: 0 auto;
@@ -10844,10 +10845,10 @@ h5,
 
 /* Style the checkmark/indicator */
 .checkbox-primary {
-    color: #8d448b;
+    color: #283c9c;
 }
 .checkbox-primary input:checked ~ .checkmark:after {
-    color: #8d448b;
+    color: #283c9c;
 }
 
 .btn {
@@ -10863,23 +10864,23 @@ h5,
     outline: none;
 }
 .btn.btn-primary {
-    background: #8d448b !important;
-    border: 1px solid #8d448b !important;
+    background: #283c9c !important;
+    border: 1px solid #283c9c !important;
     color: #fff !important;
 }
 .btn.btn-primary:hover {
-    border: 1px solid #8d448b;
+    border: 1px solid #283c9c;
     background: transparent;
-    color: #8d448b;
+    color: #283c9c;
 }
 .btn.btn-primary.btn-outline-primary {
-    border: 1px solid #8d448b;
+    border: 1px solid #283c9c;
     background: transparent;
-    color: #8d448b;
+    color: #283c9c;
 }
 .btn.btn-primary.btn-outline-primary:hover {
     border: 1px solid transparent;
-    background: #8d448b;
+    background: #283c9c;
     color: #fff;
 }
 
@@ -10901,5 +10902,5 @@ h5,
 
 /* Custom */
 .text-login {
-    color: #8d448b;
+    color: #283c9c;
 }
