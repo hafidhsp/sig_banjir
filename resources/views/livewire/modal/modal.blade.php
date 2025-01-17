@@ -4,7 +4,7 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title" id="staticBackdropLabel" style="font-size: 20px">User</h1>
+        <h1 class="modal-title" id="staticBackdropLabel" style="font-size: 20px">Akun</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
@@ -14,11 +14,15 @@
                     {{ session('error') }}
                 </div>
             @endif
-            @foreach ($errors->all() as $error)
+            @if ($errors->all())
                 <div class="alert alert-warning" role="alert">
-                    {{ $error }}
+                    <ul>
+                    @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                    @endforeach
+                    </ul>
                 </div>
-            @endforeach
+            @endif
             @if (session('success'))
                 <div class="alert alert-success" role="alert">
                     {{ session('success') }}
@@ -30,8 +34,8 @@
                 <input type="email" class="form-control" wire:model.defer="email" readonly>
             </div>
             <div class="form-group">
-                <label for="exampleInputUsername1">Nama Lengkap</label>
-                <input type="text" class="form-control  @error('nama_lengkap') is-invalid @enderror" wire:model.defer="nama_lengkap" id="exampleInputUsername1" placeholder="Nama Lengkap" required>
+                <label for="exampleInputUsername2">Nama Lengkap</label>
+                <input type="text" class="form-control  @error('nama_lengkap') is-invalid @enderror" wire:model.defer="nama_lengkap" id="exampleInputUsername2" placeholder="Nama Lengkap" required>
                 @error('nama_lengkap')
                     <label class="text-danger">{{ $message }}</label>
                 @enderror
@@ -46,7 +50,7 @@
             </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="closeModalUser()">Tutup</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="closeModal">Tutup</button>
         <button type="submit" class="btn btn-primary">Simpan</button>
       </div>
         </form>
@@ -67,6 +71,10 @@
         document.addEventListener('DOMContentLoaded', function() {
             window.addEventListener('open-modal-user', function() {
                     openModalUser();
+            });
+            window.addEventListener('close-modal-user', function() {
+                    closeModalUser();
+
             });
         });
 

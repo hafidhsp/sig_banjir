@@ -1,3 +1,4 @@
+
       <nav class="navbar col-lg-12 col-12 px-0 py-0 py-lg-4 d-flex flex-row">
           <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
               <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
@@ -23,12 +24,12 @@
                       </a>
                       <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
                           <button type="button" class="dropdown-item"  onclick="openModalUser()">
-                              <i class="mdi mdi-settings text-primary"></i>
-                              Settings
+                              <i class="mdi mdi-account text-primary"></i>
+                              Akun
                           </button>
                           <a class="dropdown-item" href="{{ url('logout') }}">
                               <i class="mdi mdi-logout text-primary"></i>
-                              Logout
+                              Keluar
                           </a>
                       </div>
                   </li>

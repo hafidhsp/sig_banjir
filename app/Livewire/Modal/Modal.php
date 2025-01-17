@@ -17,6 +17,7 @@ class Modal extends Component
     public $id,$email,$nama_lengkap,$password,$confirm_password;
 
     public function ubah_akun(){
+        $this->dispatch('close-modal-user');
         $this->dispatch('open-modal-user');
         $this->validate([
             'nama_lengkap' => 'required|regex:/^[a-zA-Z\s]+$/'
@@ -41,7 +42,7 @@ class Modal extends Component
                     'nama_lengkap.regex' => 'Nama lengkap berisi huruf.',
                     'nama_lengkap.required' => 'Nama lengkap harus diisi.',
                     'password.min' => 'Password harus terdiri dari minimal 6 karakter.',
-                    'confirm_password.same' => 'Konfirmasi password tidak sesuai dengan password.',
+                    'confirm_password.same' => 'Password tidak sesuai.',
                 ]);
                 $data = [
                 'nama_lengkap' => $this->nama_lengkap,
