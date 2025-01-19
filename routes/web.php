@@ -11,6 +11,7 @@ use App\Livewire\Login\Index as LoginIndex;
 use App\Livewire\Register\Index as RegisterIndex;
 use App\Livewire\Dashboard\Index as DashboardIndex;
 use App\Livewire\User\Index as UserIndex;
+use App\Livewire\Kecamatan\Index as KecamatanIndex;
 
 /*
 |--------------------------------------------------------------------------
@@ -44,6 +45,7 @@ Route::get('/register',RegisterIndex::class)->name('register')->middleware(['IsL
 
 Route::get('/dashboard',DashboardIndex::class)->name('dashboard')->middleware(['IsLogin']);
 Route::get('/user',UserIndex::class)->name('user')->middleware(['IsLogin']);
+Route::get('/kecamatan',KecamatanIndex::class)->name('kecamatan')->middleware(['IsLogin']);
 
 
 //lokasi banjir

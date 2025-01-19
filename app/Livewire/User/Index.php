@@ -28,6 +28,7 @@ class Index extends Component
         $this->confirm_password_user = '';
         $this->title_modal = 'Tambah';
         $this->dispatch('close-modal-form-user');
+        $this->dispatch('render-table');
     }
 
     public function render()
@@ -42,7 +43,6 @@ class Index extends Component
     }
 
     public function showModalUser($id){
-        $this->title_modal = 'Tambah';
         $data_user = User::find($id);
         $this->id_user = $data_user->id;
         $this->email_user = $data_user->email;
@@ -50,8 +50,10 @@ class Index extends Component
         $this->role_user = $data_user->role;
         $this->title_modal = 'Ubah';
         $this->dispatch('open-modal-form-user');
+        $this->dispatch('render-table');
     }
     public function closeModalUser(){
+        $this->dispatch('render-table');
         $this->mount();
     }
 
@@ -83,6 +85,7 @@ class Index extends Component
                 ];
                 $data_user->update($data);
                 session()->flash('success', 'Berhasil disimpan.');
+                $this->dispatch('open-notif-success');
             }else{
                 $this->dispatch('open-modal-form-user');
                 $this->validate([
@@ -114,6 +117,7 @@ class Index extends Component
                 $this->password_user = '';
                 $this->confirm_password_user = '';
                 session()->flash('success', 'Berhasil disimpan.');
+                $this->dispatch('open-notif-success');
             }
         }else{
             $this->dispatch('close-modal-form-user');
@@ -143,6 +147,7 @@ class Index extends Component
             User::insert($data);
             $this->mount();
             session()->flash('success', 'Berhasil disimpan.');
+            $this->dispatch('open-notif-success');
         }
     }
 
@@ -153,5 +158,6 @@ class Index extends Component
     public function hapusUser($id_user){
         $data_user = User::find($id_user);
         $data_user->delete();
+        $this->dispatch('open-notif-success-delete');
     }
 }

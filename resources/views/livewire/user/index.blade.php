@@ -143,7 +143,7 @@
                     </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close" wire:click="closeModalUser()">Tutup</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close" id="btn_close" wire:click="closeModalUser()">Tutup</button>
                 <button type="submit" class="btn btn-primary">Simpan</button>
             </div>
                 </form>
@@ -154,37 +154,52 @@
 
 @push('scripts')
 
-        <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-        <script src="https://cdn.datatables.net/2.0.2/js/dataTables.js"></script>
-        <script src="https://cdn.datatables.net/2.0.2/js/dataTables.bootstrap5.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.datatables.net/2.0.2/js/dataTables.js"></script>
+<script src="https://cdn.datatables.net/2.0.2/js/dataTables.bootstrap5.js"></script>
 <script>
 
 document.addEventListener('DOMContentLoaded', function() {
-$('#table_user').DataTable({
-    ordering: false,
-    pageLength: 10,
-    info: true,
-    lengthChange: false,
-    language: {
-        lengthMenu: "_MENU_ Data dimuat",
-        info: "Menampilkan _START_ hingga _END_ dari total _TOTAL_ data"
-    },
-    layout: {
-        topStart: 'search',
-        topEnd: null
-    },
-    rowCallback: function (row, data, index) {
-        if (index % 2 === 0) { // Baris genap
-            $(row).css('background-color', '#ffffff');
-        } else { // Baris ganjil
-            $(row).css('background-color', '#f9f9f9');
+    $('#table_user').DataTable({
+        ordering: false,
+        pageLength: 10,
+        info: true,
+        lengthChange: true,
+        language: {
+            lengthMenu: "_MENU_ Data dimuat",
+            info: "Menampilkan _START_ hingga _END_ dari total _TOTAL_ data"
+        },
+        layout: {
+            topEnd: 'search'
+        },
+        rowCallback: function (row, data, index) {
+            if (index % 2 === 0) { // Baris genap
+                $(row).css('background-color', '#ffffff');
+            } else { // Baris ganjil
+                $(row).css('background-color', '#f9f9f9');
+            }
         }
-    }
-});
+    });
 
     window.addEventListener('close-modal-form-user', function() {
         $('#modalFormUser').modal('hide');
+        $('#btn_close').click();
+    });
+    window.addEventListener('render-table', function() {
+        setTimeout(function () {
+        $('#table_user').html();
+        }, 500);
+    });
+    window.addEventListener('open-notif-success', function() {
+        setTimeout(function () {
+            alertify.success('Berhasil Disimpan');
+        }, 600);
+    });
+    window.addEventListener('open-notif-success-delete', function() {
+        setTimeout(function () {
+            alertify.success('Berhasil Dihapus');
+        }, 600);
     });
     window.addEventListener('open-modal-form-user', function() {
         setTimeout(function () {
@@ -192,26 +207,26 @@ $('#table_user').DataTable({
         }, 500);
     });
     window.addEventListener('open-modal-validation-hapus-user', function(event) {
-    var id_user = event.__livewire.params[0];
-    Swal.fire({
-        title: "Apakah ingin menghapus user ini?",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Ya !",
-        cancelButtonText: "Tidak"
-    }).then((result) => {
-        if (result.isConfirmed) {
-            Livewire.dispatch('hapusUser', {
-                id_user: id_user
-            })
-            Swal.fire("Berhasil Dihapus", "", "success");
-        } else {
-            Swal.fire("Dibatalkan!", "", "error");
-        }
+        var id_user = event.__livewire.params[0];
+        Swal.fire({
+            title: "Apakah ingin menghapus user ini?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Ya !",
+            cancelButtonText: "Tidak"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Livewire.dispatch('hapusUser', {
+                    id_user: id_user
+                })
+                Swal.fire("Berhasil Dihapus", "", "success");
+            } else {
+                Swal.fire("Dibatalkan!", "", "error");
+            }
+        });
     });
-});
 
     @if (session('success'))
             $('#table_user').html();

@@ -7,13 +7,13 @@
               <div class="navbar-brand-wrapper">
                   <a class="navbar-brand brand-logo" href="{{ url('dashboard') }}"><img src="{{ asset('image/logo_4.png') }}"
                           width="40px" height="auto" alt="logo" /></a>
-                  <a class="navbar-brand brand-logo-mini" href="{{ url('dashboard') }}"><img
-                          src="{{ asset('images/logo-mini.svg') }}" alt="logo" /></a>
+                  {{-- <a class="navbar-brand brand-logo-mini" href="{{ url('dashboard') }}"><img
+                          src="{{ asset('images/logo-mini.svg') }}" alt="logo" /></a> --}}
               </div>
-              <h4 class="font-weight-bold mb-0 d-none d-md-block mt-1">Selamat datang, {{ $user->nama_lengkap }}</h4>
-              <ul class="navbar-nav navbar-nav-right">
+              <h5 class="font-weight-bold mb-0 d-none d-md-block mt-0">Selamat datang, {{ $user->nama_lengkap }}</h5>
+              <ul class="navbar-nav navbar-nav-right" id="navbar_profile">
                   <li class="nav-item">
-                      <h4 class="mb-0 font-weight-bold d-none d-xl-block">{{ $today }}</h4>
+                      <h6 class="mb-0 font-weight-bold d-none d-xl-block">{{ $today }}</h6>
                   </li>
                   <li class="nav-item nav-profile dropdown">
                       <a class="nav-link dropdown-toggle " href="#" data-toggle="dropdown" id="profileDropdown">
@@ -146,6 +146,7 @@
                       </div>
                   </li> --}}
               </ul>
+
               <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button"
                   data-toggle="offcanvas">
                   <span class="mdi mdi-menu"></span>
@@ -195,3 +196,18 @@
               </ul>
           </div> --}}
       </nav>
+
+      <script>
+        const scrollThreshold = 100;
+        const navbar = document.getElementById('navbar_profile');
+        const desktopWidth = 992;
+        window.addEventListener('scroll', function () {
+            if (window.scrollY > scrollThreshold && window.innerWidth >= desktopWidth) {
+            navbar.style.marginRight = "15rem"; // Margin setelah scroll
+            } else if(window.scrollY < scrollThreshold) {
+            navbar.style.marginRight = "3rem";
+            }else {
+            navbar.style.marginRight = "3rem";
+            }
+        });
+      </script>
