@@ -11,14 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('sejarah_banjir', function (Blueprint $table) {
-            $table->id();
+        Schema::create('tb_daerah_banjir', function (Blueprint $table) {
+            $table->id('id_daerah_banjir');
             $table->unsignedBigInteger('id_kecamatan');
             $table->foreign('id_kecamatan')->references('id_kecamatan')->on('tb_kecamatan')->onDelete('cascade');
-            $table->date('tanggal');
-            $table->integer('tinggi_air')->nullable();
-            $table->text('kerusakan')->nullable();
-            $table->integer('korban_jiwa')->nullable();
+            $table->timestamp('waktu_mulai');
+            $table->timestamp('waktu_selesai');
+            $table->string('pemberi_informasi');
+            $table->text('radius_daerah_banjir');
+            $table->text('warna_radius');
+            $table->boolean('konfirasi_st');
             $table->timestamps();
         });
     }
@@ -28,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('sejarah_banjirs');
+        Schema::dropIfExists('tb_daerah_banjir');
     }
 };

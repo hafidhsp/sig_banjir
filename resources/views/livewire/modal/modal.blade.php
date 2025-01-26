@@ -1,6 +1,6 @@
 <div>
      <!-- Modal User -->
-<div class="modal fade" id="modalUser"  tabindex="-1" aria-hidden="true" >
+<div class="modal fade" id="modalUser"  tabindex="-1" aria-hidden="true" data-bs-backdrop="static" wire:ignore.self>
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -12,15 +12,6 @@
              @if (session('error'))
                 <div class="alert alert-warning" role="alert">
                     {{ session('error') }}
-                </div>
-            @endif
-            @if ($errors->all())
-                <div class="alert alert-warning" role="alert">
-                    <ul>
-                    @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                    @endforeach
-                    </ul>
                 </div>
             @endif
             @if (session('success'))
@@ -50,7 +41,7 @@
             </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="closeModal">Tutup</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close" id="closeModal" wire:ignore>Tutup</button>
         <button type="submit" class="btn btn-primary">Simpan</button>
       </div>
         </form>
@@ -63,18 +54,16 @@
              var modal = new bootstrap.Modal(document.getElementById('modalUser'));
              modal.show();
         }
-        function closeModalUser(){
-             var modal = new bootstrap.Modal(document.getElementById('modalUser'));
-             modal.hide();
-        }
 
         document.addEventListener('DOMContentLoaded', function() {
-            window.addEventListener('open-modal-user', function() {
-                    openModalUser();
-            });
-            window.addEventListener('close-modal-user', function() {
-                    closeModalUser();
-
+            window.addEventListener('open-notif-success-profil', function() {
+            $('#nama_pengguna').html();
+            setTimeout(function () {
+                $('#closeModal').click();
+            }, 100);
+            setTimeout(function () {
+                    alertify.success('Berhasil Disimpan');
+                }, 500);
             });
         });
 

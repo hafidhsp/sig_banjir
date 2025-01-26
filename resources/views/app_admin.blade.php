@@ -36,6 +36,8 @@
 <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/themes/semantic.min.css"/>
 <!-- Bootstrap theme -->
 <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/themes/bootstrap.min.css"/>
+{{-- FA Icon --}}
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 
 
     @livewireStyles
@@ -103,6 +105,35 @@
     <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/alertify.min.js"></script>
     {{-- sweet alert --}}
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.datatables.net/2.0.2/js/dataTables.js"></script>
+<script src="https://cdn.datatables.net/2.0.2/js/dataTables.bootstrap5.js"></script>
+<script>
+function initializeDataTable(tableSelector) {
+    $(tableSelector).DataTable({
+        ordering: false,
+        pageLength: 10,
+        info: true,
+        lengthChange: true,
+        language: {
+            lengthMenu: "_MENU_ Data dimuat",
+            info: "Menampilkan _START_ hingga _END_ dari total _TOTAL_ data"
+        },
+        layout: {
+            topEnd: 'search'
+        },
+    });
+}
+
+function destroyDataTable(tableSelector) {
+    if ($.fn.DataTable.isDataTable(tableSelector)) {
+        $(tableSelector).DataTable().destroy();
+        $(tableSelector).empty();
+    }
+}
+</script>
     @stack('scripts')
 
     @livewireScripts

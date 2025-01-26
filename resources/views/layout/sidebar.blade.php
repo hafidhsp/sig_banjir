@@ -13,7 +13,7 @@
                 </a>
             </li>
             @if($user->role =='admin') :
-            <li class="nav-item sidebar-category">\
+            <li class="nav-item sidebar-category">
                 <div class="border-top"></div>
             </li>
             <li class="nav-item">
@@ -26,6 +26,27 @@
                 <a class="nav-link" href="{{ url('kecamatan') }}">
                     <i class="bi bi-building-fill-exclamation menu-icon"></i>
                     <span class="menu-title">Data Kecamatan</span>
+                </a>
+            </li>
+            <li class="nav-item sidebar-category">
+                <div class="border-top"></div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url('data-penanggulangan') }}">
+                    <i class="bi bi bi-check-circle menu-icon"></i>
+                    <span class="menu-title">Data Penanggulangan</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url('data-laporan-banjir') }}">
+                    <i class="fa-solid fa-water menu-icon"></i>
+                    <span class="menu-title">Data Laporan Banjir</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url('penanganan') }}">
+                    <i class="bi bi-exclamation-triangle-fill menu-icon"></i>
+                    <span class="menu-title">Data Penanganan</span>
                 </a>
             </li>
             @endif

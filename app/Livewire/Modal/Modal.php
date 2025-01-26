@@ -10,15 +10,14 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
+use Carbon\Carbon;
 
 
 class Modal extends Component
 {
-    public $id,$email,$nama_lengkap,$password,$confirm_password;
+    public $id,$email,$nama_lengkap,$password,$confirm_password,$user;
 
     public function ubah_akun(){
-        $this->dispatch('close-modal-user');
-        $this->dispatch('open-modal-user');
         $this->validate([
             'nama_lengkap' => 'required|regex:/^[a-zA-Z\s]+$/'
         ], [
@@ -32,7 +31,7 @@ class Modal extends Component
                 'nama_lengkap' => $this->nama_lengkap,
                 ];
                  $user->update($data);
-                session()->flash('success', 'Berhasil disimpan.');
+                $this->dispatch('open-notif-success-profil');
             }else{
                  $this->validate([
                     'nama_lengkap' => 'required|regex:/^[a-zA-Z\s]+$/',
@@ -49,7 +48,7 @@ class Modal extends Component
                 'password' => Hash::make($this->password),
                 ];
                  $user->update($data);
-                session()->flash('success', 'Berhasil disimpan.');
+                $this->dispatch('open-notif-success-profil');
             }
         }else{
             session()->flash('error', 'Akun tidak ditemukan.');

@@ -8,9 +8,15 @@ use Illuminate\Database\Eloquent\Model;
 class kecamatan extends Model
 {
     use HasFactory;
-    protected $table = 'kecamatan';
+    protected $table = 'tb_kecamatan';
+    protected $primaryKey = 'id_kecamatan';
     protected $fillable = [
         'nama_kecamatan',
+        'long_atitude',
+        'la_atitude',
+        'icon',
+        'radius',
+        'warna_radius',
     ];
 
     public function sejarahbanjir()

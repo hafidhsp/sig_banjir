@@ -20,7 +20,7 @@
                 </div>
                 <div class="card-body">
                     <div class="table-responsive pt-3">
-                            <table class="table table-bordered table-hover" id="table_user">
+                            <table class="table table-bordered table-hover" id="table_user" wire:ignore.self>
                             <thead>
                                 <tr>
                                 <th class="text-center bg-primary">
@@ -73,34 +73,15 @@
         </div>
     </div>
          <!-- Modal User -->
-    <div class="modal fade"  tabindex="-1" aria-hidden="true" id="modalFormUser" data-bs-backdrop="static">
+    <div class="modal fade"  tabindex="-1" aria-hidden="true" id="modalFormUser" data-bs-backdrop="static" aria-hidden="true" wire:ignore.self>
         <div class="modal-dialog">
             <div class="modal-content">
             <div class="modal-header">
                 <h1 class="modal-title" id="staticBackdropLabel" style="font-size: 20px">{{ $title_modal }} Data User</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" wire:click="closeModalUser()"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <form class="forms-sample" wire:submit.prevent="save_user">
-                    @if (session('error'))
-                        <div class="alert alert-warning" role="alert">
-                            {{ session('error') }}
-                        </div>
-                    @endif
-                    {{-- @if ($errors->all())
-                        <div class="alert alert-warning" role="alert">
-                            <ul>
-                            @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                            @endforeach
-                            </ul>
-                        </div>
-                    @endif --}}
-                    @if (session('success'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('success') }}
-                        </div>
-                    @endif
                     <div class="form-group">
                         <label >Email</label>
                         <input type="text" class="form-control " wire:model.defer="id_user" hidden>
@@ -143,7 +124,7 @@
                     </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close" id="btn_close" wire:click="closeModalUser()">Tutup</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close" id="btn_close">Tutup</button>
                 <button type="submit" class="btn btn-primary">Simpan</button>
             </div>
                 </form>
@@ -154,57 +135,44 @@
 
 @push('scripts')
 
-<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-<script src="https://cdn.datatables.net/2.0.2/js/dataTables.js"></script>
-<script src="https://cdn.datatables.net/2.0.2/js/dataTables.bootstrap5.js"></script>
 <script>
 
 document.addEventListener('DOMContentLoaded', function() {
-    $('#table_user').DataTable({
-        ordering: false,
-        pageLength: 10,
-        info: true,
-        lengthChange: true,
-        language: {
-            lengthMenu: "_MENU_ Data dimuat",
-            info: "Menampilkan _START_ hingga _END_ dari total _TOTAL_ data"
-        },
-        layout: {
-            topEnd: 'search'
-        },
-        rowCallback: function (row, data, index) {
-            if (index % 2 === 0) { // Baris genap
-                $(row).css('background-color', '#ffffff');
-            } else { // Baris ganjil
-                $(row).css('background-color', '#f9f9f9');
-            }
-        }
-    });
+    initializeDataTable('#table_user');
 
     window.addEventListener('close-modal-form-user', function() {
-        $('#modalFormUser').modal('hide');
-        $('#btn_close').click();
-    });
-    window.addEventListener('render-table', function() {
         setTimeout(function () {
-        $('#table_user').html();
-        }, 500);
+            $('#modalFormUser').modal('hide');
+            $('#btn_close').click();
+        }, 100);
     });
     window.addEventListener('open-notif-success', function() {
         setTimeout(function () {
+            $('#btn_close').click();
+            destroyDataTable('#table_user');
+            initializeDataTable('#table_user');
+        }, 100);
+        setTimeout(function () {
             alertify.success('Berhasil Disimpan');
-        }, 600);
+        }, 500);
     });
     window.addEventListener('open-notif-success-delete', function() {
+        setTimeout(function () {
+            destroyDataTable('#table_user');
+            initializeDataTable('#table_user');
+        }, 100);
         setTimeout(function () {
             alertify.success('Berhasil Dihapus');
         }, 600);
     });
     window.addEventListener('open-modal-form-user', function() {
         setTimeout(function () {
+            $('#modalFormUser').modal('hide');
+            $('#btn_close').click();
+        }, 100);
+        setTimeout(function () {
             $('#modalFormUser').modal('show');
-        }, 500);
+        }, 700);
     });
     window.addEventListener('open-modal-validation-hapus-user', function(event) {
         var id_user = event.__livewire.params[0];

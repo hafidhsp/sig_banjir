@@ -11,9 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('kecamatan', function (Blueprint $table) {
-            $table->id();
+        Schema::create('tb_kecamatan', function (Blueprint $table) {
+            $table->id('id_kecamatan');
             $table->string('nama_kecamatan');
+            $table->text('long_atitude')->nullable();
+            $table->text('la_atitude')->nullable();
+            $table->string('icon')->nullable();
+            $table->string('radius')->nullable();
+            $table->string('warna_radius')->nullable();
             $table->timestamps();
         });
     }
@@ -23,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('kecamatans');
+        Schema::dropIfExists('tb_kecamatan');
     }
 };

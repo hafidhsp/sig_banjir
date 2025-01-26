@@ -27,15 +27,13 @@ class Index extends Component
         $this->password_user = '';
         $this->confirm_password_user = '';
         $this->title_modal = 'Tambah';
-        $this->dispatch('close-modal-form-user');
-        $this->dispatch('render-table');
     }
 
     public function render()
     {
         $no = 1 ;
         $user = $this->user;
-        $data_user = User::all();
+        $data_user = User::orderBy('nama_lengkap', 'Asc')->get();
         $today = $this->today;
         $title_modal = $this->title_modal;
         $title = 'Data User';
@@ -50,18 +48,11 @@ class Index extends Component
         $this->role_user = $data_user->role;
         $this->title_modal = 'Ubah';
         $this->dispatch('open-modal-form-user');
-        $this->dispatch('render-table');
-    }
-    public function closeModalUser(){
-        $this->dispatch('render-table');
-        $this->mount();
     }
 
     public function save_user(){
         if($this->id_user != ''){
             $data_user = User::find($this->id_user);
-            $this->dispatch('close-modal-form-user');
-            $this->dispatch('open-modal-form-user');
             if($this->password_user == '' && $this->confirm_password_user == ''){
                 $this->validate([
                     'id_user' => 'required|exists:users,id',
@@ -86,8 +77,8 @@ class Index extends Component
                 $data_user->update($data);
                 session()->flash('success', 'Berhasil disimpan.');
                 $this->dispatch('open-notif-success');
+
             }else{
-                $this->dispatch('open-modal-form-user');
                 $this->validate([
                     'id_user' => 'required|exists:users,id',
                     'email_user' => 'required|email',
@@ -117,11 +108,10 @@ class Index extends Component
                 $this->password_user = '';
                 $this->confirm_password_user = '';
                 session()->flash('success', 'Berhasil disimpan.');
+                $this->mount();
                 $this->dispatch('open-notif-success');
             }
         }else{
-            $this->dispatch('close-modal-form-user');
-            $this->dispatch('open-modal-form-user');
             $this->validate([
                 'email_user' => 'required|email|unique:users,email',
                 'nama_lengkap_user' => 'required|regex:/^[a-zA-Z\s]+$/',

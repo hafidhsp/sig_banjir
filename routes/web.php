@@ -12,6 +12,7 @@ use App\Livewire\Register\Index as RegisterIndex;
 use App\Livewire\Dashboard\Index as DashboardIndex;
 use App\Livewire\User\Index as UserIndex;
 use App\Livewire\Kecamatan\Index as KecamatanIndex;
+use App\Livewire\Penanggulangan\Index as PenanggulanganIndex;
 
 /*
 |--------------------------------------------------------------------------
@@ -44,8 +45,11 @@ Route::get('/logout',[LoginController::class, 'logout'])->name('logout');
 Route::get('/register',RegisterIndex::class)->name('register')->middleware(['IsLogout']);
 
 Route::get('/dashboard',DashboardIndex::class)->name('dashboard')->middleware(['IsLogin']);
+
+//Role Admin
 Route::get('/user',UserIndex::class)->name('user')->middleware(['IsLogin']);
 Route::get('/kecamatan',KecamatanIndex::class)->name('kecamatan')->middleware(['IsLogin']);
+Route::get('/data-penanggulangan',PenanggulanganIndex::class)->name('penanggulangan')->middleware(['IsLogin']);
 
 
 //lokasi banjir

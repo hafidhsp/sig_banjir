@@ -10,12 +10,12 @@
                   {{-- <a class="navbar-brand brand-logo-mini" href="{{ url('dashboard') }}"><img
                           src="{{ asset('images/logo-mini.svg') }}" alt="logo" /></a> --}}
               </div>
-              <h5 class="font-weight-bold mb-0 d-none d-md-block mt-0">Selamat datang, {{ $user->nama_lengkap }}</h5>
+              <h5 class="font-weight-bold mb-0 d-none d-md-block mt-0" id="nama_pengguna">Selamat datang, {{ $user->nama_lengkap }}</h5>
               <ul class="navbar-nav navbar-nav-right" id="navbar_profile">
                   <li class="nav-item">
                       <h6 class="mb-0 font-weight-bold d-none d-xl-block">{{ $today }}</h6>
                   </li>
-                  <li class="nav-item nav-profile dropdown">
+                  <li class="nav-item nav-profile dropdown" wire:ignore>
                       <a class="nav-link dropdown-toggle " href="#" data-toggle="dropdown" id="profileDropdown">
                           {{-- <img src="{{ asset('images/faces/face5.jpg') }}" alt="profile" width="30px"
                               height="auto" /> --}}

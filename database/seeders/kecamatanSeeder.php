@@ -13,7 +13,7 @@ class kecamatanSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('kecamatan')->insert([
+        DB::table('tb_kecamatan')->insert([
             [
                 'nama_kecamatan' => 'Adipala',
             ],
