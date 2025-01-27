@@ -136,8 +136,8 @@ class Index extends Component
                 ];
             User::insert($data);
             $this->mount();
-            session()->flash('success', 'Berhasil disimpan.');
             $this->dispatch('open-notif-success');
+            session()->flash('success', 'Berhasil disimpan.');
         }
     }
 

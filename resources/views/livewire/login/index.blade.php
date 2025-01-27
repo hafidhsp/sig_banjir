@@ -60,4 +60,13 @@
         </div>
     </section>
 
+@push('scripts')
+
+    <script>
+        const emailInput = document.getElementById('email');
+        if (emailInput) {
+            emailInput.focus();
+        }
+    </script>
+@endpush
 </div>

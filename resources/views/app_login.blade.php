@@ -25,6 +25,7 @@
     <script src="{{ asset('assets/js/popper.js') }}"></script>
     <script src="{{ asset('assets/js/bootstrap.min.js') }}"></script>
     <script src="{{ asset('assets/js/main.js') }}"></script>
+    @stack('scripts')
 
     @livewireScripts
 </body>

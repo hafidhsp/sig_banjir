@@ -32,15 +32,15 @@
                 <div class="border-top"></div>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{ url('data-penanggulangan') }}">
-                    <i class="bi bi bi-check-circle menu-icon"></i>
-                    <span class="menu-title">Data Penanggulangan</span>
-                </a>
-            </li>
-            <li class="nav-item">
                 <a class="nav-link" href="{{ url('data-laporan-banjir') }}">
                     <i class="fa-solid fa-water menu-icon"></i>
                     <span class="menu-title">Data Laporan Banjir</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url('data-penanggulangan') }}">
+                    <i class="bi bi bi-check-circle menu-icon"></i>
+                    <span class="menu-title">Data Penanggulangan</span>
                 </a>
             </li>
             <li class="nav-item">

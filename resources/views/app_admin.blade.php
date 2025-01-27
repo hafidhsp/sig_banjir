@@ -11,7 +11,7 @@
     <!-- base:css -->
     <link rel="stylesheet" href="{{ asset('vendors/mdi/css/materialdesignicons.min.css') }}">
     <link rel="stylesheet" href="{{ asset('vendors/css/vendor.bundle.base.css') }}">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="{{ asset('cdn/css/bootstrap.min.css') }}" rel="stylesheet">
 
     <!-- endinject -->
     <!-- plugin css for this page -->
@@ -22,23 +22,30 @@
     {{-- <link rel="shortcut icon" href="images/favicon.png" /> --}}
 
     {{-- datatables --}}
-    {{-- <link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css"> --}}
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
-<link href="https://cdn.datatables.net/v/bs5/jq-3.7.0/dt-2.2.1/af-2.7.0/cr-2.0.4/date-1.5.5/fc-5.0.4/fh-4.0.1/kt-2.12.1/r-3.0.3/rg-1.5.1/rr-1.5.0/sc-2.4.3/sb-1.8.1/sp-2.3.3/sl-3.0.0/sr-1.4.1/datatables.min.css" rel="stylesheet">
+    <link href="{{ asset('ajax/twitter-bootstrap/5.3.0/css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('ajax/twitter-bootstrap/5.3.0/css/datatables.min.css') }}" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
 {{-- alertify --}}
 <!-- CSS -->
-<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/alertify.min.css"/>
+<link rel="stylesheet" href="{{ asset('alertify/css/alertify.min.css') }}"/>
 <!-- Default theme -->
-<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/themes/default.min.css"/>
+<link rel="stylesheet" href="{{ asset('alertify/css/themes/default.min.css') }}"/>
 <!-- Semantic UI theme -->
-<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/themes/semantic.min.css"/>
+<link rel="stylesheet" href="{{ asset('alertify/css/themes/semantic.min.css') }}"/>
 <!-- Bootstrap theme -->
-<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/themes/bootstrap.min.css"/>
+<link rel="stylesheet" href="{{ asset('alertify/css/themes/bootstrap.min.css') }}"/>
 {{-- FA Icon --}}
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 
+{{-- select option --}}
+<link
+  rel="stylesheet"
+  href="{{ asset('choiceJs/choices.min.css') }}"
+/>
+{{-- date timepicker --}}
+<link rel="stylesheet" href="{{ asset('bootstrap-date-time-picker/bootstrap5/css/bootstrap-datetimepicker.css') }}" />
+<link rel="stylesheet" href="{{ asset('bootstrap-date-time-picker/bootstrap5/css/bootstrap-datetimepicker.min.css') }}" />
 
     @livewireStyles
 
@@ -91,6 +98,7 @@
     <script src="{{ asset('js/off-canvas.js') }}"></script>
     <script src="{{ asset('js/hoverable-collapse.js') }}"></script>
     <script src="{{ asset('js/template.js') }}"></script>
+    <script src="{{ asset('js/file-upload.js') }}"></script>
     <!-- endinject -->
     <!-- plugin js for this page -->
     <!-- End plugin js for this page -->
@@ -107,13 +115,21 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+{{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script> --}}
 <script src="https://cdn.datatables.net/2.0.2/js/dataTables.js"></script>
 <script src="https://cdn.datatables.net/2.0.2/js/dataTables.bootstrap5.js"></script>
+
+{{-- select option --}}
+<script src="{{ asset('choiceJs/choices.min.js') }}"></script>
+
+
+{{-- date timepicker --}}
+<script src="{{ asset('bootstrap-date-time-picker/bootstrap5/js/bootstrap-datetimepicker.js') }}" > </script>
+<script src="{{ asset('bootstrap-date-time-picker/bootstrap5/js/bootstrap-datetimepicker.min.js') }}"></script>
 <script>
 function initializeDataTable(tableSelector) {
     $(tableSelector).DataTable({
-        ordering: false,
+        ordering: true,
         pageLength: 10,
         info: true,
         lengthChange: true,

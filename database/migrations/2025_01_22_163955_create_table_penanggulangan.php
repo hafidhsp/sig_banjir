@@ -15,15 +15,15 @@ return new class extends Migration
             $table->id('id_penanggulangan');
             $table->unsignedBigInteger('id_kecamatan');
             $table->foreign('id_kecamatan')->references('id_kecamatan')->on('tb_kecamatan');
-            $table->string('nama_penganggulangan');
-            $table->string('jenis_penganggulangan');
+            $table->string('nama_penanggulangan');
+            $table->string('jenis_penanggulangan');
             $table->timestamp('waktu_mulai');
-            $table->timestamp('waktu_selesai');
+            $table->timestamp('waktu_selesai')->nullable();
             $table->integer('status_penanggulangan');
-            $table->string('petugas');
-            $table->string('anggaran');
-            $table->text('deskripsi_penanggulangan');
-            $table->text('bukti_penanggulangan');
+            $table->string('petugas')->nullable();
+            $table->string('anggaran')->nullable();
+            $table->text('deskripsi_penanggulangan')->nullable();
+            $table->text('bukti_penanggulangan')->nullable();
             $table->timestamps();
         });
     }
