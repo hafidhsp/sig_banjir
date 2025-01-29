@@ -57,7 +57,7 @@
 
         document.addEventListener('DOMContentLoaded', function() {
             window.addEventListener('open-notif-success-profil', function() {
-            $('#nama_pengguna').html();
+            $('#nama_pengguna').load(window.location.href + ' #nama_pengguna');
             setTimeout(function () {
                 $('#closeModal').click();
             }, 100);

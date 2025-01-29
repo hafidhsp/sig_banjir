@@ -12,14 +12,15 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Livewire\WithFileUploads;
+use Illuminate\Support\Facades\Storage;
 
 class Index extends Component
 {
     use WithFileUploads;
 
-    public $today,$user,$id_penanggulangan,$nama_penanggulangan,$jenis_penanggulangan,$waktu_mulai,$waktu_selesai,$petugas,$kecamatan_penanggulangan,$anggaran_penanggulangan,$deskripsi_penanggulangan,$bukti_penanggulangan,$bukti_penanggulangan_info,$status_penanggulangan;
+    public $today,$user,$id_penanggulangan,$nama_penanggulangan,$jenis_penanggulangan,$waktu_mulai,$waktu_selesai,$petugas,$kecamatan_penanggulangan,$anggaran_penanggulangan,$deskripsi_penanggulangan,$bukti_penanggulangan,$bukti_penanggulangan_info,$status_penanggulangan,$idbuktiGambar,$buktiGambar;
 
-    protected $listeners = ['hapusPenanggulangan'];
+    protected $listeners = ['hapusPenanggulangan','hapusBuktiPenanggulangan'];
 
     public function mount(){
         $this->today = Carbon::now()->translatedFormat('d F Y');
@@ -37,6 +38,8 @@ class Index extends Component
         $this->bukti_penanggulangan = '';
         $this->bukti_penanggulangan_info = '';
         $this->status_penanggulangan = '';
+        $this->buktiGambar = '';
+        $this->idbuktiGambar = '';
         $this->resetValidation();
     }
 
@@ -57,8 +60,8 @@ class Index extends Component
     }
 
     public function refresh_inputan(){
-        $this->dispatch('render-table');
         $this->mount();
+        $this->dispatch('render-table');
     }
     public function save_penanggulangan(){
         if($this->id_penanggulangan != ''){
@@ -111,22 +114,24 @@ class Index extends Component
             $data['waktu_selesai']=$this->waktu_selesai;
             }
             if (!empty($this->bukti_penanggulangan)) {
-
-                $existingFiles = explode('#', $data_penanggulangan->bukti_penanggulangan ?? '');
+                $existingFiles = [];
+                if($data_penanggulangan->bukti_penanggulangan !=''){
+                    $existingFiles = explode('#', $data_penanggulangan->bukti_penanggulangan ?? '');
+                }
 
                 $newFileNames = [];
                 foreach ($this->bukti_penanggulangan as $file) {
                     $filePath = $file->storeAs(
                         'penanggulangan',
                         md5(uniqid() . time()) . '.' . $file->getClientOriginalExtension(),
-                        'public'
+                        'asset'
                     );
                     $newFileNames[] = basename($filePath);
                 }
-
                 $allFileNames = array_merge($existingFiles, $newFileNames);
-
-                $data['bukti_penanggulangan'] = implode('#', $allFileNames);
+                // dd($allFileNames);
+                $data['bukti_penanggulangan'] = !empty($allFileNames) ? implode('#', $allFileNames) : '';
+                // $data['bukti_penanggulangan'] = implode('#', $allFileNames);
             }
             $data_penanggulangan->update($data);
             $this->dispatch('open-notif-success');
@@ -183,7 +188,7 @@ class Index extends Component
                     $filePath = $file->storeAs(
                         'penanggulangan',
                         md5(uniqid() . time()) . '.' . $file->getClientOriginalExtension(),
-                        'public'
+                        'asset'
                     );
                     $fileNames[] = basename($filePath);
                 }
@@ -225,6 +230,32 @@ class Index extends Component
     }
 
     public function showModalBuktiPenanggulangan($id_penanggulangan){
+        $data_penanggulangan = M_penanggulangan::where('id_penanggulangan',$id_penanggulangan)->first();
+            if (!empty($data_penanggulangan->bukti_penanggulangan)) {
+                $this->buktiGambar = explode('#', $data_penanggulangan->bukti_penanggulangan ?? '');
+                $this->idbuktiGambar = $id_penanggulangan;
+            }
         $this->dispatch('open-modal-bukti-penanggulangan');
+    }
+
+    public function show_delete_bukti_penanggulangan($id_penanggulangan,$namaFile){
+         $this->dispatch('open-modal-validation-hapus-gambar-penanggulangan',['id_penanggulangan'=>$id_penanggulangan,'namaFile'=>$namaFile]);
+    }
+    public function hapusBuktiPenanggulangan($id_penanggulangan,$namaFile){
+        $data_penanggulangan = M_penanggulangan::where('id_penanggulangan',$id_penanggulangan)->first();
+        $listGambar = explode('#', $data_penanggulangan->bukti_penanggulangan ?? '');
+        $index = array_search($namaFile, $listGambar);
+        if ($index !== false) {
+            unset($listGambar[$index]);
+
+            $filePath = 'penanggulangan/'.$namaFile;
+            if (Storage::disk('asset')->exists($filePath)) {
+                Storage::disk('asset')->delete($filePath);
+            }
+            $updatedList = implode('#', $listGambar);
+            $data_penanggulangan->update(['bukti_penanggulangan' => $updatedList]);
+
+            $this->dispatch('open-notif-success-delete');
+        }
     }
 }

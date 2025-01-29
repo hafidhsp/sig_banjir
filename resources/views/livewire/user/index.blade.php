@@ -78,7 +78,7 @@
             <div class="modal-content">
             <div class="modal-header">
                 <h1 class="modal-title" id="staticBackdropLabel" style="font-size: 20px">{{ $title_modal }} Data User</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" wire:click="refresh_inputan()"></button>
             </div>
             <div class="modal-body">
                 <form class="forms-sample" wire:submit.prevent="save_user">
@@ -124,7 +124,7 @@
                     </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close" id="btn_close">Tutup</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close" id="btn_close" wire:click="refresh_inputan()">Tutup</button>
                 <button type="submit" class="btn btn-primary">Simpan</button>
             </div>
                 </form>
@@ -139,6 +139,14 @@
 
 document.addEventListener('DOMContentLoaded', function() {
     initializeDataTable('#table_user');
+
+    window.addEventListener('render-table', function() {
+        setTimeout(function () {
+            destroyDataTable('#table_user');
+            initializeDataTable('#table_user');
+            $('#table_user').load(window.location.href + ' #table_user');
+        }, 100);
+    });
 
     window.addEventListener('close-modal-form-user', function() {
         setTimeout(function () {
@@ -197,7 +205,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     @if (session('success'))
-            $('#table_user').html();
             alertify.success("'"+{{ session('success') }}+"'");
     @endif
 });

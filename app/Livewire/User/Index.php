@@ -150,4 +150,9 @@ class Index extends Component
         $data_user->delete();
         $this->dispatch('open-notif-success-delete');
     }
+
+    public function refresh_inputan(){
+        $this->mount();
+        $this->dispatch('render-table');
+    }
 }

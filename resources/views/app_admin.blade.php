@@ -47,6 +47,9 @@
 <link rel="stylesheet" href="{{ asset('bootstrap-date-time-picker/bootstrap5/css/bootstrap-datetimepicker.css') }}" />
 <link rel="stylesheet" href="{{ asset('bootstrap-date-time-picker/bootstrap5/css/bootstrap-datetimepicker.min.css') }}" />
 
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css">
+
     @livewireStyles
 
 </head>
@@ -126,6 +129,11 @@
 {{-- date timepicker --}}
 <script src="{{ asset('bootstrap-date-time-picker/bootstrap5/js/bootstrap-datetimepicker.js') }}" > </script>
 <script src="{{ asset('bootstrap-date-time-picker/bootstrap5/js/bootstrap-datetimepicker.min.js') }}"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js"></script>
+
+
+
 <script>
 function initializeDataTable(tableSelector) {
     $(tableSelector).DataTable({

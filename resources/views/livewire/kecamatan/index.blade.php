@@ -215,6 +215,7 @@ document.addEventListener('DOMContentLoaded', function() {
         setTimeout(function () {
             destroyDataTable('#table_kecamatan');
             initializeDataTable('#table_kecamatan');
+            $('#table_kecamatan').load(window.location.href + ' #table_kecamatan');
         }, 100);
     });
     window.addEventListener('open-notif-success', function() {

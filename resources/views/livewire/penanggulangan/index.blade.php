@@ -246,7 +246,7 @@
                     <h1 class="modal-title" id="staticBackdropLabel" style="font-size: 20px"></h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" wire:click="refresh_inputan()"></button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body bg-secondary bg-gradient  bg-opacity-50">
                     <div class="container">
                         <div class="row d-flex align-items-center">
                             <!-- Previous Button -->
@@ -260,16 +260,27 @@
                             <div class="col text-center">
                                 <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
                                     <div class="carousel-inner">
+                                        @if (empty($buktiGambar))
                                         <div class="carousel-item active">
-                                            <span>Tidak ada bukti pada data ini.</span>
+                                            <span>Tidak ada foto pada data ini.</span>
                                         </div>
-                                        <div class="carousel-item">
-                                            <img src="path/to/image2.jpg" class="d-block mx-auto w-75" alt="Image 2">
-                                            <br>
-                                            <button class="btn btn-outline-danger">
-                                                <i class="fa fa-trash"></i>
-                                            </button>
-                                        </div>
+                                        @else
+                                        @php
+                                            $no_gbr=1
+                                        @endphp
+                                            @foreach ($buktiGambar as $bukti)
+                                                    <div class="carousel-item {{ ($no_gbr==1)?'active':'' }}">
+                                                        <a href="{{ asset('storage/penanggulangan/'.$bukti) }}" data-lightbox="bukti-penanggulangan">
+                                                            <img src="{{ asset('storage/penanggulangan/'.$bukti) }}" class="d-block mx-auto w-50 shadow-lg" alt="Bukti {{ $no_gbr }}">
+                                                        </a>
+                                                        <br>
+                                                        <button class="btn btn-danger" type="button" wire:click="show_delete_bukti_penanggulangan({{ "'".$idbuktiGambar."'".","."'".$bukti."'" }})">
+                                                            <i class="fa fa-trash"></i>
+                                                        </button>
+                                                    </div>
+                                                    @php $no_gbr++; @endphp
+                                            @endforeach
+                                        @endif
                                         <!-- Add more carousel items here -->
                                     </div>
                                 </div>
@@ -286,7 +297,7 @@
                 </div>
 
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close" id="btn_close" wire:click="refresh_inputan()">Tutup</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close" id="btn_close_bukti" wire:click="refresh_inputan()">Tutup</button>
                 </div>
             </div>
         </div>
@@ -331,6 +342,7 @@ document.addEventListener('DOMContentLoaded', function() {
         setTimeout(function () {
             destroyDataTable('#table_penanggulangan');
             initializeDataTable('#table_penanggulangan');
+            $('#table_penanggulangan').load(window.location.href + ' #table_penanggulangan');
         }, 100);
     });
 
@@ -369,12 +381,14 @@ document.addEventListener('DOMContentLoaded', function() {
     window.addEventListener('open-notif-success-delete', function() {
         setTimeout(function () {
             $('#btn_close').click();
+            $('#btn_close_bukti').click();
         }, 100);
         setTimeout(function () {
             destroyDataTable('#table_penanggulangan');
             initializeDataTable('#table_penanggulangan');
             alertify.success('Berhasil Dihapus');
         }, 600);
+
     });
     window.addEventListener('open-modal-form-penanggulangan', function() {
         setTimeout(function () {
@@ -404,6 +418,51 @@ document.addEventListener('DOMContentLoaded', function() {
                 Swal.fire("Berhasil Dihapus", "", "success");
             } else {
                 Swal.fire("Dibatalkan!", "", "error");
+                setTimeout(function () {
+                    destroyDataTable('#table_penanggulangan');
+                    initializeDataTable('#table_penanggulangan');
+                    $('#table_penanggulangan').load(window.location.href + ' #table_penanggulangan');
+                }, 100);
+            }
+        });
+
+    });
+    window.addEventListener('open-modal-validation-hapus-gambar-penanggulangan', function(event) {
+        var id_penanggulangan = event.__livewire.params[0].id_penanggulangan;
+        var namaFile = event.__livewire.params[0].namaFile;
+
+        Swal.fire({
+            title: "Apakah ingin menghapus gambar ini?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Ya !",
+            cancelButtonText: "Tidak"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Livewire.dispatch('hapusBuktiPenanggulangan', {
+                    id_penanggulangan: id_penanggulangan,
+                    namaFile: namaFile
+                })
+                Swal.fire({
+                    title: "Berhasil Dihapus",
+                    icon: "success",
+                    confirmButtonText: "OK"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        setTimeout(function () {
+                            $('#table_penanggulangan').load(window.location.href + ' #table_penanggulangan');
+                        }, 300);
+                    }
+                });
+            } else {
+                Swal.fire("Dibatalkan!", "", "error");
+                setTimeout(function () {
+                    destroyDataTable('#table_penanggulangan');
+                    initializeDataTable('#table_penanggulangan');
+                    $('#table_penanggulangan').load(window.location.href + ' #table_penanggulangan');
+                }, 100);
             }
         });
 
