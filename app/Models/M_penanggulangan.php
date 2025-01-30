@@ -12,7 +12,7 @@ class M_penanggulangan extends Model
     protected $casts = [
     'waktu_mulai' => 'datetime',
     'waktu_selesai' => 'datetime',
-];
+    ];
     protected $primaryKey = 'id_penanggulangan';
 
 

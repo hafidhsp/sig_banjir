@@ -9,14 +9,12 @@ class M_daerah_banjir extends Model
 {
     use HasFactory;
     protected $table = 'tb_daerah_banjir';
+    protected $primaryKey = 'id_daerah_banjir';
     protected $fillable = [
         'id_kecamatan',
-        'waktu_mulai',
-        'waktu_selesai',
         'pemberi_informasi',
-        'radius_daerah_banjir',
-        'warna_radius',
-        'konfirasi_st',
+        'batal_st',
+        'created_at',
     ];
 
 }

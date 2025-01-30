@@ -13,16 +13,17 @@ return new class extends Migration
     {
         Schema::create('tb_penanganan', function (Blueprint $table) {
             $table->id('id_penanganan');
-            $table->unsignedBigInteger('id_daerah_banjir');
-            $table->foreign('id_daerah_banjir')->references('id_daerah_banjir')->on('tb_daerah_banjir');
+            $table->unsignedBigInteger('id_jalan_daerah_banjir');
+            $table->foreign('id_jalan_daerah_banjir')->references('id_jalan_daerah_banjir')->on('tb_jalan_daerah_banjir')->onDelete('cascade');
             $table->string('nama_penanganan');
-            $table->string('jenis_penanganan');
+            // $table->string('jenis_penanganan');
             $table->timestamp('waktu_mulai');
             $table->timestamp('waktu_selesai');
             $table->integer('status_penanganan');
             $table->string('petugas');
             $table->string('anggaran');
             $table->text('deskripsi_penanganan');
+            $table->boolean('konfirmasi_st');
             $table->text('bukti_penanganan');
             $table->timestamps();
         });

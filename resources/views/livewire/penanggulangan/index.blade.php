@@ -1,6 +1,6 @@
 <div>
 
-        <div class="content-wrapper">
+    <div class="content-wrapper">
          <div class="col-lg-12 grid-margin stretch-card">
             <div class="card">
                 <div class="card-header row">
@@ -388,7 +388,6 @@ document.addEventListener('DOMContentLoaded', function() {
             initializeDataTable('#table_penanggulangan');
             alertify.success('Berhasil Dihapus');
         }, 600);
-
     });
     window.addEventListener('open-modal-form-penanggulangan', function() {
         setTimeout(function () {

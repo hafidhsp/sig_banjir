@@ -15,12 +15,8 @@ return new class extends Migration
             $table->id('id_daerah_banjir');
             $table->unsignedBigInteger('id_kecamatan');
             $table->foreign('id_kecamatan')->references('id_kecamatan')->on('tb_kecamatan')->onDelete('cascade');
-            $table->timestamp('waktu_mulai');
-            $table->timestamp('waktu_selesai');
             $table->string('pemberi_informasi');
-            $table->text('radius_daerah_banjir');
-            $table->text('warna_radius');
-            $table->boolean('konfirasi_st');
+            $table->boolean('batal_st');
             $table->timestamps();
         });
     }

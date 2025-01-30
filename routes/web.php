@@ -13,6 +13,7 @@ use App\Livewire\Dashboard\Index as DashboardIndex;
 use App\Livewire\User\Index as UserIndex;
 use App\Livewire\Kecamatan\Index as KecamatanIndex;
 use App\Livewire\Penanggulangan\Index as PenanggulanganIndex;
+use App\Livewire\LaporanBanjir\IndexLaporanBanjir as LaporanBanjirIndex;
 
 /*
 |--------------------------------------------------------------------------
@@ -47,9 +48,10 @@ Route::get('/register',RegisterIndex::class)->name('register')->middleware(['IsL
 Route::get('/dashboard',DashboardIndex::class)->name('dashboard')->middleware(['IsLogin']);
 
 //Role Admin
-Route::get('/user',UserIndex::class)->name('user')->middleware(['IsLogin']);
-Route::get('/kecamatan',KecamatanIndex::class)->name('kecamatan')->middleware(['IsLogin']);
-Route::get('/data-penanggulangan',PenanggulanganIndex::class)->name('penanggulangan')->middleware(['IsLogin']);
+Route::get('/user',UserIndex::class)->name('user')->middleware(['IsLogin','IsAdmin']);
+Route::get('/kecamatan',KecamatanIndex::class)->name('kecamatan')->middleware(['IsLogin','IsAdmin']);
+Route::get('/data-penanggulangan',PenanggulanganIndex::class)->name('penanggulangan')->middleware(['IsLogin','IsAdmin']);
+Route::get('/data-laporan-banjir',LaporanBanjirIndex::class)->name('data-laporan-banjir')->middleware(['IsLogin','IsAdmin']);
 
 
 //lokasi banjir
