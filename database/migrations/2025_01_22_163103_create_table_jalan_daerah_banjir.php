@@ -15,20 +15,20 @@ return new class extends Migration
             $table->id('id_jalan_daerah_banjir');
             $table->unsignedBigInteger('id_daerah_banjir');
             $table->foreign('id_daerah_banjir')->references('id_daerah_banjir')->on('tb_daerah_banjir');
-            $table->string('jenis_banjir');
             $table->timestamp('waktu_mulai');
-            $table->timestamp('waktu_selesai');
+            $table->timestamp('waktu_selesai')->nullable();
             $table->text('nama_jalan');
             $table->string('nomor_jalan');
             $table->string('panjang_jalan');
-            $table->string('tinggi_banjir');
+            $table->string('jenis_banjir')->nullable();
+            $table->string('tinggi_banjir')->nullable();
             $table->text('long_atitude')->nullable();
             $table->text('la_atitude')->nullable();
             $table->string('icon')->nullable();
             $table->string('radius')->nullable();
             $table->string('warna_radius')->nullable();
             $table->boolean('konfirmasi_st');
-            $table->text('bukti_foto');
+            $table->text('bukti_foto')->nullable();
             $table->timestamps();
         });
     }

@@ -216,7 +216,7 @@
                             <label class="text-danger">{{ $message }}</label>
                         @enderror
                     </div>
-                    <div class="form-group">
+                    {{-- <div class="form-group">
                         <label>Unggah Gambar</label>
                         <input type="file" class="file-upload-default @error('bukti_penanggulangan') is-invalid @enderror" wire:model.defer="bukti_penanggulangan" multiple>
                         <div class="input-group col-xs-12">
@@ -228,11 +228,38 @@
                         @error('bukti_penanggulangan')
                             <label class="text-danger">{{ $message }}</label>
                         @enderror
+                    </div> --}}
+                    <div class="mb-3 form-group">
+                        <label class="fw-bold">Bukti Penanggulangan</label>
+
+                        <input type="file" class="file-upload-default @error('bukti_penanggulangan.*') is-invalid @enderror"
+                            wire:model="bukti_penanggulangan" multiple hidden id="bukti_penanggulangan_input">
+                        <div class="input-group">
+                            <input type="text" class="form-control file-upload-info @error('bukti_penanggulangan.*') is-invalid @enderror"
+                                disabled placeholder="Pilih Gambar" wire:model.defer="bukti_penanggulangan_info">
+
+                            <span class="input-group-append">
+                                <button class="file-upload-browse btn btn-primary" type="button"
+                                        onclick="document.getElementById('bukti_penanggulangan_input').click()">
+                                    <span wire:loading wire:target="bukti_penanggulangan">Mengunggah...</span>
+                                    <span wire:loading.remove wire:target="bukti_penanggulangan">Unggah</span>
+                                </button>
+                            </span>
+                        </div>
+
+                        @error('bukti_penanggulangan.*')
+                            <label class="text-danger">{{ $message }}</label>
+                        @enderror
                     </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close" id="btn_close" wire:click="refresh_inputan()">Tutup</button>
-                <button type="submit" class="btn btn-primary">Simpan</button>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary" wire:loading.attr="disabled">
+                        <span wire:loading wire:target="save_penanggulangan">Menyimpan data...</span>
+                        <span wire:loading.remove wire:target="save_penanggulangan">Simpan</span>
+                    </button>
+                </div>
             </div>
                 </form>
             </div>

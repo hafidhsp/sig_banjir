@@ -258,4 +258,13 @@ class Index extends Component
             $this->dispatch('open-notif-success-delete');
         }
     }
+
+    public function updatedBuktiPenanggulangan()
+    {
+        sleep(3);
+
+        $this->validate([
+            'bukti_penanggulangan.*' => 'nullable|mimes:jpeg,jpg,png|max:2048',
+        ]);
+    }
 }

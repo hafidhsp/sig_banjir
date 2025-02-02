@@ -9,7 +9,10 @@ class M_daerah_banjir extends Model
 {
     use HasFactory;
     protected $table = 'tb_daerah_banjir';
-    protected $primaryKey = 'id_daerah_banjir';
+    protected $casts = [
+        'created_at' => 'datetime',
+    ];
+    protected $dates = ['created_at','daerah_created_at'];
     protected $fillable = [
         'id_kecamatan',
         'pemberi_informasi',

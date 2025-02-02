@@ -50,6 +50,36 @@
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css">
 
+<style>
+    .clickable-cell {
+        cursor: pointer;
+    }
+    .btn-close-custom {
+        position: absolute;
+        top: 0px;
+        background: white;
+        border: none;
+        font-size: 24px;
+        color: #333;
+        padding: 10px;
+        cursor: pointer;
+        border-radius: 10%;
+    }
+    .btn-close-custom-start {
+        position: absolute;
+        left: -30px;
+        top: 0px;
+        background: white;
+        border: none;
+        font-size: 24px;
+        color: #333;
+        padding: 10px;
+        cursor: pointer;
+        border-radius: 10%;
+    }
+
+</style>
+
     @livewireStyles
 
 </head>
