@@ -20,9 +20,42 @@ class IndexLaporanBanjir extends Component
 {
     use WithFileUploads;
 
-    public $today,$user,$title_modal,$id_daerah_banjir,$kecamatan_daerah_banjir,$nama_pemberi_informasi,$id_jalan_daerah_banjir,$nama_jalan,$nomor_jalan,$panjang_jalan,$radius,$icon,$jenis_banjir,$tinggi_banjir,$bukti_foto,$bukti_foto_info,$id_daerah_banjir_jalan,$detailNamaKecamatan,$detailPemberiInformasi,$waktu_mulai,$waktu_selesai;
+    public $today,
+           $user,
+           $title_modal,
+           $id_daerah_banjir,
+           $kecamatan_daerah_banjir,
+           $nama_pemberi_informasi,
+           $id_jalan_daerah_banjir,
+           $nama_jalan,
+           $nomor_jalan,
+           $panjang_jalan,
+           $radius,
+           $icon,
+           $jenis_banjir,
+           $tinggi_banjir,
+           $bukti_foto,
+           $bukti_foto_info,
+           $id_daerah_banjir_jalan,
+           $detailNamaKecamatan,
+           $detailPemberiInformasi,
+           $detailWaktu,
+           $waktu_mulai,
+           $waktu_selesai,
+           $id_jalan_daerah_banjir_info,
+           $label_nama_jalan,
+           $label_nomor_jalan,
+           $label_panjang_jalan,
+           $label_jenis_banjir,
+           $label_tinggi_banjir,
+           $label_waktu_mulai,
+           $label_waktu_selesai,
+           $label_konfirmasi_st,
+           $buktiFoto,
+           $idbuktiFoto
+           ;
 
-    protected $listeners = ['hapusDaerahBanjir','hapusJalanDaerahBanjir'];
+    protected $listeners = ['hapusDaerahBanjir','hapusJalanDaerahBanjir','hapusBuktiJalanDaerahBanjir'];
 
     public function mount(){
         $this->today = Carbon::now()->translatedFormat('d F Y');
@@ -40,11 +73,23 @@ class IndexLaporanBanjir extends Component
         $this->jenis_banjir = '';
         $this->tinggi_banjir = '';
         $this->bukti_foto = [];
+        $this->buktiFoto = [];
+        $this->idbuktiFoto = [];
         $this->bukti_foto_info = '';
         $this->detailNamaKecamatan = '';
         $this->detailPemberiInformasi = '';
+        $this->detailWaktu = '';
         $this->waktu_mulai = '';
         $this->waktu_selesai = '';
+        $this->id_jalan_daerah_banjir_info = '';
+        $this->label_nama_jalan = '';
+        $this->label_nomor_jalan = '';
+        $this->label_panjang_jalan = '';
+        $this->label_jenis_banjir = '';
+        $this->label_tinggi_banjir = '';
+        $this->label_konfirmasi_st = '';
+        $this->label_waktu_mulai = '';
+        $this->label_waktu_selesai = '';
         $this->resetValidation();
     }
 
@@ -52,6 +97,36 @@ class IndexLaporanBanjir extends Component
     public function refresh_inputan(){
         $this->mount();
         $this->dispatch('render-table');
+    }
+
+    public function refresh_canvas($form){
+        $this->id_jalan_daerah_banjir = '';
+        $this->nama_jalan = '';
+        $this->nomor_jalan = '';
+        $this->panjang_jalan = '';
+        $this->waktu_mulai = '';
+        $this->waktu_selesai = '';
+        $this->radius = '';
+        $this->icon = '';
+        $this->jenis_banjir = '';
+        $this->tinggi_banjir = '';
+        $this->id_jalan_daerah_banjir_info = '';
+        $this->label_nama_jalan = '';
+        $this->label_nomor_jalan = '';
+        $this->label_panjang_jalan = '';
+        $this->label_jenis_banjir = '';
+        $this->label_tinggi_banjir = '';
+        $this->label_konfirmasi_st = '';
+        $this->label_waktu_mulai = '';
+        $this->label_waktu_selesai = '';
+        $this->buktiFoto = [];
+        $this->idbuktiFoto = '';
+        $this->title_modal = 'Tambah';
+        if($form == true){
+            $this->dispatch('render-canvas-form');
+        }else{
+            $this->dispatch('render-canvas-utama');
+        }
     }
 
     public function render()
@@ -143,12 +218,14 @@ class IndexLaporanBanjir extends Component
     }
 
     public function detailDaerahBanjir($id_daerah_banjir){
-        $detailDaerahBanjir = M_daerah_banjir::where('id_daerah_banjir',$id_daerah_banjir)
+        $detailDaerahBanjir = M_daerah_banjir::select('tb_daerah_banjir.*','tb_kecamatan.nama_kecamatan')
+                                ->where('id_daerah_banjir',$id_daerah_banjir)
                                 ->leftJoin('tb_kecamatan','tb_kecamatan.id_kecamatan','=','tb_daerah_banjir.id_kecamatan')
                                 ->first();
         $this->id_daerah_banjir_jalan = $id_daerah_banjir;
         $this->detailNamaKecamatan = $detailDaerahBanjir->nama_kecamatan;
         $this->detailPemberiInformasi = $detailDaerahBanjir->pemberi_informasi;
+        $this->detailWaktu = !empty($detailDaerahBanjir->created_at)?$detailDaerahBanjir->created_at->translatedformat('d F Y'):'-';
         $this->dispatch('open-canvas-detail-daerah-banjir');
     }
 
@@ -219,7 +296,6 @@ class IndexLaporanBanjir extends Component
                 $allFileNames = array_merge($existingFiles, $newFileNames);
                 $data['bukti_foto'] = !empty($allFileNames) ? implode('#', $allFileNames) : '';
             }
-
             $data_jalan_daerah_banjir->update($data);
             $this->mount();
             $this->dispatch('open-notif-success-canvas-form');
@@ -300,7 +376,7 @@ class IndexLaporanBanjir extends Component
         $this->jenis_banjir = $detailJalanDaerahBanjir->jenis_banjir;
         $this->tinggi_banjir = $detailJalanDaerahBanjir->tinggi_banjir;
         $this->title_modal = 'Ubah';
-        $this->dispatch('open-canvas-detail-jalan-daerah-banjir');
+        $this->dispatch('open-canvas-form-jalan-daerah-banjir');
     }
 
     public function updatedBuktiFoto()
@@ -325,4 +401,47 @@ class IndexLaporanBanjir extends Component
         $this->dispatch('render-table');
         $this->dispatch('open-notif-success-delete-canvas-form');
     }
+
+    public function detailJalanDaerahBanjir($id_jalan_daerah_banjir){
+        $data__jalan_daerah_banjir = M_jalan_daerah_banjir::where('id_jalan_daerah_banjir',$id_jalan_daerah_banjir)->first();
+        $this->id_jalan_daerah_banjir_info = $id_jalan_daerah_banjir;
+        $this->label_nama_jalan = $data__jalan_daerah_banjir->nama_jalan;
+        $this->label_nomor_jalan = $data__jalan_daerah_banjir->nomor_jalan;
+        $this->label_panjang_jalan = $data__jalan_daerah_banjir->panjang_jalan;
+        $this->label_jenis_banjir = $data__jalan_daerah_banjir->jenis_banjir;
+        $this->label_tinggi_banjir = $data__jalan_daerah_banjir->tinggi_banjir;
+        $this->label_waktu_mulai = $data__jalan_daerah_banjir->waktu_mulai
+                                    ? $data__jalan_daerah_banjir->waktu_mulai->translatedFormat('d F Y') .
+                                    ($data__jalan_daerah_banjir->waktu_selesai ? ' - ' . $data__jalan_daerah_banjir->waktu_selesai->translatedFormat('d F Y') : '')
+                                    : '-';
+        $this->label_konfirmasi_st = $data__jalan_daerah_banjir->konfirmasi_st;
+
+        if (!empty($data__jalan_daerah_banjir->bukti_foto)) {
+                $this->buktiFoto = explode('#', $data__jalan_daerah_banjir->bukti_foto ?? '');
+                $this->idbuktiFoto = $id_jalan_daerah_banjir;
+            }
+        $this->dispatch('open-canvas-detail-jalan-daerah-banjir');
+    }
+
+    public function show_delete_bukti_jalan_daerah_banjir($id_jalan_daerah_banjir,$namaFile){
+         $this->dispatch('open-modal-validation-hapus-foto-jalan-daerah-banjir',['id_jalan_daerah_banjir'=>$id_jalan_daerah_banjir,'namaFile'=>$namaFile]);
+    }
+
+    public function hapusBuktiJalanDaerahBanjir($id_jalan_daerah_banjir,$namaFile){
+        $data_jalan_daerah_banjir = M_jalan_daerah_banjir::where('id_jalan_daerah_banjir',$id_jalan_daerah_banjir)->first();
+        $listGambar = explode('#', $data_jalan_daerah_banjir->bukti_foto ?? '');
+        $index = array_search($namaFile, $listGambar);
+        if ($index !== false) {
+            unset($listGambar[$index]);
+
+            $filePath = 'jalanbanjir/'.$namaFile;
+            if (Storage::disk('asset')->exists($filePath)) {
+                Storage::disk('asset')->delete($filePath);
+            }
+            $updatedList = implode('#', $listGambar);
+            $data_jalan_daerah_banjir->update(['bukti_foto' => $updatedList]);
+            $this->dispatch('open-notif-success-delete-canvas-detail-jalan-daerah-banjir');
+        }
+    }
+
 }

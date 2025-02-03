@@ -51,7 +51,7 @@
                                         <td class="clickable-cell" wire:click="detailDaerahBanjir('{{ $daerah_banjir->id_daerah_banjir }}')">
                                             {{ $daerah_banjir->pemberi_informasi }}
                                         </td>
-                                        <td class="clickable-cell" class="text-center" wire:click="detailDaerahBanjir('{{ $daerah_banjir->id_daerah_banjir }})">
+                                        <td class="clickable-cell text-center" wire:click="detailDaerahBanjir('{{ $daerah_banjir->id_daerah_banjir }})">
                                             {{ (($daerah_banjir->tb_daerah_banjir.$daerah_banjir->created_at != '')?$daerah_banjir->tb_daerah_banjir.$daerah_banjir->created_at->translatedFormat('d F Y'):'') }}
                                         </td>
                                         <td align="center">
@@ -133,7 +133,7 @@
                     </div>
                 <div>
                     <h3 id="offcanvasRightLabel"><b>Detail Laporan</b></h3>
-                    <small class="text-muted fst-italic">30 Januari 2025</small>
+                    <small class="text-muted fst-italic">{{ $detailWaktu??'-' }}</small>
                 </div>
             </div>
         </div>
@@ -193,13 +193,13 @@
                             @else
                                 @foreach ($data_jalan_daerah_banjir as $jalan_banjir)
                                     <tr>
-                                        <td class="text-center">
+                                        <td class="text-center clickable-cell" wire:click="detailJalanDaerahBanjir({{ $jalan_banjir->id_jalan_daerah_banjir }})">
                                             {{ $no_1 }}
                                         </td>
-                                        <td wire:click="detailDaerahBanjir('')">
+                                        <td class="clickable-cell" wire:click="detailJalanDaerahBanjir({{ $jalan_banjir->id_jalan_daerah_banjir }})">
                                             {{ $jalan_banjir->nama_jalan }}
                                         </td>
-                                        <td wire:click="detailDaerahBanjir('')">
+                                        <td class="clickable-cell" wire:click="detailJalanDaerahBanjir({{ $jalan_banjir->id_jalan_daerah_banjir }})">
                                             {{ $jalan_banjir->tinggi_banjir }}
                                         </td>
                                         <td align="center">
@@ -214,9 +214,9 @@
                                                     <button type="button" class="dropdown-item text-primary" wire:click="showFormJalanDaerahBanjir({{ $jalan_banjir->id_jalan_daerah_banjir }})">
                                                         <i class="bi bi-pencil-square"></i> Ubah
                                                     </button>
-                                                    <button type="button" class="dropdown-item text-primary" wire:click="showDetailJalanDaerahBanjir('')">
+                                                    {{-- <button type="button" class="dropdown-item text-primary" wire:click="showDetailJalanDaerahBanjir('')">
                                                         <i class="bi bi-list"></i> Detail
-                                                    </button>
+                                                    </button> --}}
                                                 </div>
                                             </div>
                                         </td>
@@ -231,7 +231,7 @@
                     </table>
                 </div>
                 <div class="d-flex justify-content-end">
-                    <button type="button" class="btn btn-outline-primary btn-icon-text mt-3" onclick="showModalJalanBanjir()">
+                    <button type="button" class="btn btn-outline-primary btn-icon-text mt-3" wire:click='refresh_canvas(true)'>
                     <i class="mdi mdi-account-plus"></i>
                     Tambah Detail Laporan Banjir
                     </button>
@@ -248,7 +248,7 @@
             </div>
             <div class="d-flex">
                 <div class="align-items-end">
-                    <button type="button" class="btn-close-custom text-reset" data-bs-dismiss="offcanvas" aria-label="Close" id="formCanvasJalanBanjir">
+                    <button type="button" class="btn-close-custom text-reset" data-bs-dismiss="offcanvas" aria-label="Close" id="formCanvasJalanBanjir" wire:click='refresh_canvas(false)'>
                         <i class="bi bi-arrow-left"></i>
                     </button>
                 </div>
@@ -361,6 +361,122 @@
         </div>
     </div>
 
+    <!-- Offcanvas Detail -->
+    <div class="offcanvas offcanvas-start h-100 w-50" tabindex="-1" id="canvasDetailLaporanJalanBanjir" aria-labelledby="offcanvasRightLabel" wire:ignore.self>
+        <div class="offcanvas-header">
+            <div>
+                {{-- <h3 id="offcanvasRightLabel"><b>Detail Laporan</b></h3> --}}
+            </div>
+            <div class="d-flex">
+                <div class="align-items-end">
+                    <button type="button" class="btn-close-custom text-reset" data-bs-dismiss="offcanvas" aria-label="Close" id="DetailCanvasJalanBanjir" wire:click='refresh_canvas(false)'>
+                        <i class="bi bi-arrow-left"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="offcanvas-body">
+             <p>
+                <table>
+                    <tr>
+                        <td class="fw-bold">Detail Jalan</td>
+                        <td>&nbsp;&nbsp;:&nbsp;&nbsp;</td>
+                        <td>
+                            <span style="font-size: 0.9em">
+                                Jl. {{ $label_nama_jalan??'-' }}, No. {{ $label_nomor_jalan??'-' }}
+                            </span>
+                        </td>
+                        <td width="30px"></td>
+                        <td class="fw-bold">Panjang Jalan</td>
+                        <td>&nbsp;&nbsp;:&nbsp;&nbsp;</td>
+                        <td>
+                            <span style="font-size: 0.9em">
+                                {{ $label_panjang_jalan??'-' }}
+                            </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="fw-bold">Waktu Banjir</td>
+                        <td>&nbsp;&nbsp;:&nbsp;&nbsp;</td>
+                        <td>
+                            <span style="font-size: 0.9em">
+                                {{ $label_waktu_mulai??'-' }}
+                            </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="fw-bold">Jenis Banjir</td>
+                        <td>&nbsp;&nbsp;:&nbsp;&nbsp;</td>
+                        <td>
+                            <span style="font-size: 0.9em">
+                                {{ $label_jenis_banjir??'-' }}
+                            </span>
+                        </td>
+                        <td></td>
+                        <td class="fw-bold">Tinggi Banjir</td>
+                        <td>&nbsp;&nbsp;:&nbsp;&nbsp;</td>
+                        <td>
+                            <span style="font-size: 0.9em">
+                                {{ $label_tinggi_banjir??'-' }}
+                            </span>
+                        </td>
+                    </tr>
+                </table>
+            </p>
+            <p>
+                <div class="bg-secondary bg-gradient  bg-opacity-50">
+                    <div class="container">
+                        <div class="row d-flex align-items-center">
+                            <!-- Previous Button -->
+                            <div class="col-auto">
+                                <button class="btn btn-outline-dark" data-bs-target="#carouselExample" data-bs-slide="prev">
+                                    <i class="fa fa-chevron-left"></i>
+                                </button>
+                            </div>
+
+                            <!-- Carousel Images -->
+                            <div class="col text-center">
+                                <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
+                                    <div class="carousel-inner">
+                                        @if (empty($buktiFoto))
+                                        <div class="carousel-item active">
+                                            <span>Tidak ada foto pada data ini.</span>
+                                        </div>
+                                        @else
+                                        @php
+                                            $no_gbr=1
+                                        @endphp
+                                            @foreach ($buktiFoto as $bukti)
+                                                    <div class="carousel-item {{ ($no_gbr==1)?'active':'' }}">
+                                                        <a href="{{ asset('storage/jalanbanjir/'.$bukti) }}" data-lightbox="bukti-jalan_daerah_banjir">
+                                                            <img src="{{ asset('storage/jalanbanjir/'.$bukti) }}" class="d-block mx-auto w-50 shadow-lg" alt="Bukti {{ $no_gbr }}">
+                                                        </a>
+                                                        <br>
+                                                        <button class="btn btn-danger" type="button" wire:click="show_delete_bukti_jalan_daerah_banjir({{ "'".$idbuktiFoto."'".","."'".$bukti."'" }})">
+                                                            <i class="fa fa-trash"></i>
+                                                        </button>
+                                                    </div>
+                                                    @php $no_gbr++; @endphp
+                                            @endforeach
+                                        @endif
+                                        <!-- Add more carousel items here -->
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Next Button -->
+                            <div class="col-auto">
+                                <button class="btn btn-outline-dark" data-bs-target="#carouselExample" data-bs-slide="next">
+                                    <i class="fa fa-chevron-right"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </p>
+        </div>
+    </div>
+
 </div>
 
 @push('scripts')
@@ -376,12 +492,24 @@
             backdrop: 'true',
             keyboard: false
         });
+        var offcanvasElement3 = document.getElementById('canvasDetailLaporanJalanBanjir');
+        var offcanvas3 = new bootstrap.Offcanvas(offcanvasElement3, {
+            backdrop: 'true',
+            keyboard: false
+        });
+        const button = document.getElementById('button_detail_canvas');
 
         function showModal(){
             $('#modalFormLaporanBanjirPertama').modal('show');
         }
         function showModalJalanBanjir(){
+            offcanvas2.hide();
+             setTimeout(function () {
             offcanvas2.show();
+            }, 100);
+        }
+        function showDetailJalanBanjir(){
+            offcanvas3.show();
         }
 
         document.addEventListener('DOMContentLoaded', function() {
@@ -437,6 +565,16 @@
                 setTimeout(function () {
                     $('#formCanvasJalanBanjir').click();
                     offcanvas.show();
+                    alertify.success('Berhasil Dihapus');
+                }, 600);
+            });
+            window.addEventListener('open-notif-success-delete-canvas-detail-jalan-daerah-banjir', function() {
+                setTimeout(function () {
+                    offcanvas3.hide();
+                }, 100);
+                setTimeout(function () {
+                    $('#carouselExample').load(window.location.href + ' #carouselExample');
+                    offcanvas3.show();
                     alertify.success('Berhasil Dihapus');
                 }, 600);
             });
@@ -508,13 +646,25 @@
                     offcanvas.show();
                 }, 300);
             });
-            window.addEventListener('open-canvas-detail-jalan-daerah-banjir', function() {
+            window.addEventListener('open-canvas-form-jalan-daerah-banjir', function() {
+                setTimeout(function () {
+                    offcanvas2.hide();
+                    offcanvas3.hide();
+                }, 100);
                 setTimeout(function () {
                     offcanvas2.show();
                 }, 300);
             });
+            window.addEventListener('open-canvas-detail-jalan-daerah-banjir', function() {
+                setTimeout(function () {
+                    offcanvas2.hide();
+                    offcanvas3.hide();
+                }, 100);
+                setTimeout(function () {
+                    offcanvas3.show();
+                }, 300);
+            });
 
-            const button = document.getElementById('button_detail_canvas');
             window.addEventListener('render-canvas', function() {
                 setTimeout(function () {
                     offcanvas.hide();
@@ -524,6 +674,86 @@
                     offcanvas.show();
                     offcanvas2.show();
                 }, 300);
+            });
+            window.addEventListener('render-canvas-utama', function() {
+                setTimeout(function () {
+                    offcanvas.hide();
+                    offcanvas2.hide();
+                    offcanvas3.hide();
+                }, 100);
+                setTimeout(function () {
+
+                    offcanvas.show();
+                }, 300);
+            });
+            window.addEventListener('render-canvas-form', function() {
+                setTimeout(function () {
+                    offcanvas2.hide();
+                    offcanvas3.hide();
+                }, 100);
+                setTimeout(function () {
+                    offcanvas2.show();
+                }, 300);
+            });
+            window.addEventListener('render-canvas-detail-jalan-daerah-banjir', function() {
+                setTimeout(function () {
+                    offcanvas2.hide();
+                    offcanvas3.hide();
+                }, 100);
+                setTimeout(function () {
+                    offcanvas3.show();
+                }, 300);
+            });
+            window.addEventListener('hide-canvas-all', function() {
+                setTimeout(function () {
+                    offcanvas.hide();
+                    offcanvas2.hide();
+                    offcanvas3.hide();
+                }, 100);
+            });
+            window.addEventListener('open-modal-validation-hapus-foto-jalan-daerah-banjir', function(event) {
+                var id_jalan_daerah_banjir = event.__livewire.params[0].id_jalan_daerah_banjir;
+                var namaFile = event.__livewire.params[0].namaFile;
+
+                Swal.fire({
+                    title: "Apakah ingin menghapus gambar ini?",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Ya !",
+                    cancelButtonText: "Tidak"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Livewire.dispatch('hapusBuktiJalanDaerahBanjir', {
+                            id_jalan_daerah_banjir: id_jalan_daerah_banjir,
+                            namaFile: namaFile
+                        })
+                        Swal.fire({
+                            title: "Berhasil Dihapus",
+                            icon: "success",
+                            confirmButtonText: "OK"
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                setTimeout(function () {
+                                    $('#table_jalan_daerah_banjir').load(window.location.href + ' #table_jalan_daerah_banjir');
+                                }, 300);
+                            }
+                        });
+                    } else {
+                        Swal.fire("Dibatalkan!", "", "error");
+                        setTimeout(function () {
+                            destroyDataTable('#table_jalan_daerah_banjir');
+                            initializeDataTable('#table_jalan_daerah_banjir');
+                            $('#table_jalan_daerah_banjir').load(window.location.href + ' #table_jalan_daerah_banjir');
+                            offcanvas2.hide();
+                            offcanvas3.hide();
+                        }, 100);
+                        setTimeout(function () {
+                            offcanvas3.show();
+                        }, 300);
+                            }
+                });
             });
         });
     </script>
