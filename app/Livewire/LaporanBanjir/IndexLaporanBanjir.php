@@ -52,7 +52,8 @@ class IndexLaporanBanjir extends Component
            $label_waktu_selesai,
            $label_konfirmasi_st,
            $buktiFoto,
-           $idbuktiFoto
+           $idbuktiFoto,
+           $displayjalan
            ;
 
     protected $listeners = ['hapusDaerahBanjir','hapusJalanDaerahBanjir','hapusBuktiJalanDaerahBanjir'];
@@ -90,6 +91,7 @@ class IndexLaporanBanjir extends Component
         $this->label_konfirmasi_st = '';
         $this->label_waktu_mulai = '';
         $this->label_waktu_selesai = '';
+        $this->displayjalan = 0;
         $this->resetValidation();
     }
 
@@ -122,6 +124,7 @@ class IndexLaporanBanjir extends Component
         $this->buktiFoto = [];
         $this->idbuktiFoto = '';
         $this->title_modal = 'Tambah';
+        $this->displayjalan = 0;
         if($form == true){
             $this->dispatch('render-canvas-form');
         }else{
@@ -148,7 +151,8 @@ class IndexLaporanBanjir extends Component
         $data_kecamatan = kecamatan::orderBy('nama_kecamatan', 'Asc')
                                     ->get();
         $title = 'Data Laporan Banjir';
-        return view('livewire.laporan-banjir.index-laporan-banjir',compact('data_daerah_banjir','data_jalan_daerah_banjir','data_kecamatan','no','title_modal'))->extends('app_admin',compact('title','today','user'))->section('content');
+        $displayjalan = $this->displayjalan;
+        return view('livewire.laporan-banjir.index-laporan-banjir',compact('data_daerah_banjir','data_jalan_daerah_banjir','data_kecamatan','no','title_modal','displayjalan'))->extends('app_admin',compact('title','today','user'))->section('content');
     }
 
     public function save_laporan_banjir_pertama(){
@@ -421,6 +425,7 @@ class IndexLaporanBanjir extends Component
                 $this->idbuktiFoto = $id_jalan_daerah_banjir;
             }
         $this->dispatch('open-canvas-detail-jalan-daerah-banjir');
+        $this->dispatch('render-map');
     }
 
     public function show_delete_bukti_jalan_daerah_banjir($id_jalan_daerah_banjir,$namaFile){

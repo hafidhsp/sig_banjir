@@ -47,8 +47,17 @@
 <link rel="stylesheet" href="{{ asset('bootstrap-date-time-picker/bootstrap5/css/bootstrap-datetimepicker.css') }}" />
 <link rel="stylesheet" href="{{ asset('bootstrap-date-time-picker/bootstrap5/css/bootstrap-datetimepicker.min.css') }}" />
 
+{{-- <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"> --}}
+{{-- <link rel="stylesheet" href="{{ asset('leaflet/leaflet.css') }}" /> --}}
+ <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+     crossorigin=""/>
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css">
+
+{{-- <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script> --}}
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+     crossorigin=""></script>
 
 <style>
     .clickable-cell {
@@ -77,6 +86,50 @@
         cursor: pointer;
         border-radius: 10%;
     }
+    .offcanvas-scroll {
+    max-height: 100vh;
+    overflow-y: auto;
+    padding-bottom: 20px;
+    }
+
+    .btn-secondary-custom {
+        background-color: transparent;
+        color: rgb(108, 117, 125, 0.5);
+        box-shadow: none;
+        border-radius: 0;
+        width: 75px;
+        height: 40px;
+        transition: all 0.3s ease-in-out;
+    }
+
+    .btn-secondary-custom:first-child {
+        border-top-left-radius: 15px;
+        border-bottom-left-radius: 0;
+    }
+
+    /* Saat tombol di-hover atau aktif */
+    .btn-secondary-custom:hover,
+    .btn-secondary-custom:active,
+    .btn-secondary-custom.active {
+        background-color: rgb(108, 117, 125, 0.5) !important;
+        color: white !important;
+        border-color: rgb(108, 117, 125, 0.5);
+    }
+
+    .btn-secondary-custom:focus {
+        outline: none;
+        box-shadow: none;
+    }
+
+
+    .bg-secondary-container {
+    background-color: rgba(108, 117, 125, 0.5) !important;
+    padding: 0 !important;
+    border: none !important;
+    margin-top: -1px;
+    }
+
+    #map { height: 60vh; }
 
 </style>
 
@@ -161,6 +214,11 @@
 <script src="{{ asset('bootstrap-date-time-picker/bootstrap5/js/bootstrap-datetimepicker.min.js') }}"></script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js"></script>
+
+
+{{--
+<script src="{{ asset('leaflet/leaflet.js') }}"></script>
+<script src="{{ asset('leaflet/leaflet-src.js') }}"></script> --}}
 
 
 

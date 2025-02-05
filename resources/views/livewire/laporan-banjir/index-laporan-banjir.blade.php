@@ -72,6 +72,8 @@
         </div>
     </div>
 
+
+
     <!-- Modal Laporan Banjir 1 -->
     <div class="modal fade"  tabindex="-1" aria-hidden="true" id="modalFormLaporanBanjirPertama" data-bs-backdrop="static" wire:ignore.self>
         <div class="modal-dialog">
@@ -375,8 +377,8 @@
                 </div>
             </div>
         </div>
-        <div class="offcanvas-body">
-             <p>
+        <div class="offcanvas-body position-relative  offcanvas-scroll">
+             <p class="mb-3" >
                 <table>
                     <tr>
                         <td class="fw-bold">Detail Jalan</td>
@@ -423,7 +425,76 @@
                     </tr>
                 </table>
             </p>
-            <p>
+            <p class="mt-4">
+            <!-- Wrapper untuk memastikan posisi elemen tepat -->
+                <div class="position-absolute start-50 translate-middle-x w-100 h-auto">
+                    <div class="text-end">
+                        <div class="btn-group mt-4" role="group" aria-label="Basic example">
+                          <button type="button" class="btn btn-secondary-custom" id="btn_map" onclick="display_jalan_banjir('1')">
+                            <i class="mdi mdi-map"></i>
+                          </button>
+                          <button type="button" class="btn btn-secondary-custom active" id="btn_carousel" onclick="display_jalan_banjir('0')">
+                            <i class="mdi mdi-camera-front"></i>
+                          </button>
+                        </div>
+                    </div>
+
+                    <div class="bg-secondary bg-gradient bg-opacity-50 p-3 w-100 h-100 mx-auto" id="section_gambar_lokasi">
+                        <div class="">
+                            <div id="sec-1" class="container">
+                                <div class="row d-flex align-items-center">
+                                    <!-- Tombol Previous -->
+                                    <div class="col-auto">
+                                        <button class="btn btn-outline-dark" data-bs-target="#carouselExample" data-bs-slide="prev">
+                                            <i class="fa fa-chevron-left"></i>
+                                        </button>
+                                    </div>
+
+                                    <!-- Carousel Gambar -->
+                                    <div class="col text-center">
+                                        <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
+                                            <div class="carousel-inner">
+                                                @if (empty($buktiFoto))
+                                                    <div class="carousel-item active">
+                                                        <span>Tidak ada foto pada data ini.</span>
+                                                    </div>
+                                                @else
+                                                    @php $no_gbr=1 @endphp
+                                                    @foreach ($buktiFoto as $bukti)
+                                                        <div class="carousel-item {{ ($no_gbr==1)?'active':'' }}">
+                                                            <a href="{{ asset('storage/jalanbanjir/'.$bukti) }}" data-lightbox="bukti-jalan_daerah_banjir">
+                                                                <img src="{{ asset('storage/jalanbanjir/'.$bukti) }}" class="d-block mx-auto w-50 shadow-lg" alt="Bukti {{ $no_gbr }}">
+                                                            </a>
+                                                            <br>
+                                                            <button class="btn btn-danger" type="button" wire:click="show_delete_bukti_jalan_daerah_banjir({{ "'".$idbuktiFoto."'".","."'".$bukti."'" }})">
+                                                                <i class="fa fa-trash"></i>
+                                                            </button>
+                                                        </div>
+                                                        @php $no_gbr++; @endphp
+                                                    @endforeach
+                                                @endif
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Tombol Next -->
+                                    <div class="col-auto">
+                                        <button class="btn btn-outline-dark" data-bs-target="#carouselExample" data-bs-slide="next">
+                                            <i class="fa fa-chevron-right"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="sec-2" style="display: none;">
+                                <div class="col-md-12">
+                                    <div id="map" wire:ignore></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </p>
+            {{-- <p class="align-middle">
                 <div class="bg-secondary bg-gradient  bg-opacity-50">
                     <div class="container">
                         <div class="row d-flex align-items-center">
@@ -473,14 +544,13 @@
                         </div>
                     </div>
                 </div>
-            </p>
+            </p> --}}
         </div>
     </div>
 
 </div>
 
 @push('scripts')
-
     <script>
         var offcanvasElement = document.getElementById('CanvasDetailBanjir');
         var offcanvas = new bootstrap.Offcanvas(offcanvasElement, {
@@ -512,10 +582,99 @@
             offcanvas3.show();
         }
 
+        //    var map = L.map('map').setView([-7.6982991, 109.023521], 9);
+        //     var customIcon = L.divIcon({
+        //         // className: 'fa-solid fa-water',
+        //         html: "<i class='fa-solid fa-water' style='font-size: 30px; color: #007bff; border:none;background:none;'></i>",
+        //         iconSize: [30, 30]
+        //     });
+
+        //     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        //         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        //     }).addTo(map);
+
+        //     L.marker([-7.6982991, 109.023521], { icon: customIcon }).addTo(map)
+        //         .bindPopup('A pretty CSS popup.<br> Easily customizable.')
+        //         .openPopup();
+
+        // Inisialisasi peta Leaflet
+        var map = L.map('map').setView([-7.6982991, 109.023521], 9);
+
+        // Tambahkan tile layer dari OpenStreetMap
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        // Data lokasi dengan koordinat, kategori, dan ikon
+        var locations = [
+            { lat: -7.6982991, lng: 109.023521, name: "Lokasi 1", category: "air", radius: 500 },
+            { lat: -7.699500, lng: 109.030000, name: "Lokasi 2", category: "tanah", radius: 700 },
+            { lat: -7.705000, lng: 109.035000, name: "Lokasi 3", category: "air", radius: 400 },
+            { lat: -7.710000, lng: 109.040000, name: "Lokasi 4", category: "tanah", radius: 800 }
+        ];
+
+        // Buat layer grup untuk kategori
+        var airLayer = L.layerGroup();
+        var tanahLayer = L.layerGroup();
+
+        // Loop melalui lokasi untuk menambahkan marker ke layer yang sesuai
+        locations.forEach(function(location) {
+            var customIcon = L.divIcon({
+                html: "<i class='fa-solid fa-water' style='font-size: 30px; color: #007bff;'></i>",
+                iconSize: [30, 30],
+                className: "custom-leaflet-icon"
+            });
+
+            var marker = L.marker([location.lat, location.lng], { icon: customIcon })
+                .bindPopup(`<b>${location.name}</b><br>Kategori: ${location.category}`);
+
+            // Tambahkan lingkaran radius berdasarkan data dari array
+            var color = (location.category === "air") ? "blue" : "green";
+            var circle = L.circle([location.lat, location.lng], {
+                color: color,
+                fillColor: color,
+                fillOpacity: 0.2,
+                radius: location.radius
+            });
+
+            // Tambahkan marker dan lingkaran ke dalam layer berdasarkan kategorinya
+            if (location.category === "air") {
+                marker.addTo(airLayer);
+                circle.addTo(airLayer);
+            } else if (location.category === "tanah") {
+                marker.addTo(tanahLayer);
+                circle.addTo(tanahLayer);
+            }
+        });
+        // Tambahkan semua layer ke peta
+        airLayer.addTo(map);
+        tanahLayer.addTo(map);
+        var layerControl = L.control.layers(null, {
+            "Sumber Air": airLayer,
+            "Wilayah Tanah": tanahLayer
+        }, { collapsed: true });
+
+        layerControl.addTo(map);
+
+        var controlContainer = document.querySelector('.leaflet-control-layers');
+        controlContainer.style.opacity = '0';
+        controlContainer.style.transition = 'opacity 0.3s';
+
+        map.getContainer().addEventListener('mouseover', function() {
+            controlContainer.style.opacity = '1';
+        });
+
+        map.getContainer().addEventListener('mouseout', function() {
+            controlContainer.style.opacity = '0';
+        });
+
+
+
+
         document.addEventListener('DOMContentLoaded', function() {
+
             initializeDataTable('#table_daerah_banjir');
             initializeDataTable('#table_detail_daerah_banjir');
-
             window.addEventListener('render-table', function() {
                 setTimeout(function () {
                     destroyDataTable('#table_daerah_banjir');
@@ -755,7 +914,35 @@
                             }
                 });
             });
+
+            window.addEventListener('render-map', function() {
+                        // var map = L.map('map').setView([51.505, -0.09], 13);
+                setTimeout(function () {
+                    // $('#map').load(window.location.href + ' #map');
+                }, 500);
+
+            });
         });
+
+        function display_jalan_banjir(value) {
+            const carousel = document.getElementById("sec-1");
+            const map = document.getElementById("sec-2");
+            const btn_carousel = document.getElementById("btn_carousel");
+            const btn_map = document.getElementById("btn_map");
+
+            if (value === '1') {
+                map.style.display = "block";
+                carousel.style.display = "none";
+                btn_carousel.classList.remove("active");
+                btn_map.classList.add("active");
+            } else {
+                map.style.display = "none";
+                carousel.style.display = "block";
+                btn_carousel.classList.add("active");
+                btn_map.classList.remove("active");
+            }
+        }
+
     </script>
 
 

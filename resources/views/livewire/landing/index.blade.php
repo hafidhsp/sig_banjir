@@ -19,13 +19,80 @@
         <!-- Heading Row-->
         <div class="row gx-4 gx-lg-5 align-items-center my-5">
             <div id="map" class="col-lg-6 rounded" style="height: 300px;">
+            </div>
                 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
                 <script>
-                    var map = L.map('map').setView([-7.6982991, 109.023521], 9);
+                 var map = L.map('map').setView([-7.6982991, 109.023521], 9);
 
-                    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {}).addTo(map);
+                // Tambahkan tile layer dari OpenStreetMap
+                L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                }).addTo(map);
+
+                // Data lokasi dengan koordinat, kategori, dan ikon
+                var locations = [
+                    { lat: -7.6982991, lng: 109.023521, name: "Lokasi 1", category: "air", radius: 500 },
+                    { lat: -7.699500, lng: 109.030000, name: "Lokasi 2", category: "tanah", radius: 700 },
+                    { lat: -7.705000, lng: 109.035000, name: "Lokasi 3", category: "air", radius: 400 },
+                    { lat: -7.710000, lng: 109.040000, name: "Lokasi 4", category: "tanah", radius: 800 }
+                ];
+
+                // Buat layer grup untuk kategori
+                var airLayer = L.layerGroup();
+                var tanahLayer = L.layerGroup();
+
+                // Loop melalui lokasi untuk menambahkan marker ke layer yang sesuai
+                locations.forEach(function(location) {
+                    var customIcon = L.divIcon({
+                        html: "<i class='fa-solid fa-water' style='font-size: 30px; color: #007bff;'></i>",
+                        iconSize: [30, 30],
+                        className: "custom-leaflet-icon"
+                    });
+
+                    var marker = L.marker([location.lat, location.lng], { icon: customIcon })
+                        .bindPopup(`<b>${location.name}</b><br>Kategori: ${location.category}`);
+
+                    // Tambahkan lingkaran radius berdasarkan data dari array
+                    var color = (location.category === "air") ? "blue" : "green";
+                    var circle = L.circle([location.lat, location.lng], {
+                        color: color,
+                        fillColor: color,
+                        fillOpacity: 0.2,
+                        radius: location.radius
+                    });
+
+                    // Tambahkan marker dan lingkaran ke dalam layer berdasarkan kategorinya
+                    if (location.category === "air") {
+                        marker.addTo(airLayer);
+                        circle.addTo(airLayer);
+                    } else if (location.category === "tanah") {
+                        marker.addTo(tanahLayer);
+                        circle.addTo(tanahLayer);
+                    }
+                });
+                // Tambahkan semua layer ke peta
+                airLayer.addTo(map);
+                tanahLayer.addTo(map);
+                var layerControl = L.control.layers(null, {
+                    "Sumber Air": airLayer,
+                    "Wilayah Tanah": tanahLayer
+                }, { collapsed: true });
+
+                layerControl.addTo(map);
+
+                var controlContainer = document.querySelector('.leaflet-control-layers');
+                controlContainer.style.opacity = '0';
+                controlContainer.style.transition = 'opacity 0.3s';
+
+                map.getContainer().addEventListener('mouseover', function() {
+                    controlContainer.style.opacity = '1';
+                });
+
+                map.getContainer().addEventListener('mouseout', function() {
+                    controlContainer.style.opacity = '0';
+                });
+
                 </script>
-            </div>
             <div class="col-lg-5">
                 <h1 class="font-weight-light">Business Name or Tagline</h1>
                 <p>This is a template that is great for small businesses. It doesn't have too much fancy flare to it,
