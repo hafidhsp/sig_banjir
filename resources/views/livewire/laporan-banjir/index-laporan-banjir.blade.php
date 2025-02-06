@@ -430,10 +430,10 @@
                 <div class="position-absolute start-50 translate-middle-x w-100 h-auto">
                     <div class="text-end">
                         <div class="btn-group mt-4" role="group" aria-label="Basic example">
-                          <button type="button" class="btn btn-secondary-custom" id="btn_map" onclick="display_jalan_banjir('1')">
+                          <button type="button" class="btn btn-secondary-custom active" id="btn_map" onclick="display_jalan_banjir('1')">
                             <i class="mdi mdi-map"></i>
                           </button>
-                          <button type="button" class="btn btn-secondary-custom active" id="btn_carousel" onclick="display_jalan_banjir('0')">
+                          <button type="button" class="btn btn-secondary-custom" id="btn_carousel" onclick="display_jalan_banjir('0')">
                             <i class="mdi mdi-camera-front"></i>
                           </button>
                         </div>
@@ -441,7 +441,7 @@
 
                     <div class="bg-secondary bg-gradient bg-opacity-50 p-3 w-100 h-100 mx-auto" id="section_gambar_lokasi">
                         <div class="">
-                            <div id="sec-1" class="container">
+                            <div id="sec-1" class="container" style="display: none;" >
                                 <div class="row d-flex align-items-center">
                                     <!-- Tombol Previous -->
                                     <div class="col-auto">
@@ -485,9 +485,14 @@
                                     </div>
                                 </div>
                             </div>
-                            <div id="sec-2" style="display: none;">
+                            <div id="sec-2" wire:ignore>
+                                <select id="categoryFilter">
+                                    <option value="all">Semua</option>
+                                    <option value="air">Sumber Air</option>
+                                    <option value="tanah">Wilayah Tanah</option>
+                                </select>
                                 <div class="col-md-12">
-                                    <div id="map" wire:ignore></div>
+                                    <div id="map"></div>
                                 </div>
                             </div>
                         </div>
@@ -582,93 +587,18 @@
             offcanvas3.show();
         }
 
-        //    var map = L.map('map').setView([-7.6982991, 109.023521], 9);
-        //     var customIcon = L.divIcon({
-        //         // className: 'fa-solid fa-water',
-        //         html: "<i class='fa-solid fa-water' style='font-size: 30px; color: #007bff; border:none;background:none;'></i>",
-        //         iconSize: [30, 30]
-        //     });
-
-        //     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        //         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        //     }).addTo(map);
-
-        //     L.marker([-7.6982991, 109.023521], { icon: customIcon }).addTo(map)
-        //         .bindPopup('A pretty CSS popup.<br> Easily customizable.')
-        //         .openPopup();
-
-        // Inisialisasi peta Leaflet
-        var map = L.map('map').setView([-7.6982991, 109.023521], 9);
-
-        // Tambahkan tile layer dari OpenStreetMap
-        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        }).addTo(map);
-
-        // Data lokasi dengan koordinat, kategori, dan ikon
         var locations = [
-            { lat: -7.6982991, lng: 109.023521, name: "Lokasi 1", category: "air", radius: 500 },
-            { lat: -7.699500, lng: 109.030000, name: "Lokasi 2", category: "tanah", radius: 700 },
-            { lat: -7.705000, lng: 109.035000, name: "Lokasi 3", category: "air", radius: 400 },
-            { lat: -7.710000, lng: 109.040000, name: "Lokasi 4", category: "tanah", radius: 800 }
+            { lat: -7.6982991, lng: 109.023521, name: "Lokasi 1", category: "air", radius: 500, color: "blue" },
+            { lat: -7.699500, lng: 109.030000, name: "Lokasi 2", category: "tanah", radius: 700, color: "green" },
+            { lat: -7.705000, lng: 109.035000, name: "Lokasi 3", category: "air", radius: 400, color: "red" },
+            { lat: -7.710000, lng: 109.040000, name: "Lokasi 4", category: "tanah", radius: 800, color: "purple" }
         ];
+        updateMap(locations, "all");
 
-        // Buat layer grup untuk kategori
-        var airLayer = L.layerGroup();
-        var tanahLayer = L.layerGroup();
-
-        // Loop melalui lokasi untuk menambahkan marker ke layer yang sesuai
-        locations.forEach(function(location) {
-            var customIcon = L.divIcon({
-                html: "<i class='fa-solid fa-water' style='font-size: 30px; color: #007bff;'></i>",
-                iconSize: [30, 30],
-                className: "custom-leaflet-icon"
-            });
-
-            var marker = L.marker([location.lat, location.lng], { icon: customIcon })
-                .bindPopup(`<b>${location.name}</b><br>Kategori: ${location.category}`);
-
-            // Tambahkan lingkaran radius berdasarkan data dari array
-            var color = (location.category === "air") ? "blue" : "green";
-            var circle = L.circle([location.lat, location.lng], {
-                color: color,
-                fillColor: color,
-                fillOpacity: 0.2,
-                radius: location.radius
-            });
-
-            // Tambahkan marker dan lingkaran ke dalam layer berdasarkan kategorinya
-            if (location.category === "air") {
-                marker.addTo(airLayer);
-                circle.addTo(airLayer);
-            } else if (location.category === "tanah") {
-                marker.addTo(tanahLayer);
-                circle.addTo(tanahLayer);
-            }
+        document.getElementById("categoryFilter").addEventListener("change", function() {
+            var selectedCategory = this.value;
+            updateMap(locations, selectedCategory); // Panggil function untuk update layer
         });
-        // Tambahkan semua layer ke peta
-        airLayer.addTo(map);
-        tanahLayer.addTo(map);
-        var layerControl = L.control.layers(null, {
-            "Sumber Air": airLayer,
-            "Wilayah Tanah": tanahLayer
-        }, { collapsed: true });
-
-        layerControl.addTo(map);
-
-        var controlContainer = document.querySelector('.leaflet-control-layers');
-        controlContainer.style.opacity = '0';
-        controlContainer.style.transition = 'opacity 0.3s';
-
-        map.getContainer().addEventListener('mouseover', function() {
-            controlContainer.style.opacity = '1';
-        });
-
-        map.getContainer().addEventListener('mouseout', function() {
-            controlContainer.style.opacity = '0';
-        });
-
-
 
 
         document.addEventListener('DOMContentLoaded', function() {
@@ -683,6 +613,7 @@
                     offcanvas2.hide();
                     $('#table_daerah_banjir').load(window.location.href + ' #table_daerah_banjir');
                     $('#table_detail_daerah_banjir').load(window.location.href + ' #table_detail_daerah_banjir');
+                   updateMap(locations, "all");
                 }, 100);
             });
             window.addEventListener('open-notif-success', function() {

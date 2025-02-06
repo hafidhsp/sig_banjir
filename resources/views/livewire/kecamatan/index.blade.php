@@ -11,6 +11,10 @@
                     </div>
                     <div class="col-md-6">
                         <div class="d-flex justify-content-end">
+                            <button type="button" class="btn btn-outline-success btn-icon-text mt-3 mr-3" onclick="showModalLokasi()">
+                            <i class="mdi mdi-map-marker-multiple"></i>
+                            Lokasi
+                            </button>
                             <button type="button" class="btn btn-outline-primary btn-icon-text mt-3" onclick="showModal()">
                             <i class="mdi mdi-account-plus"></i>
                             Tambah Kecamatan
@@ -56,12 +60,12 @@
                                 </td>
                                 <td class="text-center">
                                     @if (isset($kecamatan->long_atitude) && isset($kecamatan->la_atitude))
-                                    [{{ $kecamatan->long_atitude }},{{ $kecamatan->la_atitude }}]
+                                    [{{ $kecamatan->la_atitude }},{{ $kecamatan->long_atitude }}]
                                     @endif
                                 </td>
                                 <td class="text-center">
                                     @if (isset($kecamatan->icon))
-                                    {{ $kecamatan->icon }}
+                                        <i class="{{ $kecamatan->icon }}"></i>
                                     @endif
                                 </td>
                                 <td class="text-center">
@@ -70,13 +74,13 @@
                                     @endif
                                 </td>
                                 <td class="text-center
-                                    @if ($kecamatan->warna_radius == '0')
+                                    @if ($kecamatan->warna_radius == 'blue')
                                         bg-primary text-white
-                                    @elseif ($kecamatan->warna_radius == '1')
+                                    @elseif ($kecamatan->warna_radius == 'green')
                                         bg-success text-white
-                                    @elseif ($kecamatan->warna_radius == '2')
+                                    @elseif ($kecamatan->warna_radius == 'yellow')
                                         bg-warning text-white
-                                    @elseif ($kecamatan->warna_radius == '3')
+                                    @elseif ($kecamatan->warna_radius == 'red')
                                         bg-danger text-white
                                     @else
                                         bg-white
@@ -101,7 +105,7 @@
             </div>
         </div>
     </div>
-         <!-- Modal Kecamatan -->
+    <!-- Modal Kecamatan -->
     <div class="modal fade"  tabindex="-1" aria-hidden="true" id="modalFormKecamatan" data-bs-backdrop="static" data-bs-backdrop="static" wire:ignore.self>
         <div class="modal-dialog">
             <div class="modal-content">
@@ -130,13 +134,6 @@
                         @enderror
                     </div>
                     <div class="form-group">
-                        <label >Longatitude</label>
-                        <input type="text" class="form-control @error('long_atitude') is-invalid @enderror" wire:model.defer="long_atitude" placeholder="Masukkan Longtitude" required>
-                        @error('long_atitude')
-                            <label class="text-danger">{{ $message }}</label>
-                        @enderror
-                    </div>
-                    <div class="form-group">
                         <label >Latitude</label>
                         <input type="text" class="form-control @error('la_atitude') is-invalid @enderror" wire:model.defer="la_atitude" placeholder="Masukkan Latitude" required>
                         @error('la_atitude')
@@ -144,15 +141,57 @@
                         @enderror
                     </div>
                     <div class="form-group">
-                        <label >Icon</label>
-                        <input type="text" class="form-control @error('icon') is-invalid @enderror" wire:model.defer="icon" placeholder="Masukkan Icon" required>
+                        <label >Longatitude</label>
+                        <input type="text" class="form-control @error('long_atitude') is-invalid @enderror" wire:model.defer="long_atitude" placeholder="Masukkan Longtitude" required>
+                        @error('long_atitude')
+                            <label class="text-danger">{{ $message }}</label>
+                        @enderror
+                    </div>
+                    <div class="form-group">
+                        {{-- <label >Icon</label>
+                        <select class="form-control @error('icon') is-invalid @enderror" id="exampleFormControlSelect2" wire:model.defer="icon"  required>
+                            <option value="" class="bg-white text-dark" selected>-- Pilih --</option>
+                            <option value="mdi mdi-map-marker" class="">
+                                <i class="mdi mdi-map-marker"></i>
+                                Default
+                            </option>
+                            <option value="fa-solid fa-water" class="">
+                                <i class="fa-solid fa-water"></i>
+                                 Banjir
+                            </option>
+                        </select> --}}
+                        <label>Icon</label>
+                        <div class="d-flex flex-wrap gap-3 p-3 border rounded">
+                            <label class="icon-option">
+                                <input type="radio" wire:model.defer="icon" value="mdi mdi-map-marker" required>
+                                <i class="mdi mdi-map-marker"></i> Normal
+                            </label>
+
+                            <label class="icon-option">
+                                <input type="radio" wire:model.defer="icon" value="fa-solid fa-water" required>
+                                <i class="fa-solid fa-water"></i> Banjir
+                            </label>
+                            <label class="icon-option">
+                                <input type="radio" wire:model.defer="icon" value="fa-solid fa-house-flood-water" required>
+                                <i class="fa-solid fa-house-flood-water"></i> Banjir Bandang
+                            </label>
+                        </div>
+
+                        {{-- <input type="text" class="form-control @error('icon') is-invalid @enderror" wire:model.defer="icon" placeholder="Masukkan Icon" required> --}}
                         @error('icon')
                             <label class="text-danger">{{ $message }}</label>
                         @enderror
                     </div>
                     <div class="form-group">
                         <label >Radius</label>
-                        <input type="text" class="form-control @error('radius') is-invalid @enderror" wire:model.defer="radius" placeholder="Masukkan Radius" required>
+                        <div class="row">
+                            <div class="col-md-10 col-lg-10">
+                                <input type="text" class="form-control @error('radius') is-invalid @enderror" wire:model.defer="radius" placeholder="Masukkan Radius" required>
+                            </div>
+                            <div class="col-md-2 col-lg-2 align-items-center align-middle d-flex">
+                                Meter
+                            </div>
+                        </div>
                         @error('radius')
                             <label class="text-danger">{{ $message }}</label>
                         @enderror
@@ -161,10 +200,10 @@
                         <label >Warna Radius</label>
                         <select class="form-control @error('warna_radius') is-invalid @enderror" id="exampleFormControlSelect2" wire:model.defer="warna_radius" onchange="changeBackgroundColor(this)"  required>
                             <option value="" class="bg-white text-dark" selected>-- Pilih --</option>
-                            <option value="0" class="bg-primary text-white">Default</option>
-                            <option value="1" class="bg-success text-white">Normal</option>
-                            <option value="2" class="bg-warning text-white">Waspada</option>
-                            <option value="3" class="bg-danger text-white">Bahaya</option>
+                            <option value="blue" class="bg-primary text-white">Default</option>
+                            <option value="green" class="bg-success text-white">Normal</option>
+                            <option value="yellow" class="bg-warning text-white">Waspada</option>
+                            <option value="red" class="bg-danger text-white">Bahaya</option>
                         </select>
                         @error('warna_radius')
                             <label class="text-danger">{{ $message }}</label>
@@ -179,11 +218,41 @@
             </div>
         </div>
     </div>
+    <!-- Modal Lokasi -->
+    <div class="modal fade"  tabindex="-1" aria-hidden="true" id="modalLokasiKecamatan" data-bs-backdrop="static" data-bs-backdrop="static" wire:ignore>
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title" id="staticBackdropLabel" style="font-size: 20px">Titik Lokasi Kecamatan</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" wire:click="refresh_inputan()"></button>
+                </div>
+                <div class="modal-body" wire:ignore>
+                    <div id="map"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close" id="btn_close" wire:click="refresh_inputan()">Tutup</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 @push('scripts')
 
 <script>
+var locations = [
+            @foreach ( $data_kecamatan as  $lokasi )
+                @if (!empty($lokasi->la_atitude) && !empty($lokasi->long_atitude))
 
+                    { lat: {{ $lokasi->la_atitude }},
+                      lng: {{ $lokasi->long_atitude }},
+                      name: "{{ $lokasi->nama_kecamatan }}",
+                      category: "{{ $lokasi->icon }}", radius: {{ $lokasi->radius }},
+                      color: "{{ $lokasi->warna_radius }}",icon: "{{ $lokasi->icon }}" },
+
+                @endif
+            @endforeach
+        ];
+updateMap(locations, "all");
 document.addEventListener('DOMContentLoaded', function() {
     initializeDataTable('#table_kecamatan');
 
@@ -199,13 +268,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 select.removeClass('bg-warning text-white');
                 select.removeClass('bg-danger text-white');
                 select.addClass('bg-white text-dark');
-            }else if(event.detail == '1'){
+            }else if(event.detail == 'green'){
                 select.addClass('bg-success text-white');
-            }else if(event.detail == '2'){
+            }else if(event.detail == 'yellow'){
                 select.addClass('bg-warning text-white');
-            }else if(event.detail == '3'){
+            }else if(event.detail == 'red'){
                 select.addClass('bg-danger text-white');
-            }else if(event.detail == '0'){
+            }else if(event.detail == 'blue'){
                 select.addClass('bg-primary text-white');
             }
         }, 100);
@@ -216,6 +285,7 @@ document.addEventListener('DOMContentLoaded', function() {
             destroyDataTable('#table_kecamatan');
             initializeDataTable('#table_kecamatan');
             $('#table_kecamatan').load(window.location.href + ' #table_kecamatan');
+            updateMap(locations, "all");
         }, 100);
     });
     window.addEventListener('open-notif-success', function() {
@@ -276,13 +346,13 @@ function changeBackgroundColor(select) {
         select.classList.remove('bg-warning','text-white');
         select.classList.remove('bg-danger','text-white');
         select.classList.add('bg-white','text-dark');
-    }else if(select.value == 1){
+    }else if(select.value == 'green'){
         select.classList.add('bg-success','text-white');
-    }else if(select.value == 2){
+    }else if(select.value == 'yellow'){
         select.classList.add('bg-warning','text-white');
-    }else if(select.value == 3){
+    }else if(select.value == 'red'){
         select.classList.add('bg-danger','text-white');
-    }else if(select.value == 0){
+    }else if(select.value == 'blue'){
         select.classList.add('bg-primary','text-white');
     }
 }
@@ -290,7 +360,9 @@ function changeBackgroundColor(select) {
 function showModal(){
         $('#modalFormKecamatan').modal('show');
 }
-
+function showModalLokasi(){
+        $('#modalLokasiKecamatan').modal('show');
+}
 </script>
 @endpush
 

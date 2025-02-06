@@ -58,6 +58,9 @@
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
      crossorigin=""></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+{{--
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/fontawesome.min.css"> --}}
 
 <style>
     .clickable-cell {
@@ -130,6 +133,32 @@
     }
 
     #map { height: 60vh; }
+
+.icon-option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 5px;
+}
+
+/* .icon-option input {
+    display: none;
+} */
+
+.icon-option i {
+    font-size: 24px;
+    color: #111111;
+}
+
+.icon-option input:checked + i {
+    color: #007bff;
+    font-weight: bold;
+}
+
 
 </style>
 
@@ -245,6 +274,64 @@ function destroyDataTable(tableSelector) {
         $(tableSelector).empty();
     }
 }
+
+        var map = L.map('map').setView([-7.712896, 109.028118], 13.2);
+        var currentLayer = null;
+
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        function addLocationsToMap(locations, categoryFilter) {
+            var layerGroup = L.layerGroup(); // Membuat grup layer baru
+
+            locations.forEach(function(location) {
+                if (location.category === categoryFilter || categoryFilter === "all") {
+                    var customIcon = L.divIcon({
+                        html: `<i class='${location.icon}' style='font-size: 30px; color: ${location.color};'></i>`,
+                        iconSize: [30, 30],
+                        className: ""
+                    });
+
+                    var kategori = '';
+                    if(location.color == 'green'){
+                        kategori = 'Normal';
+                    }else if(location.color == 'yellow'){
+                        kategori = 'Waspada';
+                    }else if(location.color == 'red'){
+                        kategori = 'Bahaya';
+                    }else{
+                        kategori = 'Default';
+                    }
+
+                    var marker = L.marker([location.lat, location.lng], { icon: customIcon })
+                        .bindPopup(`<b>${location.name}</b><br>Kategori: ${kategori}<br>Radius: ${location.radius} meter`);
+
+                    var circle = L.circle([location.lat, location.lng], {
+                        color: location.color,
+                        fillColor: location.color,
+                        fillOpacity: 0.2,
+                        radius: location.radius
+                    });
+
+                    marker.addTo(layerGroup);
+                    circle.addTo(layerGroup);
+                }
+            });
+
+            return layerGroup; // Mengembalikan layer group
+        }
+
+        function updateMap(locations, categoryFilter) {
+            // Hapus layer lama jika ada
+            if (currentLayer) {
+                map.removeLayer(currentLayer);
+            }
+
+            // Tambahkan layer baru
+            currentLayer = addLocationsToMap(locations, categoryFilter);
+            currentLayer.addTo(map);
+        }
 </script>
     @stack('scripts')
 

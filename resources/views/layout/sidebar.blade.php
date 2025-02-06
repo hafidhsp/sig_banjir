@@ -50,6 +50,12 @@
                 </a>
             </li>
             @endif
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url('panduan-lokasi') }}">
+                    <i class="mdi mdi-book-open-page-variant menu-icon"></i>
+                    <span class="menu-title">Panduan Lokasi</span>
+                </a>
+            </li>
             {{-- <li class="nav-item sidebar-category">
                 <p>Components</p>
                 <span></span>

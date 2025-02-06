@@ -63,10 +63,10 @@ class Index extends Component
             $this->validate([
                     'id_kecamatan' => 'required|exists:tb_kecamatan,id_kecamatan',
                     'nama_kecamatan' => 'required|regex:/^[a-zA-Z\s]+$/',
-                    'long_atitude' => 'required|numeric',
-                    'la_atitude' => 'required|numeric',
+                    'long_atitude' => 'required|regex:/^-?\d+([,\.]\d+)?$/',
+                    'la_atitude' => 'required|regex:/^-?\d+([,\.]\d+)?$/',
                     'icon' => 'required',
-                    'radius' => 'required',
+                    'radius' => 'required|numeric',
                     'warna_radius' => 'required',
                 ], [
                     'id_kecamatan.required' => 'Data masih kosong.',
@@ -74,11 +74,12 @@ class Index extends Component
                     'nama_kecamatan.regex' => 'Nama Kecamatan berisi huruf.',
                     'nama_kecamatan.required' => 'Nama Kecamatan harus diisi.',
                     'long_atitude.required' => 'Longatitude harus diisi.',
-                    'long_atitude.numeric' => 'Longatitude berisi angka.',
+                    'long_atitude.regex' => 'Longatitude tidak valid.',
                     'la_atitude.required' => 'Latitude harus diisi.',
-                    'la_atitude.numeric' => 'Latitude berisi angka.',
+                    'la_atitude.regex' => 'Latitude tidak valid.',
                     'icon.required' => 'Icon harus diisi.',
                     'radius.required' => 'Radius harus diisi.',
+                    'radius.numeric' => 'radius berisi angka.',
                     'warna_radius.required' => 'Warna Radius harus diisi.',
                 ]);
                  $data = [
@@ -96,19 +97,22 @@ class Index extends Component
         }else{
             $this->validate([
                     'nama_kecamatan' => 'required|regex:/^[a-zA-Z\s]+$/|unique:tb_kecamatan,nama_kecamatan',
-                    'long_atitude' => 'required',
-                    'la_atitude' => 'required',
+                    'long_atitude' => 'required|regex:/^-?\d+([,\.]\d+)?$/',
+                    'la_atitude' => 'required|regex:/^-?\d+([,\.]\d+)?$/',
                     'icon' => 'required',
-                    'radius' => 'required',
+                    'radius' => 'required|numeric',
                     'warna_radius' => 'required',
                 ], [
                     'nama_kecamatan.regex' => 'Nama Kecamatan berisi huruf.',
                     'nama_kecamatan.required' => 'Nama Kecamatan harus diisi.',
                     'nama_kecamatan.unique' => 'Nama Kecamatan sudah tersedia.',
                     'long_atitude.required' => 'Longatitude harus diisi.',
+                    'long_atitude.regex' => 'Longatitude tidak valid.',
                     'la_atitude.required' => 'Latitude harus diisi.',
+                    'la_atitude.regex' => 'Latitude tidak valid.',
                     'icon.required' => 'Icon harus diisi.',
                     'radius.required' => 'Radius harus diisi.',
+                    'radius.numeric' => 'radius berisi angka.',
                     'warna_radius.required' => 'Warna Radius harus diisi.',
                 ]);
              $data = [
