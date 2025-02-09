@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="{{ asset('vendors/mdi/css/materialdesignicons.min.css') }}">
     <link rel="stylesheet" href="{{ asset('vendors/css/vendor.bundle.base.css') }}">
     <link href="{{ asset('cdn/css/bootstrap.min.css') }}" rel="stylesheet">
+    {{-- <link href="{{ asset('scss/custom.scss') }}" rel="stylesheet"> --}}
 
     <!-- endinject -->
     <!-- plugin css for this page -->
@@ -248,6 +249,8 @@
 {{--
 <script src="{{ asset('leaflet/leaflet.js') }}"></script>
 <script src="{{ asset('leaflet/leaflet-src.js') }}"></script> --}}
+
+
 
 
 

@@ -106,7 +106,7 @@
         </div>
     </div>
     <!-- Modal Kecamatan -->
-    <div class="modal fade"  tabindex="-1" aria-hidden="true" id="modalFormKecamatan" data-bs-backdrop="static" data-bs-backdrop="static" wire:ignore.self>
+    <div class="modal fade"  tabindex="-1" aria-hidden="true" id="modalFormKecamatan" data-bs-backdrop="static" wire:ignore.self>
         <div class="modal-dialog">
             <div class="modal-content">
             <div class="modal-header">

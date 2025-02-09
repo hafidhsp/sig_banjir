@@ -51,7 +51,7 @@
             </li>
             @endif
             <li class="nav-item">
-                <a class="nav-link" href="{{ url('panduan-lokasi') }}">
+                <a class="nav-link" href="javascript:void(0)" onclick="openModalPanduan()">
                     <i class="mdi mdi-book-open-page-variant menu-icon"></i>
                     <span class="menu-title">Panduan Lokasi</span>
                 </a>
