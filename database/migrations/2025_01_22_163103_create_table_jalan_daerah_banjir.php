@@ -20,7 +20,7 @@ return new class extends Migration
             $table->text('nama_jalan');
             $table->string('nomor_jalan');
             $table->string('panjang_jalan');
-            $table->string('jenis_banjir')->nullable();
+            // $table->string('jenis_banjir')->nullable();
             $table->string('tinggi_banjir')->nullable();
             $table->text('long_atitude')->nullable();
             $table->text('la_atitude')->nullable();

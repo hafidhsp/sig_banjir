@@ -25,5 +25,9 @@ class M_jalan_daerah_banjir extends Model
         'bukti_foto',
         'waktu_mulai',
         'waktu_selesai',
+        'warna_radius',
+        'long_atitude',
+        'la_atitude',
+        'icon',
     ];
 }

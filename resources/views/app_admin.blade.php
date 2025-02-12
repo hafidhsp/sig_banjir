@@ -278,63 +278,285 @@ function destroyDataTable(tableSelector) {
     }
 }
 
-        var map = L.map('map').setView([-7.712896, 109.028118], 13.2);
-        var currentLayer = null;
+// var defaultLatitude = -7.712896;
+// var defaultLongitude = 109.028118;
+// var map;
+// var currentLayer = null;
 
+// function setBaseView(latitude, longitude, zoomLevel = 13) {
+//     var baseLatitude = latitude ?? defaultLatitude;
+//     var baseLongitude = longitude ?? defaultLongitude;
+
+//     // Jika peta belum dibuat, buat peta baru
+//     if (!map) {
+//         map = L.map('map').setView([baseLatitude, baseLongitude], zoomLevel);
+//     } else {
+//         map.setView([baseLatitude, baseLongitude], zoomLevel);
+//     }
+//         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+//             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+//         }).addTo(map);
+// }
+// function addLocationsToMap(locations, categoryFilter) {
+//     var layerGroup = L.layerGroup();
+
+//     locations.forEach(function(location) {
+//         if (location.category === categoryFilter || categoryFilter === "all") {
+//             var customIcon = L.divIcon({
+//                 html: `<i class='${location.icon}' style='font-size: 30px; color: ${location.color};'></i>`,
+//                 iconSize: [30, 30],
+//                 className: ""
+//             });
+
+//             var kategori = location.color === 'green' ? 'Normal' :
+//                            location.color === 'yellow' ? 'Waspada' :
+//                            location.color === 'red' ? 'Bahaya' : 'Default';
+
+//             var marker = L.marker([location.lat, location.lng], { icon: customIcon })
+//                 .bindPopup(`<b>${location.name}</b><br>Kategori: ${kategori}<br>Radius: ${location.radius} meter`);
+
+//             var circle = L.circle([location.lat, location.lng], {
+//                 color: location.color,
+//                 fillColor: location.color,
+//                 fillOpacity: 0.2,
+//                 radius: location.radius
+//             });
+
+//             marker.addTo(layerGroup);
+//             circle.addTo(layerGroup);
+//         }
+//     });
+
+//     return layerGroup;
+// }
+
+// // Fungsi untuk menampilkan lokasi-lokasi tanpa mengubah Base View
+// function updateMap(locations, categoryFilter) {
+//     if (currentLayer) {
+//         map.removeLayer(currentLayer);
+//     }
+
+//     currentLayer = addLocationsToMap(locations, categoryFilter);
+//     currentLayer.addTo(map);
+// }
+
+
+var defaultLatitude = -7.712896;
+var defaultLongitude = 109.028118;
+var maps = {}; // Objek untuk menyimpan instance peta berdasarkan ID
+var currentLayers = {}; // Objek untuk menyimpan layer per ID
+
+function setBaseView(mapId, latitude, longitude, zoomLevel = 13) {
+    var baseLatitude = latitude ?? defaultLatitude;
+    var baseLongitude = longitude ?? defaultLongitude;
+
+    if (!maps[mapId]) {
+        maps[mapId] = L.map(mapId).setView([baseLatitude, baseLongitude], zoomLevel);
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        }).addTo(map);
+            attribution: '&copy; Sistem Informasi Geografis Kabupaten Cilacap'
+        }).addTo(maps[mapId]);
+    } else {
+        maps[mapId].setView([baseLatitude, baseLongitude], zoomLevel);
+    }
+}
 
-        function addLocationsToMap(locations, categoryFilter) {
-            var layerGroup = L.layerGroup(); // Membuat grup layer baru
+// function addLocationsToMap(locations, categoryFilter) {
+//     var layerGroup = L.layerGroup();
 
-            locations.forEach(function(location) {
-                if (location.category === categoryFilter || categoryFilter === "all") {
-                    var customIcon = L.divIcon({
-                        html: `<i class='${location.icon}' style='font-size: 30px; color: ${location.color};'></i>`,
-                        iconSize: [30, 30],
-                        className: ""
-                    });
+//     locations.forEach(function(location) {
+//         if (location.category === categoryFilter || categoryFilter === "all") {
+//             var customIcon = L.divIcon({
+//                 html: `<i class='${location.icon}' style='font-size: 30px; color: ${location.color};'></i>`,
+//                 iconSize: [30, 30],
+//                 className: ""
+//             });
 
-                    var kategori = '';
-                    if(location.color == 'green'){
-                        kategori = 'Normal';
-                    }else if(location.color == 'yellow'){
-                        kategori = 'Waspada';
-                    }else if(location.color == 'red'){
-                        kategori = 'Bahaya';
-                    }else{
-                        kategori = 'Default';
-                    }
+//             var kategori = location.color === 'green' ? 'Normal' :
+//                            location.color === 'yellow' ? 'Waspada' :
+//                            location.color === 'red' ? 'Bahaya' : 'Default';
 
-                    var marker = L.marker([location.lat, location.lng], { icon: customIcon })
-                        .bindPopup(`<b>${location.name}</b><br>Kategori: ${kategori}<br>Radius: ${location.radius} meter`);
+//             var marker = L.marker([location.lat, location.lng], { icon: customIcon })
+//                 .bindPopup(`<b>${location.name}</b><br>Kategori: ${kategori}<br>Radius: ${location.radius} meter`);
 
-                    var circle = L.circle([location.lat, location.lng], {
-                        color: location.color,
-                        fillColor: location.color,
-                        fillOpacity: 0.2,
-                        radius: location.radius
-                    });
+//             var circle = L.circle([location.lat, location.lng], {
+//                 color: location.color,
+//                 fillColor: location.color,
+//                 fillOpacity: 0.2,
+//                 radius: location.radius
+//             });
 
-                    marker.addTo(layerGroup);
-                    circle.addTo(layerGroup);
-                }
-            });
+//             marker.addTo(layerGroup);
+//             circle.addTo(layerGroup);
+//         }
+//     });
 
-            return layerGroup; // Mengembalikan layer group
+//     return layerGroup;
+// }
+
+// function updateMap(mapId, locations, categoryFilter) {
+//     if (currentLayers[mapId]) {
+//         maps[mapId].removeLayer(currentLayers[mapId]);
+//     }
+
+//     currentLayers[mapId] = addLocationsToMap(locations, categoryFilter);
+//     currentLayers[mapId].addTo(maps[mapId]);
+// }
+
+function addLocationsToMap(locations, categoryFilter) {
+    var greenLayer = L.layerGroup();
+    var yellowLayer = L.layerGroup();
+    var redLayer = L.layerGroup();
+
+    locations.forEach(function(location) {
+        var kategori = location.color === 'green' ? 'Normal' :
+                       location.color === 'yellow' ? 'Waspada' :
+                       location.color === 'red' ? 'Bahaya' : 'Default';
+
+        var customIcon = L.divIcon({
+            html: `<i class='${location.icon}' style='font-size: 30px; color: ${location.color};'></i>`,
+            iconSize: [30, 30],
+            className: ""
+        });
+
+        var marker = L.marker([location.lat, location.lng], { icon: customIcon })
+            .bindPopup(`<b>${location.name}</b><br>Kategori: ${kategori}<br>Radius: ${location.radius} meter`);
+
+        var circle = L.circle([location.lat, location.lng], {
+            color: location.color,
+            fillColor: location.color,
+            fillOpacity: 0.2,
+            radius: location.radius
+        });
+
+        // Masukkan ke layer berdasarkan warnanya
+        if (location.color === 'green' && visibleLayer.green) {
+            marker.addTo(greenLayer);
+            circle.addTo(greenLayer);
+        } else if (location.color === 'yellow' && visibleLayer.yellow) {
+            marker.addTo(yellowLayer);
+            circle.addTo(yellowLayer);
+        } else if (location.color === 'red' && visibleLayer.red) {
+            marker.addTo(redLayer);
+            circle.addTo(redLayer);
         }
+    });
 
-        function updateMap(locations, categoryFilter) {
-            // Hapus layer lama jika ada
-            if (currentLayer) {
-                map.removeLayer(currentLayer);
+    return { greenLayer, yellowLayer, redLayer };
+}
+var layerControl = null; // Variabel untuk menyimpan kontrol layer
+
+// Layer yang bisa ditampilkan/dihilangkan berdasarkan warna
+var visibleLayer = {
+    green: true,
+    yellow: true,
+    red: true
+};
+
+// Layer yang bisa ditampilkan/dihilangkan berdasarkan ikon
+var visibleIcon = {
+    "mdi mdi-map-marker": true,         // Normal
+    "fa-solid fa-water": true,          // Banjir
+    "fa-solid fa-house-flood-water": true // Banjir Bandang
+};
+
+// Fungsi untuk menambahkan lokasi ke peta dengan filter warna & ikon
+function addLocationsToMap(locations) {
+    var greenLayer = L.layerGroup();
+    var yellowLayer = L.layerGroup();
+    var redLayer = L.layerGroup();
+
+    var normalLayer = L.layerGroup();
+    var banjirLayer = L.layerGroup();
+    var banjirBdgLayer = L.layerGroup();
+
+    locations.forEach(function(location) {
+        var kategori = location.color === 'green' ? 'Normal' :
+                       location.color === 'yellow' ? 'Waspada' :
+                       location.color === 'red' ? 'Bahaya' : 'Default';
+
+        var customIcon = L.divIcon({
+            html: `<i class='${location.icon}' style='font-size: 30px; color: ${location.color};'></i>`,
+            iconSize: [30, 30],
+            className: ""
+        });
+
+        var marker = L.marker([location.lat, location.lng], { icon: customIcon })
+            .bindPopup(`<b>${location.name}</b><br>Kategori: ${kategori}<br>Radius: ${location.radius} meter`);
+
+        var circle = L.circle([location.lat, location.lng], {
+            color: location.color,
+            fillColor: location.color,
+            fillOpacity: 0.2,
+            radius: location.radius
+        });
+
+        if (visibleLayer[location.color] && visibleIcon[location.icon]) {
+            if (location.color === 'green') {
+                // marker.addTo(greenLayer);
+                circle.addTo(greenLayer);
+            } else if (location.color === 'yellow') {
+                // marker.addTo(yellowLayer);
+                circle.addTo(yellowLayer);
+            } else if (location.color === 'red') {
+                // marker.addTo(redLayer);
+                circle.addTo(redLayer);
             }
-
-            // Tambahkan layer baru
-            currentLayer = addLocationsToMap(locations, categoryFilter);
-            currentLayer.addTo(map);
         }
+
+        if (visibleIcon[location.icon]) {
+            if (location.icon === "mdi mdi-map-marker") {
+                marker.addTo(normalLayer);
+            } else if (location.icon === "fa-solid fa-water") {
+                marker.addTo(banjirLayer);
+            } else if (location.icon === "fa-solid fa-house-flood-water") {
+                marker.addTo(banjirBdgLayer);
+            }
+        }
+    });
+
+    return { greenLayer, yellowLayer, redLayer, normalLayer, banjirLayer, banjirBdgLayer };
+}
+
+function updateMap(mapId, locations, filter = false) {
+    console.log(filter);
+
+    if (currentLayers[mapId]) {
+        if (currentLayers[mapId].greenLayer) maps[mapId].removeLayer(currentLayers[mapId].greenLayer);
+        if (currentLayers[mapId].yellowLayer) maps[mapId].removeLayer(currentLayers[mapId].yellowLayer);
+        if (currentLayers[mapId].redLayer) maps[mapId].removeLayer(currentLayers[mapId].redLayer);
+        if (currentLayers[mapId].normalLayer) maps[mapId].removeLayer(currentLayers[mapId].normalLayer);
+        if (currentLayers[mapId].banjirLayer) maps[mapId].removeLayer(currentLayers[mapId].banjirLayer);
+        if (currentLayers[mapId].banjirBdgLayer) maps[mapId].removeLayer(currentLayers[mapId].banjirBdgLayer);
+    }
+
+    currentLayers[mapId] = addLocationsToMap(locations);
+
+    if (visibleLayer.green) currentLayers[mapId].greenLayer.addTo(maps[mapId]);
+    if (visibleLayer.yellow) currentLayers[mapId].yellowLayer.addTo(maps[mapId]);
+    if (visibleLayer.red) currentLayers[mapId].redLayer.addTo(maps[mapId]);
+
+    if (visibleIcon["mdi mdi-map-marker"]) currentLayers[mapId].normalLayer.addTo(maps[mapId]);
+    if (visibleIcon["fa-solid fa-water"]) currentLayers[mapId].banjirLayer.addTo(maps[mapId]);
+    if (visibleIcon["fa-solid fa-house-flood-water"]) currentLayers[mapId].banjirBdgLayer.addTo(maps[mapId]);
+
+    if (!filter &&layerControl) {
+        maps[mapId].removeControl(layerControl);
+        layerControl = null;
+        return;
+    }
+
+    if (filter) {
+        layerControl = L.control.layers(null, {
+            "Zona Hijau (Normal)": currentLayers[mapId].greenLayer,
+            "Zona Kuning (Waspada)": currentLayers[mapId].yellowLayer,
+            "Zona Merah (Bahaya)": currentLayers[mapId].redLayer,
+            "Normal": currentLayers[mapId].normalLayer,
+            "Banjir": currentLayers[mapId].banjirLayer,
+            "Banjir Bandang": currentLayers[mapId].banjirBdgLayer
+        }, { collapsed: false }).addTo(maps[mapId]);
+    }
+}
+
 </script>
     @stack('scripts')
 

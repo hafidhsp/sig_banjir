@@ -219,14 +219,14 @@
         </div>
     </div>
     <!-- Modal Lokasi -->
-    <div class="modal fade"  tabindex="-1" aria-hidden="true" id="modalLokasiKecamatan" data-bs-backdrop="static" data-bs-backdrop="static" wire:ignore>
+    <div class="modal fade"  tabindex="-1" aria-hidden="true" id="modalLokasiKecamatan" data-bs-backdrop="static" data-bs-backdrop="static" wire:ignore.self>
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
                     <h1 class="modal-title" id="staticBackdropLabel" style="font-size: 20px">Titik Lokasi Kecamatan</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" wire:click="refresh_inputan()"></button>
                 </div>
-                <div class="modal-body" wire:ignore>
+                <div class="modal-body" wire:ignore.self>
                     <div id="map"></div>
                 </div>
                 <div class="modal-footer">
@@ -243,16 +243,18 @@ var locations = [
             @foreach ( $data_kecamatan as  $lokasi )
                 @if (!empty($lokasi->la_atitude) && !empty($lokasi->long_atitude))
 
-                    { lat: {{ $lokasi->la_atitude }},
-                      lng: {{ $lokasi->long_atitude }},
+                    { lat: {!! json_encode($lokasi->la_atitude ?? "") !!},
+                      lng: {!! json_encode($lokasi->long_atitude ?? "") !!},
                       name: "{{ $lokasi->nama_kecamatan }}",
-                      category: "{{ $lokasi->icon }}", radius: {{ $lokasi->radius }},
+                      category: "{{ $lokasi->icon }}", radius: {!! json_encode($lokasi->radius ?? "") !!},
                       color: "{{ $lokasi->warna_radius }}",icon: "{{ $lokasi->icon }}" },
 
                 @endif
             @endforeach
         ];
-updateMap(locations, "all");
+var baseLocation = null;
+setBaseView("map",null,null);
+updateMap("map",locations, "all");
 document.addEventListener('DOMContentLoaded', function() {
     initializeDataTable('#table_kecamatan');
 
@@ -285,7 +287,7 @@ document.addEventListener('DOMContentLoaded', function() {
             destroyDataTable('#table_kecamatan');
             initializeDataTable('#table_kecamatan');
             $('#table_kecamatan').load(window.location.href + ' #table_kecamatan');
-            updateMap(locations, "all");
+            updateMap("map",locations, "all");
         }, 100);
     });
     window.addEventListener('open-notif-success', function() {

@@ -51,9 +51,16 @@ class IndexLaporanBanjir extends Component
            $label_waktu_mulai,
            $label_waktu_selesai,
            $label_konfirmasi_st,
+           $label_long_titude,
+           $label_la_titude,
            $buktiFoto,
            $idbuktiFoto,
-           $displayjalan
+           $baseLatitude,
+           $baseLongtitude,
+           $displayjalan,
+           $long_atitude,
+           $la_atitude,
+           $warna_radius
            ;
 
     protected $listeners = ['hapusDaerahBanjir','hapusJalanDaerahBanjir','hapusBuktiJalanDaerahBanjir'];
@@ -92,6 +99,9 @@ class IndexLaporanBanjir extends Component
         $this->label_waktu_mulai = '';
         $this->label_waktu_selesai = '';
         $this->displayjalan = 0;
+        $this->long_atitude = '';
+        $this->la_atitude = '';
+        $this->warna_radius = '';
         $this->resetValidation();
     }
 
@@ -125,6 +135,11 @@ class IndexLaporanBanjir extends Component
         $this->idbuktiFoto = '';
         $this->title_modal = 'Tambah';
         $this->displayjalan = 0;
+        $this->baseLatitude = '';
+        $this->baseLongtitude = '';
+        $this->long_atitude = '';
+        $this->la_atitude = '';
+        $this->warna_radius = '';
         if($form == true){
             $this->dispatch('render-canvas-form');
         }else{
@@ -246,9 +261,12 @@ class IndexLaporanBanjir extends Component
                 'waktu_selesai' => 'date|after_or_equal:waktu_mulai',
                 'radius' => 'numeric',
                 'icon' => 'nullable',
-                'jenis_banjir' => 'required',
+                // 'jenis_banjir' => 'required',
                 'tinggi_banjir' => 'required',
                 'bukti_foto.*' => 'nullable|mimes:jpeg,jpg,png|max:2048',
+                'long_atitude' => 'required|regex:/^-?\d+([,\.]\d+)?$/',
+                'la_atitude' => 'required|regex:/^-?\d+([,\.]\d+)?$/',
+                'warna_radius' => 'required',
             ], [
                 'nama_jalan.required' => 'Nama Jalan harus diisi.',
                 'nama_jalan.regex' => 'Nama jalan berisi huruf.',
@@ -260,24 +278,32 @@ class IndexLaporanBanjir extends Component
                 'waktu_selesai.date' => 'Format tanggal tidak sesuai.',
                 'waktu_selesai.after_or_equal' => 'Format tanggal minimal dihari yang sama.',
                 'radius.numeric' => 'Radius berisi angka.',
-                'jenis_banjir.required' => 'Jenis Banjir harus diisi.',
+                // 'jenis_banjir.required' => 'Jenis Banjir harus diisi.',
                 'tinggi_banjir.required' => 'Tinggi Banjir harus diisi.',
                 'bukti_foto.*.mimes' => 'Gambar harus berformat jpeg, jpg, atau png.',
                 'bukti_foto.*.max' => 'Ukuran gambar maksimal 2MB.',
+                'long_atitude.required' => 'Longatitude harus diisi.',
+                'long_atitude.regex' => 'Longatitude tidak valid.',
+                'la_atitude.required' => 'Latitude harus diisi.',
+                'la_atitude.regex' => 'Latitude tidak valid.',
+                'warna_radius.required' => 'Warna Radius harus diisi.',
             ]);
             $data_jalan_daerah_banjir = M_jalan_daerah_banjir::where('id_jalan_daerah_banjir',$this->id_jalan_daerah_banjir)->first();
             $data = [
-                // 'id_daerah_banjir' => $this->id_daerah_banjir_jalan,
+                'id_daerah_banjir' => $this->id_daerah_banjir_jalan,
                 'nama_jalan' => $this->nama_jalan,
                 'nomor_jalan' => $this->nomor_jalan,
                 'panjang_jalan' => $this->panjang_jalan,
                 'waktu_mulai' => $this->waktu_mulai,
                 'radius' => $this->radius,
                 'icon' => $this->icon,
-                'jenis_banjir' => $this->jenis_banjir,
+                // 'jenis_banjir' => $this->jenis_banjir,
                 'tinggi_banjir' => $this->tinggi_banjir,
                 'konfirmasi_st' => 0,
                 'created_at' => now(),
+                'long_atitude' => $this->long_atitude,
+                'la_atitude' => $this->la_atitude,
+                'warna_radius' => $this->warna_radius,
             ];
             if(!empty($this->waktu_selesai)){
                 $data['waktu_selesai']=$this->waktu_selesai;
@@ -312,9 +338,12 @@ class IndexLaporanBanjir extends Component
                 'waktu_selesai' => 'date|after_or_equal:waktu_mulai',
                 'radius' => 'numeric',
                 'icon' => 'nullable',
-                'jenis_banjir' => 'required',
+                // 'jenis_banjir' => 'required',
                 'tinggi_banjir' => 'required',
                 'bukti_foto.*' => 'nullable|mimes:jpeg,jpg,png|max:2048',
+                'long_atitude' => 'required|regex:/^-?\d+([,\.]\d+)?$/',
+                'la_atitude' => 'required|regex:/^-?\d+([,\.]\d+)?$/',
+                'warna_radius' => 'required',
             ], [
                 'nama_jalan.required' => 'Nama Jalan harus diisi.',
                 'nama_jalan.regex' => 'Nama jalan berisi huruf.',
@@ -326,10 +355,15 @@ class IndexLaporanBanjir extends Component
                 'waktu_selesai.date' => 'Format tanggal tidak sesuai.',
                 'waktu_selesai.after_or_equal' => 'Format tanggal minimal dihari yang sama.',
                 'radius.numeric' => 'Radius berisi angka.',
-                'jenis_banjir.required' => 'Jenis Banjir harus diisi.',
+                // 'jenis_banjir.required' => 'Jenis Banjir harus diisi.',
                 'tinggi_banjir.required' => 'Tinggi Banjir harus diisi.',
                 'bukti_foto.*.mimes' => 'Gambar harus berformat jpeg, jpg, atau png.',
                 'bukti_foto.*.max' => 'Ukuran gambar maksimal 2MB.',
+                'long_atitude.required' => 'Longatitude harus diisi.',
+                'long_atitude.regex' => 'Longatitude tidak valid.',
+                'la_atitude.required' => 'Latitude harus diisi.',
+                'la_atitude.regex' => 'Latitude tidak valid.',
+                'warna_radius.required' => 'Warna Radius harus diisi.',
             ]);
             $data = [
                 'id_daerah_banjir' => $this->id_daerah_banjir_jalan,
@@ -339,10 +373,13 @@ class IndexLaporanBanjir extends Component
                 'waktu_mulai' => $this->waktu_mulai,
                 'radius' => $this->radius,
                 'icon' => $this->icon,
-                'jenis_banjir' => $this->jenis_banjir,
+                // 'jenis_banjir' => $this->jenis_banjir,
                 'tinggi_banjir' => $this->tinggi_banjir,
                 'konfirmasi_st' => 0,
                 'created_at' => now(),
+                'long_atitude' => $this->long_atitude,
+                'la_atitude' => $this->la_atitude,
+                'warna_radius' => $this->warna_radius,
             ];
             if(!empty($this->waktu_selesai)){
                 $data['waktu_selesai']=$this->waktu_selesai;
@@ -379,7 +416,11 @@ class IndexLaporanBanjir extends Component
         $this->icon = $detailJalanDaerahBanjir->icon;
         $this->jenis_banjir = $detailJalanDaerahBanjir->jenis_banjir;
         $this->tinggi_banjir = $detailJalanDaerahBanjir->tinggi_banjir;
+        $this->warna_radius = $detailJalanDaerahBanjir->warna_radius;
+        $this->long_atitude = $detailJalanDaerahBanjir->long_atitude;
+        $this->la_atitude = $detailJalanDaerahBanjir->la_atitude;
         $this->title_modal = 'Ubah';
+        $this->dispatch('updateSelectColor',$detailJalanDaerahBanjir->warna_radius);
         $this->dispatch('open-canvas-form-jalan-daerah-banjir');
     }
 
@@ -407,12 +448,29 @@ class IndexLaporanBanjir extends Component
     }
 
     public function detailJalanDaerahBanjir($id_jalan_daerah_banjir){
-        $data__jalan_daerah_banjir = M_jalan_daerah_banjir::where('id_jalan_daerah_banjir',$id_jalan_daerah_banjir)->first();
+        $data__jalan_daerah_banjir = M_jalan_daerah_banjir::from('tb_jalan_daerah_banjir as a')
+                                        ->leftJoin('tb_daerah_banjir as b','b.id_daerah_banjir','=','a.id_daerah_banjir')
+                                        ->where('a.id_jalan_daerah_banjir',$id_jalan_daerah_banjir)
+                                        ->first();
+        $data_kecamatan = M_daerah_banjir::from('tb_daerah_banjir as a')
+                                        ->leftJoin('tb_kecamatan as b','b.id_kecamatan','=','a.id_kecamatan')
+                                        ->where('a.id_daerah_banjir',$data__jalan_daerah_banjir->id_daerah_banjir)
+                                        ->first();
+        $jenis_banjir ='-';
+        if($data__jalan_daerah_banjir->icon == 'mdi mdi-map-marker' ){
+            $jenis_banjir ='Normal';
+        }else if($data__jalan_daerah_banjir->icon == 'fa-solid fa-water' ){
+            $jenis_banjir ='Banjir';
+        }else if($data__jalan_daerah_banjir->icon == 'fa-solid fa-house-flood-water'){
+            $jenis_banjir ='Banjir Bandang';
+        }else{
+        $jenis_banjir ='-';
+        }
         $this->id_jalan_daerah_banjir_info = $id_jalan_daerah_banjir;
         $this->label_nama_jalan = $data__jalan_daerah_banjir->nama_jalan;
         $this->label_nomor_jalan = $data__jalan_daerah_banjir->nomor_jalan;
         $this->label_panjang_jalan = $data__jalan_daerah_banjir->panjang_jalan;
-        $this->label_jenis_banjir = $data__jalan_daerah_banjir->jenis_banjir;
+        $this->label_jenis_banjir = $jenis_banjir;
         $this->label_tinggi_banjir = $data__jalan_daerah_banjir->tinggi_banjir;
         $this->label_waktu_mulai = $data__jalan_daerah_banjir->waktu_mulai
                                     ? $data__jalan_daerah_banjir->waktu_mulai->translatedFormat('d F Y') .
@@ -424,8 +482,23 @@ class IndexLaporanBanjir extends Component
                 $this->buktiFoto = explode('#', $data__jalan_daerah_banjir->bukti_foto ?? '');
                 $this->idbuktiFoto = $id_jalan_daerah_banjir;
             }
+        $this->baseLatitude = $data_kecamatan->la_atitude;
+        $this->baseLongtitude = $data_kecamatan->long_atitude;
         $this->dispatch('open-canvas-detail-jalan-daerah-banjir');
-        $this->dispatch('render-map');
+        $detail = [
+                    'Latitude'=> $data__jalan_daerah_banjir->la_atitude,
+                    'Longtitude'=> $data__jalan_daerah_banjir->long_atitude,
+                    'namaJalan'=> $data__jalan_daerah_banjir->nama_jalan,
+                    'nomorJalan'=> $data__jalan_daerah_banjir->nomor_jalan,
+                    'panjangJalan'=> $data__jalan_daerah_banjir->panjang_jalan,
+                    'iconJalan'=> $data__jalan_daerah_banjir->icon,
+                    'warnaRadius'=> $data__jalan_daerah_banjir->warna_radius,
+                    'tinggiJalan'=> $data__jalan_daerah_banjir->tinggi_jalan,
+                    'radiusJalan'=> $data__jalan_daerah_banjir->radius,
+                    'baseLatitude'=> $data_kecamatan->la_atitude,
+                    'baseLongtitude'=> $data_kecamatan->long_atitude,
+                    ];
+        $this->dispatch('render-map',$detail);
     }
 
     public function show_delete_bukti_jalan_daerah_banjir($id_jalan_daerah_banjir,$namaFile){
@@ -447,6 +520,23 @@ class IndexLaporanBanjir extends Component
             $data_jalan_daerah_banjir->update(['bukti_foto' => $updatedList]);
             $this->dispatch('open-notif-success-delete-canvas-detail-jalan-daerah-banjir');
         }
+    }
+
+    public function showDetailLokasiMapsAll($id_daerah_banjir){
+        $detailDaerahBanjir = M_daerah_banjir::select('a.id_daerah_banjir','a.pemberi_informasi','b.*')
+                                ->from('tb_daerah_banjir as a')
+                                ->leftJoin('tb_jalan_daerah_banjir as b','a.id_daerah_banjir','=','b.id_daerah_banjir')
+                                ->where('a.id_daerah_banjir',$id_daerah_banjir)
+                                ->get();
+        $data_kecamatan = M_daerah_banjir::from('tb_daerah_banjir as a')
+                                        ->leftJoin('tb_kecamatan as b','b.id_kecamatan','=','a.id_kecamatan')
+                                        ->where('a.id_daerah_banjir',$id_daerah_banjir)
+                                        ->first();
+        $data = [
+            'jalan_daerah_banjir' => $detailDaerahBanjir,
+            'baseView' => $data_kecamatan,
+        ];
+        $this->dispatch('render-map-all',$data);
     }
 
 }
