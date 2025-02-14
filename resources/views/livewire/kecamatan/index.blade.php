@@ -287,7 +287,7 @@ document.addEventListener('DOMContentLoaded', function() {
             destroyDataTable('#table_kecamatan');
             initializeDataTable('#table_kecamatan');
             $('#table_kecamatan').load(window.location.href + ' #table_kecamatan');
-            updateMap("map",locations, "all");
+            updateMap("map",locations, false);
         }, 100);
     });
     window.addEventListener('open-notif-success', function() {

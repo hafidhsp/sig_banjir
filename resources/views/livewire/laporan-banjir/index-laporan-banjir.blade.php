@@ -51,7 +51,7 @@
                                         <td class="clickable-cell" wire:click="detailDaerahBanjir('{{ $daerah_banjir->id_daerah_banjir }}')">
                                             {{ $daerah_banjir->pemberi_informasi }}
                                         </td>
-                                        <td class="clickable-cell text-center" wire:click="detailDaerahBanjir('{{ $daerah_banjir->id_daerah_banjir }})">
+                                        <td class="clickable-cell text-center" wire:click="detailDaerahBanjir('{{ $daerah_banjir->id_daerah_banjir }}')">
                                             {{ (($daerah_banjir->tb_daerah_banjir.$daerah_banjir->created_at != '')?$daerah_banjir->tb_daerah_banjir.$daerah_banjir->created_at->translatedFormat('d F Y'):'') }}
                                         </td>
                                         <td align="center">
@@ -125,7 +125,7 @@
     </div>
 
     <!-- Offcanvas -->
-    <div class="offcanvas offcanvas-end h-100" tabindex="-1" id="CanvasDetailBanjir" aria-labelledby="offcanvasRightLabel"  aria-hidden="true" data-bs-backdrop="static" wire:ignore.self>
+    <div class="offcanvas offcanvas-end h-100 w-auto" tabindex="-1" id="CanvasDetailBanjir" aria-labelledby="offcanvasRightLabel"  aria-hidden="true" data-bs-backdrop="static" wire:ignore.self>
         <div class="offcanvas-header">
             <div class="d-flex justify-content-between">
                     <div class="align-items-start">
@@ -162,7 +162,7 @@
                     </tr>
                 </table>
             </p>
-            <button type="button" class="btn btn-outline-success btn-icon-text mt-3 mr-3" wire:click="showDetailLokasiMapsAll({{ $data_jalan_daerah_banjir[0]->id_daerah_banjir }})">
+            <button type="button" class="btn btn-outline-success btn-icon-text mt-3 mr-3" wire:click="showDetailLokasiMapsAll({{ $data_jalan_daerah_banjir[0]->id_daerah_banjir??null }})">
                 <i class="mdi mdi-map-marker-multiple"></i>
                 Lokasi
             </button>
@@ -189,7 +189,7 @@
                                 $no_1 = 1;
                             @endphp
 
-                            @if ($data_jalan_daerah_banjir->isEmpty())
+                            @if (empty($data_jalan_daerah_banjir))
                                 <tr>
                                     <td colspan="4" class="text-center text-muted">Data tidak ada</td>
                                     <td class="d-none"></td>
@@ -210,6 +210,12 @@
                                         </td>
                                         <td align="center">
                                             <div class="btn-group">
+                                                <button type="button" class="btn  {{ ($jalan_banjir->konfirmasi_st == 1)?' btn-outline-success':' btn-outline-danger' }} btn-icon-text" wire:click="showKonfirmasiJalanDaerahBanjir({{ $jalan_banjir->id_jalan_daerah_banjir }})">
+                                                    <i class="mdi  {{ ($jalan_banjir->konfirmasi_st == 1)?'mdi-check-circle-outline':'mdi-close-circle-outline' }}"></i>
+                                                    {{ ($jalan_banjir->konfirmasi_st == 1)?'Terkonfirmasi':'Belum Terkonfirmasi' }}
+                                                </button>
+                                            </div>
+                                            <div class="btn-group">
                                                 <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                                                     <i class="bi bi-hand-index-thumb"></i> Aksi
                                                 </button>
@@ -220,8 +226,8 @@
                                                     <button type="button" class="dropdown-item text-primary" wire:click="showFormJalanDaerahBanjir({{ $jalan_banjir->id_jalan_daerah_banjir }})">
                                                         <i class="bi bi-pencil-square"></i> Ubah
                                                     </button>
-                                                    {{-- <button type="button" class="dropdown-item text-primary" wire:click="showDetailJalanDaerahBanjir('')">
-                                                        <i class="bi bi-list"></i> Detail
+                                                    {{-- <button type="button" class="dropdown-item {{ ($jalan_banjir->konfirmasi_st == 0)?'text-info':'text-warning' }}" wire:click="showKonfirmasiJalanDaerahBanjir({{ $jalan_banjir->id_jalan_daerah_banjir }})">
+                                                        <i class="{{ ($jalan_banjir->konfirmasi_st == 0)?'mdi mdi-check-circle-outline':'mdi mdi-close-circle-outline' }}"></i> Konfirmasi
                                                     </button> --}}
                                                 </div>
                                             </div>
@@ -499,11 +505,20 @@
                     </tr>
                 </table>
             </p>
+            <p>
+                <button type="button" class="btn btn-outline-warning btn-icon-text mt-3" wire:click='refresh_canvas(true)'>
+                    <i class="mdi mdi-table-row-plus-before"></i>
+                    Tambah Penanganan
+                </button>
+            </p>
             <p class="mt-4">
             <!-- Wrapper untuk memastikan posisi elemen tepat -->
                 <div class="position-absolute start-50 translate-middle-x w-100 h-auto">
                     <div id="btn-display" class="text-end">
                         <div class="btn-group mt-4" role="group" aria-label="Basic example">
+                          <button type="button" class="btn btn-secondary-custom" id="btn_carousel" onclick="display_jalan_banjir('3')">
+                            <i class="bi bi-exclamation-triangle-fill"></i>
+                          </button>
                           <button type="button" class="btn btn-secondary-custom active" id="btn_map" onclick="display_jalan_banjir('1')">
                             <i class="mdi mdi-map"></i>
                           </button>
@@ -559,14 +574,14 @@
                                     </div>
                                 </div>
                             </div>
-                            <div id="sec-2" wire:ignore>
+                            <div id="sec-2">
                                 {{-- <select id="categoryFilter">
                                     <option value="all">Semua</option>
                                     <option value="air">Sumber Air</option>
                                     <option value="tanah">Wilayah Tanah</option>
                                 </select> --}}
                                 <div class="col-md-12">
-                                    <div id="map"></div>
+                                    <div id="map" wire:ignore></div>
                                 </div>
                             </div>
                         </div>
@@ -717,7 +732,6 @@
 
 
         document.addEventListener('DOMContentLoaded', function() {
-
             initializeDataTable('#table_daerah_banjir');
             initializeDataTable('#table_detail_daerah_banjir');
             window.addEventListener('render-table', function() {
@@ -728,7 +742,7 @@
                     offcanvas2.hide();
                     $('#table_daerah_banjir').load(window.location.href + ' #table_daerah_banjir');
                     $('#table_detail_daerah_banjir').load(window.location.href + ' #table_detail_daerah_banjir');
-                   updateMap(locations, "all");
+                //    updateMap(locations, "all");
                 }, 100);
             });
             window.addEventListener('open-notif-success', function() {
@@ -846,6 +860,39 @@
                 });
 
             });
+            window.addEventListener('open-modal-validation-ganti-status-jalan-daerah-banjir', function(event) {
+                var id_jalan_daerah_banjir = event.__livewire.params[0];
+
+                Swal.fire({
+                    title: "Apakah ingin mengubah status?",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Ya !",
+                    cancelButtonText: "Tidak"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+
+                        Livewire.dispatch('gantiStatusJalanDaerahBanjir', {
+                            id_jalan_daerah_banjir: id_jalan_daerah_banjir
+                        })
+                        Swal.fire("Berhasil Diubah", "", "success");
+                    } else {
+                        Swal.fire("Dibatalkan!", "", "error");
+                        setTimeout(function () {
+                            offcanvas.hide();
+                            destroyDataTable('#table_jalan_daerah_banjir');
+                            initializeDataTable('#table_jalan_daerah_banjir');
+                            $('#table_jalan_daerah_banjir').load(window.location.href + ' #table_jalan_daerah_banjir');
+                        }, 100);
+                        setTimeout(function () {
+                            offcanvas.show();
+                        }, 300);
+                    }
+                });
+
+            });
             window.addEventListener('open-canvas-detail-daerah-banjir', function() {
                 setTimeout(function () {
                     offcanvas.show();
@@ -894,7 +941,9 @@
                     offcanvas4.hide();
                 }, 100);
                 setTimeout(function () {
-
+                    destroyDataTable('#table_daerah_banjir');
+                    initializeDataTable('#table_daerah_banjir');
+                    $('#table_daerah_banjir').load(window.location.href + ' #table_daerah_banjir');
                     offcanvas.show();
                 }, 300);
             });
@@ -903,7 +952,6 @@
                     offcanvas2.hide();
                     offcanvas3.hide();
                     offcanvas4.hide();
-
                 }, 100);
                 setTimeout(function () {
                     offcanvas2.show();
@@ -1055,7 +1103,9 @@
                 setTimeout(function () {
                     // console.log(setBaseView("map",base.la_atitude,base.long_atitude,13.2));
                     // updateMap("map_all",locations, "all");
+                    // clearExistingLayers("map");
                     setBaseView("map",base.la_atitude,base.long_atitude,13.2);
+                    updateMap("map",locations, false);
                     updateMap("map",locations, true);
                 }, 500);
             });
@@ -1067,17 +1117,16 @@
             const map = document.getElementById("sec-2");
             const btn_carousel = document.getElementById("btn_carousel");
             const btn_map = document.getElementById("btn_map");
-
-            if (value === '1') {
-                map.style.display = "block";
-                carousel.style.display = "none";
+                map.classList.add("d-none");
+                carousel.classList.add("d-none");
+                btn_map.classList.remove("active");
                 btn_carousel.classList.remove("active");
+            if (value === "1") {
+                map.classList.remove("d-none");
                 btn_map.classList.add("active");
             } else {
-                map.style.display = "none";
-                carousel.style.display = "block";
+                carousel.classList.remove("d-none");
                 btn_carousel.classList.add("active");
-                btn_map.classList.remove("active");
             }
         }
 

@@ -459,6 +459,17 @@ var visibleIcon = {
     "fa-solid fa-house-flood-water": true // Banjir Bandang
 };
 
+
+function clearExistingLayers(mapId) {
+    if (window[mapId] && window[mapId]._layers) {
+        Object.keys(window[mapId]._layers).forEach(function(layerId) {
+            var layer = window[mapId]._layers[layerId];
+            if (layer instanceof L.Marker || layer instanceof L.Circle) {
+                window[mapId].removeLayer(layer);
+            }
+        });
+    }
+}
 // Fungsi untuk menambahkan lokasi ke peta dengan filter warna & ikon
 function addLocationsToMap(locations) {
     var greenLayer = L.layerGroup();
@@ -518,7 +529,7 @@ function addLocationsToMap(locations) {
 }
 
 function updateMap(mapId, locations, filter = false) {
-    console.log(filter);
+    // console.log(filter);
 
     if (currentLayers[mapId]) {
         if (currentLayers[mapId].greenLayer) maps[mapId].removeLayer(currentLayers[mapId].greenLayer);
@@ -556,6 +567,7 @@ function updateMap(mapId, locations, filter = false) {
         }, { collapsed: false }).addTo(maps[mapId]);
     }
 }
+
 
 </script>
     @stack('scripts')

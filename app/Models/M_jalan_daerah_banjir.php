@@ -11,6 +11,7 @@ class M_jalan_daerah_banjir extends Model
     protected $table = 'tb_jalan_daerah_banjir';
     protected $primaryKey = 'id_jalan_daerah_banjir';
     protected $casts = [
+        'konfirmasi_st' => 'boolean',
         'created_at' => 'datetime',
         'waktu_mulai' => 'datetime',
         'waktu_selesai' => 'datetime',
@@ -29,5 +30,7 @@ class M_jalan_daerah_banjir extends Model
         'long_atitude',
         'la_atitude',
         'icon',
+        'radius',
+        'konfirmasi_st',
     ];
 }

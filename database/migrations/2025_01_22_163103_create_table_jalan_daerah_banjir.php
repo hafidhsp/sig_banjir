@@ -25,7 +25,8 @@ return new class extends Migration
             $table->text('long_atitude')->nullable();
             $table->text('la_atitude')->nullable();
             $table->string('icon')->nullable();
-            $table->string('radius')->nullable();
+            // $table->string('radius')->nullable();
+            $table->integer('radius')->nullable();
             $table->string('warna_radius')->nullable();
             $table->boolean('konfirmasi_st');
             $table->text('bukti_foto')->nullable();

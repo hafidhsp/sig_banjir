@@ -60,10 +60,11 @@ class IndexLaporanBanjir extends Component
            $displayjalan,
            $long_atitude,
            $la_atitude,
-           $warna_radius
+           $warna_radius,
+           $data_jalan_daerah_banjir
            ;
 
-    protected $listeners = ['hapusDaerahBanjir','hapusJalanDaerahBanjir','hapusBuktiJalanDaerahBanjir'];
+    protected $listeners = ['hapusDaerahBanjir','hapusJalanDaerahBanjir','hapusBuktiJalanDaerahBanjir','gantiStatusJalanDaerahBanjir'];
 
     public function mount(){
         $this->today = Carbon::now()->translatedFormat('d F Y');
@@ -102,6 +103,7 @@ class IndexLaporanBanjir extends Component
         $this->long_atitude = '';
         $this->la_atitude = '';
         $this->warna_radius = '';
+        $this->data_jalan_daerah_banjir = [];
         $this->resetValidation();
     }
 
@@ -140,6 +142,7 @@ class IndexLaporanBanjir extends Component
         $this->long_atitude = '';
         $this->la_atitude = '';
         $this->warna_radius = '';
+        // $this->data_jalan_daerah_banjir = [];
         if($form == true){
             $this->dispatch('render-canvas-form');
         }else{
@@ -160,9 +163,7 @@ class IndexLaporanBanjir extends Component
                                 ->leftJoin('tb_kecamatan','tb_kecamatan.id_kecamatan','=','tb_daerah_banjir.id_kecamatan')
                                 ->orderBy('tb_daerah_banjir.created_at', 'Desc')
                                 ->get();
-        $data_jalan_daerah_banjir = M_jalan_daerah_banjir::leftJoin('tb_daerah_banjir','tb_daerah_banjir.id_daerah_banjir','=','tb_daerah_banjir.id_daerah_banjir')
-                                ->orderBy('tb_jalan_daerah_banjir.created_at', 'Desc')
-                                ->get();
+        $data_jalan_daerah_banjir =  $this->data_jalan_daerah_banjir;
         $data_kecamatan = kecamatan::orderBy('nama_kecamatan', 'Asc')
                                     ->get();
         $title = 'Data Laporan Banjir';
@@ -173,6 +174,7 @@ class IndexLaporanBanjir extends Component
     public function save_laporan_banjir_pertama(){
        if($this->id_daerah_banjir != ''){
             $data_daerah_banjir = M_daerah_banjir::where('id_daerah_banjir',$this->id_daerah_banjir)->first();
+        // dd($data_daerah_banjir);
             $this->validate([
                 'id_daerah_banjir' => 'required|exists:tb_daerah_banjir,id_daerah_banjir',
                 'kecamatan_daerah_banjir' => 'required|exists:tb_kecamatan,id_kecamatan',
@@ -226,7 +228,7 @@ class IndexLaporanBanjir extends Component
     }
 
     public function show_delete_daerah_banjir($id_daerah_banjir){
-         $this->dispatch('open-modal-validation-hapus-daerah-banjir',$id_daerah_banjir);
+        $this->dispatch('open-modal-validation-hapus-daerah-banjir',$id_daerah_banjir);
     }
 
     public function hapusDaerahBanjir($id_daerah_banjir){
@@ -241,6 +243,11 @@ class IndexLaporanBanjir extends Component
                                 ->where('id_daerah_banjir',$id_daerah_banjir)
                                 ->leftJoin('tb_kecamatan','tb_kecamatan.id_kecamatan','=','tb_daerah_banjir.id_kecamatan')
                                 ->first();
+        $this->data_jalan_daerah_banjir = M_jalan_daerah_banjir::leftJoin('tb_daerah_banjir','tb_jalan_daerah_banjir.id_daerah_banjir','=','tb_daerah_banjir.id_daerah_banjir')
+                                ->where('tb_jalan_daerah_banjir.id_daerah_banjir',$id_daerah_banjir)
+                                ->orderBy('tb_jalan_daerah_banjir.created_at', 'Desc')
+                                ->get();
+                                // dd($this->data_jalan_daerah_banjir);
         $this->id_daerah_banjir_jalan = $id_daerah_banjir;
         $this->detailNamaKecamatan = $detailDaerahBanjir->nama_kecamatan;
         $this->detailPemberiInformasi = $detailDaerahBanjir->pemberi_informasi;
@@ -253,7 +260,7 @@ class IndexLaporanBanjir extends Component
 
         if($this->id_jalan_daerah_banjir != ''){
             $this->validate([
-                'id_jalan_daerah_banjir' => 'required|exists:tb_jalan_daerah_banjir,id_jalan_daerah_banjir',
+                // 'id_jalan_daerah_banjir' => 'required|exists:tb_jalan_daerah_banjir,id_jalan_daerah_banjir',
                 'nama_jalan' => 'required|regex:/^[a-zA-Z\s]+$/',
                 'nomor_jalan' => 'required|numeric',
                 'panjang_jalan' => 'required',
@@ -289,6 +296,22 @@ class IndexLaporanBanjir extends Component
                 'warna_radius.required' => 'Warna Radius harus diisi.',
             ]);
             $data_jalan_daerah_banjir = M_jalan_daerah_banjir::where('id_jalan_daerah_banjir',$this->id_jalan_daerah_banjir)->first();
+            // $data = [
+            //     'id_daerah_banjir' => $this->id_daerah_banjir_jalan,
+            //     'nama_jalan' => $this->nama_jalan,
+            //     'nomor_jalan' => $this->nomor_jalan,
+            //     'panjang_jalan' => $this->panjang_jalan,
+            //     'waktu_mulai' => $this->waktu_mulai,
+            //     'radius' => $this->radius,
+            //     'icon' => $this->icon,
+            //     // 'jenis_banjir' => $this->jenis_banjir,
+            //     'tinggi_banjir' => $this->tinggi_banjir,
+            //     'konfirmasi_st' => 0,
+            //     'created_at' => now(),
+            //     'long_atitude' => $this->long_atitude,
+            //     'la_atitude' => $this->la_atitude,
+            //     'warna_radius' => $this->warna_radius,
+            // ];
             $data = [
                 'id_daerah_banjir' => $this->id_daerah_banjir_jalan,
                 'nama_jalan' => $this->nama_jalan,
@@ -326,6 +349,7 @@ class IndexLaporanBanjir extends Component
                 $allFileNames = array_merge($existingFiles, $newFileNames);
                 $data['bukti_foto'] = !empty($allFileNames) ? implode('#', $allFileNames) : '';
             }
+            // dd($data);
             $data_jalan_daerah_banjir->update($data);
             $this->mount();
             $this->dispatch('open-notif-success-canvas-form');
@@ -448,6 +472,7 @@ class IndexLaporanBanjir extends Component
     }
 
     public function detailJalanDaerahBanjir($id_jalan_daerah_banjir){
+        $this->refresh_canvas(false);
         $data__jalan_daerah_banjir = M_jalan_daerah_banjir::from('tb_jalan_daerah_banjir as a')
                                         ->leftJoin('tb_daerah_banjir as b','b.id_daerah_banjir','=','a.id_daerah_banjir')
                                         ->where('a.id_jalan_daerah_banjir',$id_jalan_daerah_banjir)
@@ -486,17 +511,17 @@ class IndexLaporanBanjir extends Component
         $this->baseLongtitude = $data_kecamatan->long_atitude;
         $this->dispatch('open-canvas-detail-jalan-daerah-banjir');
         $detail = [
-                    'Latitude'=> $data__jalan_daerah_banjir->la_atitude,
-                    'Longtitude'=> $data__jalan_daerah_banjir->long_atitude,
-                    'namaJalan'=> $data__jalan_daerah_banjir->nama_jalan,
-                    'nomorJalan'=> $data__jalan_daerah_banjir->nomor_jalan,
-                    'panjangJalan'=> $data__jalan_daerah_banjir->panjang_jalan,
-                    'iconJalan'=> $data__jalan_daerah_banjir->icon,
-                    'warnaRadius'=> $data__jalan_daerah_banjir->warna_radius,
-                    'tinggiJalan'=> $data__jalan_daerah_banjir->tinggi_jalan,
-                    'radiusJalan'=> $data__jalan_daerah_banjir->radius,
-                    'baseLatitude'=> $data_kecamatan->la_atitude,
-                    'baseLongtitude'=> $data_kecamatan->long_atitude,
+                    'Latitude'=> $data__jalan_daerah_banjir->la_atitude??null,
+                    'Longtitude'=> $data__jalan_daerah_banjir->long_atitude??null,
+                    'namaJalan'=> $data__jalan_daerah_banjir->nama_jalan??null,
+                    'nomorJalan'=> $data__jalan_daerah_banjir->nomor_jalan??null,
+                    'panjangJalan'=> $data__jalan_daerah_banjir->panjang_jalan??null,
+                    'iconJalan'=> $data__jalan_daerah_banjir->icon??null,
+                    'warnaRadius'=> $data__jalan_daerah_banjir->warna_radius??null,
+                    'tinggiJalan'=> $data__jalan_daerah_banjir->tinggi_jalan??null,
+                    'radiusJalan'=> $data__jalan_daerah_banjir->radius??null,
+                    'baseLatitude'=> $data_kecamatan->la_atitude??null,
+                    'baseLongtitude'=> $data_kecamatan->long_atitude??null,
                     ];
         $this->dispatch('render-map',$detail);
     }
@@ -522,16 +547,21 @@ class IndexLaporanBanjir extends Component
         }
     }
 
-    public function showDetailLokasiMapsAll($id_daerah_banjir){
-        $detailDaerahBanjir = M_daerah_banjir::select('a.id_daerah_banjir','a.pemberi_informasi','b.*')
-                                ->from('tb_daerah_banjir as a')
-                                ->leftJoin('tb_jalan_daerah_banjir as b','a.id_daerah_banjir','=','b.id_daerah_banjir')
-                                ->where('a.id_daerah_banjir',$id_daerah_banjir)
-                                ->get();
-        $data_kecamatan = M_daerah_banjir::from('tb_daerah_banjir as a')
-                                        ->leftJoin('tb_kecamatan as b','b.id_kecamatan','=','a.id_kecamatan')
-                                        ->where('a.id_daerah_banjir',$id_daerah_banjir)
-                                        ->first();
+    public function showDetailLokasiMapsAll($id_daerah_banjir = null){
+        $detailDaerahBanjir = [];
+        $data_kecamatan = [];
+        if($id_daerah_banjir != null){
+            $detailDaerahBanjir = M_daerah_banjir::select('a.id_daerah_banjir','a.pemberi_informasi','b.*')
+                                    ->from('tb_daerah_banjir as a')
+                                    ->leftJoin('tb_jalan_daerah_banjir as b','a.id_daerah_banjir','=','b.id_daerah_banjir')
+                                    ->where('a.id_daerah_banjir',$id_daerah_banjir)
+                                    ->where('b.konfirmasi_st',1)
+                                    ->get();
+            $data_kecamatan = M_daerah_banjir::from('tb_daerah_banjir as a')
+                                            ->leftJoin('tb_kecamatan as b','b.id_kecamatan','=','a.id_kecamatan')
+                                            ->where('a.id_daerah_banjir',$id_daerah_banjir)
+                                            ->first();
+        }
         $data = [
             'jalan_daerah_banjir' => $detailDaerahBanjir,
             'baseView' => $data_kecamatan,
@@ -539,4 +569,19 @@ class IndexLaporanBanjir extends Component
         $this->dispatch('render-map-all',$data);
     }
 
+    public function showKonfirmasiJalanDaerahBanjir($id_jalan_daerah_banjir = null){
+        $this->dispatch('open-modal-validation-ganti-status-jalan-daerah-banjir',$id_jalan_daerah_banjir);
+    }
+
+    public function gantiStatusJalanDaerahBanjir($id_jalan_daerah_banjir = null){
+        $data__jalan_daerah_banjir = M_jalan_daerah_banjir::where('id_jalan_daerah_banjir',$id_jalan_daerah_banjir)->first();
+        $data = [
+                    'konfirmasi_st'=>($data__jalan_daerah_banjir->konfirmasi_st == 0)? 1:0
+                ];
+        $data__jalan_daerah_banjir->update([
+                    'konfirmasi_st'=>($data__jalan_daerah_banjir->konfirmasi_st == 0)? 1:0
+                ]);
+        $this->dispatch('open-notif-success-canvas-form');
+        $this->dispatch('render-table');
+    }
 }
