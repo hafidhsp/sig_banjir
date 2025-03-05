@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('nama_penanganan');
             // $table->string('jenis_penanganan');
             $table->timestamp('waktu_mulai');
-            $table->timestamp('waktu_selesai');
+            $table->timestamp('waktu_selesai')->nullable();
             $table->integer('status_penanganan');
             $table->string('petugas');
             $table->string('anggaran');

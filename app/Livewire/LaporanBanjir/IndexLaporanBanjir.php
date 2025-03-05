@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use App\Models\M_penanggulangan;
 use App\Models\M_daerah_banjir;
 use App\Models\M_jalan_daerah_banjir;
+use App\Models\M_penanganan;
 use App\Models\kecamatan;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
@@ -61,7 +62,17 @@ class IndexLaporanBanjir extends Component
            $long_atitude,
            $la_atitude,
            $warna_radius,
-           $data_jalan_daerah_banjir
+           $data_jalan_daerah_banjir,
+           $id_penanganan,
+           $nama_penanganan,
+           $nama_petugas,
+           $anggaran,
+           $deskripsi,
+           $bukti_foto_penanganan,
+           $bukti_foto_penanganan_info,
+           $id_jalan_daerah_banjir_penanganan_info,
+           $hide_id_jalan_daerah_banjir,
+           $data_penanganan
            ;
 
     protected $listeners = ['hapusDaerahBanjir','hapusJalanDaerahBanjir','hapusBuktiJalanDaerahBanjir','gantiStatusJalanDaerahBanjir'];
@@ -105,6 +116,16 @@ class IndexLaporanBanjir extends Component
         $this->warna_radius = '';
         $this->data_jalan_daerah_banjir = [];
         $this->resetValidation();
+        $this->id_penanganan = '';
+        $this->nama_penanganan = '';
+        $this->nama_petugas = '';
+        $this->anggaran = '';
+        $this->deskripsi = '';
+        $this->bukti_foto_penanganan = '';
+        $this->bukti_foto_penanganan_info = '';
+        $this->id_jalan_daerah_banjir_penanganan_info = '';
+        $this->hide_id_jalan_daerah_banjir = '';
+        $this->data_penanganan = [];
     }
 
 
@@ -143,6 +164,14 @@ class IndexLaporanBanjir extends Component
         $this->la_atitude = '';
         $this->warna_radius = '';
         // $this->data_jalan_daerah_banjir = [];
+        $this->id_penanganan = '';
+        $this->nama_penanganan = '';
+        $this->nama_petugas = '';
+        $this->anggaran = '';
+        $this->deskripsi = '';
+        $this->bukti_foto_penanganan = '';
+        $this->id_jalan_daerah_banjir_penanganan_info = '';
+        $this->hide_id_jalan_daerah_banjir = '';
         if($form == true){
             $this->dispatch('render-canvas-form');
         }else{
@@ -458,6 +487,7 @@ class IndexLaporanBanjir extends Component
             'bukti_foto.*.mimes' => 'Gambar harus berformat jpeg, jpg, atau png.',
             'bukti_foto.*.max' => 'Ukuran gambar maksimal 2MB.',
         ]);
+
     }
 
     public function show_delete_jalan_daerah_banjir($id_jalan_daerah_banjir){
@@ -502,13 +532,18 @@ class IndexLaporanBanjir extends Component
                                     ($data__jalan_daerah_banjir->waktu_selesai ? ' - ' . $data__jalan_daerah_banjir->waktu_selesai->translatedFormat('d F Y') : '')
                                     : '-';
         $this->label_konfirmasi_st = $data__jalan_daerah_banjir->konfirmasi_st;
-
+        $this->hide_id_jalan_daerah_banjir = $data__jalan_daerah_banjir->id_jalan_daerah_banjir;
         if (!empty($data__jalan_daerah_banjir->bukti_foto)) {
                 $this->buktiFoto = explode('#', $data__jalan_daerah_banjir->bukti_foto ?? '');
                 $this->idbuktiFoto = $id_jalan_daerah_banjir;
             }
         $this->baseLatitude = $data_kecamatan->la_atitude;
         $this->baseLongtitude = $data_kecamatan->long_atitude;
+
+        //Data Penanganan
+        $this->data_penanganan = M_penanganan::where('id_jalan_daerah_banjir',$id_jalan_daerah_banjir)
+                                ->orderBy('created_at', 'Desc')
+                                ->get();
         $this->dispatch('open-canvas-detail-jalan-daerah-banjir');
         $detail = [
                     'Latitude'=> $data__jalan_daerah_banjir->la_atitude??null,
@@ -583,5 +618,76 @@ class IndexLaporanBanjir extends Component
                 ]);
         $this->dispatch('open-notif-success-canvas-form');
         $this->dispatch('render-table');
+    }
+
+    public function updatedBuktiFotoPenanganan()
+    {
+        sleep(3);
+        try {
+            $this->validate([
+                'bukti_foto_penanganan.*' => 'nullable|mimes:jpeg,jpg,png|max:2048',
+            ],[
+                'bukti_foto_penanganan.*.mimes' => 'Gambar harus berformat jpeg, jpg, atau png.',
+                'bukti_foto_penanganan.*.max' => 'Ukuran gambar maksimal 2MB.',
+            ]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            $this->reset('bukti_foto_penanganan');
+            $this->reset('bukti_foto_penanganan_info');
+            throw $e;
+        }
+    }
+
+    public function save_penanganan(){
+        if($this->id_jalan_daerah_banjir != ''){
+        }else{
+            $this->validate([
+                'nama_penanganan' => 'required|regex:/^[a-zA-Z\s]+$/',
+                'waktu_mulai' => 'required|date',
+                'waktu_selesai' => 'date|after_or_equal:waktu_mulai|nullable',
+                'nama_petugas' => 'required|regex:/^[a-zA-Z\s]+$/',
+                'anggaran' => 'numeric',
+                'deskripsi' => 'nullable',
+            ], [
+                'nama_penanganan.required' => 'Nama Penanganan harus diisi.',
+                'nama_penanganan.regex' => 'Nama Penanganan berisi huruf.',
+                'waktu_mulai.required' => 'Waktu mulai harus diisi.',
+                'waktu_mulai.date' => 'Format tanggal tidak sesuai.',
+                'waktu_selesai.date' => 'Format tanggal tidak sesuai.',
+                'waktu_selesai.after_or_equal' => 'Format tanggal minimal dihari yang sama.',
+                'nama_petugas.required' => 'Nama Petugas harus diisi.',
+                'nama_petugas.regex' => 'Nama Petugas berisi huruf.',
+                'anggaran.numeric' => 'Anggaran berisi angka.',
+            ]);
+            $data = [
+                'id_jalan_daerah_banjir' => $this->hide_id_jalan_daerah_banjir,
+                'nama_penanganan' => $this->nama_penanganan,
+                'waktu_mulai' => $this->waktu_mulai,
+                'petugas' => $this->nama_petugas,
+                'anggaran' => $this->anggaran,
+                'deskripsi_penanganan' => $this->deskripsi,
+                'status_penanganan' => 0,
+                'konfirmasi_st' => 0,
+                'created_at' => now(),
+            ];
+            if(!empty($this->waktu_selesai)){
+                $data['waktu_selesai']=$this->waktu_selesai;
+            }
+            if (!empty($this->bukti_foto_penanganan)) {
+                $fileNames = [];
+                foreach ($this->bukti_foto_penanganan as $file) {
+                    $filePath = $file->storeAs(
+                        'penanganan',
+                        md5(uniqid() . time()) . '.' . $file->getClientOriginalExtension(),
+                        'asset'
+                    );
+                    $fileNames[] = basename($filePath);
+                }
+                $data['bukti_penanganan'] = implode('#', $fileNames);
+            }
+            // dd($data);
+            M_penanganan::insert($data);
+            $this->mount();
+            $this->dispatch('open-notif-success-canvas-form');
+        }
     }
 }

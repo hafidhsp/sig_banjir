@@ -9,16 +9,23 @@ class M_penanganan extends Model
 {
     use HasFactory;
     protected $table = 'tb_penanganan';
+    protected $primaryKey = 'id_penanganan';
+        protected $casts = [
+        'konfirmasi_st' => 'boolean',
+        'created_at' => 'datetime',
+        'waktu_mulai' => 'datetime',
+        'waktu_selesai' => 'datetime',
+    ];
     protected $fillable = [
-        'id_daerah_banjir',
+        'id_jalan_daerah_banjir',
         'nama_penanganan',
-        'jenis_penanganan',
         'waktu_mulai',
         'waktu_selesai',
         'status_penanganan',
         'petugas',
         'anggaran',
         'deskripsi_penanganan',
+        'konfirmasi_st',
         'bukti_penanganan',
     ];
 }

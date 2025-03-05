@@ -565,6 +565,18 @@ function updateMap(mapId, locations, filter = false) {
             "Banjir": currentLayers[mapId].banjirLayer,
             "Banjir Bandang": currentLayers[mapId].banjirBdgLayer
         }, { collapsed: false }).addTo(maps[mapId]);
+
+        var controlContainer = document.querySelector('.leaflet-control-layers');
+        controlContainer.style.opacity = '0';
+        controlContainer.style.transition = 'opacity 0.3s';
+
+        maps[mapId].getContainer().addEventListener('mouseover', function() {
+            controlContainer.style.opacity = '1';
+        });
+
+        maps[mapId].getContainer().addEventListener('mouseout', function() {
+            controlContainer.style.opacity = '0';
+        });
     }
 }
 
