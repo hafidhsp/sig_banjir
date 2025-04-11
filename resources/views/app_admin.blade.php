@@ -63,6 +63,8 @@
 {{--
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/fontawesome.min.css"> --}}
 
+{{-- Flat Picker --}}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <style>
     .clickable-cell {
         cursor: pointer;
@@ -249,6 +251,9 @@
 {{--
 <script src="{{ asset('leaflet/leaflet.js') }}"></script>
 <script src="{{ asset('leaflet/leaflet-src.js') }}"></script> --}}
+
+{{-- flat picker --}}
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
 
 

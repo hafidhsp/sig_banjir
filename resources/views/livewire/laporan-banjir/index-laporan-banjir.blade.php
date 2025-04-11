@@ -345,7 +345,7 @@
                 <div class="mb-3 form-group row">
                     <div class="col-6">
                         <label class="form-label fw-bold">Waktu Mulai</label>
-                        <input type="date" class="form-control @error('waktu_mulai') is-invalid @enderror"
+                        <input type="text" class="form-control @error('waktu_mulai') is-invalid @enderror" id="waktu_mulai"
                             wire:model.defer="waktu_mulai" placeholder="Pilih Waktu" required>
                         @error('waktu_mulai')
                             <label class="text-danger">{{ $message }}</label>
@@ -353,7 +353,7 @@
                     </div>
                     <div class="col-6">
                         <label class="form-label fw-bold">Waktu Selesai</label>
-                        <input type="date" class="form-control @error('waktu_selesai') is-invalid @enderror"
+                        <input type="text" class="form-control @error('waktu_selesai') is-invalid @enderror" id="waktu_selesai"
                             wire:model.defer="waktu_selesai" placeholder="Pilih Waktu">
                         @error('waktu_selesai')
                             <label class="text-danger">{{ $message }}</label>
@@ -681,11 +681,11 @@
                                                 <td class="text-left">{{ $item->nama_penanganan }}</td>
                                                 <td class="text-center">{{ $item->waktu_mulai.(!empty($item->waktu_selesai)?' - '.$item->waktu_selesai:'') }}</td>
                                                 <td class="text-center">
-                                                    <button type="button" class="btn btn-sm @if($item->status_penanganan === 2) btn-primary @elseif($item->status_penanganan === 3) btn-success @else btn-secondary @endif
+                                                    <button type="button"  wire:click="ShowValidationStatusPenanganan({{ $item->id_penanganan }})" class="btn btn-sm @if($item->status_penanganan === 1) btn-primary @elseif($item->status_penanganan === 2) btn-success @else btn-secondary @endif
                                                         " readonly>
-                                                        @if ($item->status_penanganan === 2)
+                                                        @if ($item->status_penanganan === 1)
                                                             Proses
-                                                        @elseif($item->status_penanganan === 3)
+                                                        @elseif($item->status_penanganan === 2)
                                                             Selesai
                                                         @else
                                                             Terencana
@@ -792,8 +792,8 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>Waktu Mulai</label>
-                                    <input type="date"
-                                        class="form-control @error('waktu_mulai') is-invalid @enderror"
+                                    <input type="text" id="waktu_mulai"
+                                        class="form-control datetimepicker @error('waktu_mulai') is-invalid @enderror"
                                         wire:model.defer="waktu_mulai" placeholder="Pilih Waktu" required>
                                     @error('waktu_mulai')
                                         <label class="text-danger">{{ $message }}</label>
@@ -803,7 +803,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>Waktu Selesai</label>
-                                    <input type="date"
+                                    <input type="text"  id="waktu_selesai"
                                         class="form-control @error('waktu_selesai') is-invalid @enderror"
                                         wire:model.defer="waktu_selesai" placeholder="Pilih Waktu">
                                     @error('waktu_selesai')
@@ -875,7 +875,6 @@
     </div>
 
 </div>
-</div>
 
 @push('scripts')
     <script>
@@ -900,6 +899,23 @@
             keyboard: false
         });
         const button = document.getElementById('button_detail_canvas');
+
+        flatpickr("#waktu_mulai", {
+            enableTime: true,
+            time_24hr: true,
+            dateFormat: "Y-m-d H:i",
+            onChange: function(selectedDates, dateStr) {
+                @this.set('waktu_mulai', dateStr);
+            }
+        });
+        flatpickr("#waktu_selesai", {
+            enableTime: true,
+            time_24hr: true,
+            dateFormat: "Y-m-d H:i",
+            onChange: function(selectedDates, dateStr) {
+                @this.set('waktu_mulai', dateStr);
+            }
+        });
 
         function showModal() {
             $('#modalFormLaporanBanjirPertama').modal('show');
@@ -984,6 +1000,21 @@
                 select.classList.add('bg-primary', 'text-white');
             }
         }
+        function changeBgColorStatusPenanganan(select) {
+            select.classList.remove('bg-primary', 'bg-success', 'bg-secondary', 'text-white');
+
+            if (select.value == '') {
+                select.classList.remove('bg-primary', 'text-white');
+                select.classList.remove('bg-success', 'text-white');
+                select.classList.remove('bg-secondary', 'text-white');
+            } else if (select.value == 2) {
+                select.classList.add('bg-success', 'text-white');
+            } else if (select.value == 1) {
+                select.classList.add('bg-primary', 'text-white');
+            } else if (select.value == 0) {
+                select.classList.add('bg-secondary', 'text-white');
+            }
+        }
 
 
         document.addEventListener('DOMContentLoaded', function() {
@@ -1017,6 +1048,7 @@
                 setTimeout(function() {
                     offcanvas.hide();
                     offcanvas2.hide();
+                    $('#modalFormPenanganan').modal('hide');
                     $('#modalFormPenanganan').modal('hide');
                 }, 100);
                 setTimeout(function() {
@@ -1377,6 +1409,58 @@
                     updateMap("map", locations, false);
                     updateMap("map", locations, true);
                 }, 500);
+            });
+
+            window.addEventListener('open-modal-validation-ubah-status-penanganan', function(event) {
+                let id_penanganan = event.__livewire.params[0].id_penanganan;
+                let status_penanganan = event.__livewire.params[0].status_penanganan;
+                Swal.fire({
+                    title: "Apakah ingin status?",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Ya !",
+                    cancelButtonText: "Tidak"
+                }).then(async (result) => {
+                    if (result.isConfirmed) {
+                        const { value: fruit } = await Swal.fire({
+                            title: "Status Penanganan",
+                            input: "select",
+                                inputOptions: {
+                                    0: "Terencana",
+                                    1: "Proses",
+                                    2: "Selesai"
+                                },
+                            inputValue: String(status_penanganan),
+                            inputPlaceholder: "-- Pilih Status -- ",
+                            showCancelButton: true,
+                            inputValidator: (value) => {
+                                return new Promise((resolve) => {
+                                if (value !== "") {
+                                    Livewire.dispatch('ActionUbahStatusPenanganan', {
+                                        id_penanganan: id_penanganan,
+                                        status_penanganan: value
+                                    })
+                                    // alertify.success('Berhasil Diubah');
+                                    resolve();
+                                } else {
+                                    resolve("Status Belum Terpilih :)");
+                                }
+                                });
+                            }
+                        });
+                    } else {
+                        Swal.fire("Dibatalkan!", "", "error");
+                        setTimeout(function() {
+                            destroyDataTable('#table_daerah_banjir');
+                            initializeDataTable('#table_daerah_banjir');
+                            $('#table_daerah_banjir').load(window.location.href +
+                                ' #table_daerah_banjir');
+                        }, 100);
+                    }
+                });
+
             });
 
         });

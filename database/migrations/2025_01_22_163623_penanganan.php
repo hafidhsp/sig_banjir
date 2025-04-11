@@ -24,7 +24,7 @@ return new class extends Migration
             $table->string('anggaran');
             $table->text('deskripsi_penanganan');
             $table->boolean('konfirmasi_st');
-            $table->text('bukti_penanganan');
+            $table->text('bukti_penanganan')->nullable();
             $table->timestamps();
         });
     }

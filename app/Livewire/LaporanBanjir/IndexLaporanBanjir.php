@@ -72,10 +72,11 @@ class IndexLaporanBanjir extends Component
            $bukti_foto_penanganan_info,
            $id_jalan_daerah_banjir_penanganan_info,
            $hide_id_jalan_daerah_banjir,
-           $data_penanganan
+           $data_penanganan,
+           $status_penanganan
            ;
 
-    protected $listeners = ['hapusDaerahBanjir','hapusJalanDaerahBanjir','hapusBuktiJalanDaerahBanjir','gantiStatusJalanDaerahBanjir'];
+    protected $listeners = ['hapusDaerahBanjir','hapusJalanDaerahBanjir','hapusBuktiJalanDaerahBanjir','gantiStatusJalanDaerahBanjir','ShowValidationStatusPenanganan','ActionUbahStatusPenanganan'];
 
     public function mount(){
         $this->today = Carbon::now()->translatedFormat('d F Y');
@@ -99,7 +100,7 @@ class IndexLaporanBanjir extends Component
         $this->detailNamaKecamatan = '';
         $this->detailPemberiInformasi = '';
         $this->detailWaktu = '';
-        $this->waktu_mulai = '';
+        $this->waktu_mulai = now()->format('Y-m-d H:i:s');
         $this->waktu_selesai = '';
         $this->id_jalan_daerah_banjir_info = '';
         $this->label_nama_jalan = '';
@@ -126,6 +127,7 @@ class IndexLaporanBanjir extends Component
         $this->id_jalan_daerah_banjir_penanganan_info = '';
         $this->hide_id_jalan_daerah_banjir = '';
         $this->data_penanganan = [];
+        $this->status_penanganan = '';
     }
 
 
@@ -139,7 +141,7 @@ class IndexLaporanBanjir extends Component
         $this->nama_jalan = '';
         $this->nomor_jalan = '';
         $this->panjang_jalan = '';
-        $this->waktu_mulai = '';
+        $this->waktu_mulai = now()->format('Y-m-d H:i');
         $this->waktu_selesai = '';
         $this->radius = '';
         $this->icon = '';
@@ -172,6 +174,7 @@ class IndexLaporanBanjir extends Component
         $this->bukti_foto_penanganan = '';
         $this->id_jalan_daerah_banjir_penanganan_info = '';
         $this->hide_id_jalan_daerah_banjir = '';
+        $this->status_penanganan = '';
         if($form == true){
             $this->dispatch('render-canvas-form');
         }else{
@@ -686,8 +689,30 @@ class IndexLaporanBanjir extends Component
             }
             // dd($data);
             M_penanganan::insert($data);
-            $this->mount();
+            // $this->mount();
+            // $this->dispatch('hide-canvas-all');
             $this->dispatch('open-notif-success-canvas-form');
+            $this->dispatch('render-table');
         }
+    }
+
+    public function ShowValidationStatusPenanganan($id_penanganan){
+        $penanganan = M_penanganan::where('id_penanganan',$id_penanganan)
+                        ->first();
+        $data = [
+            'id_penanganan' => $id_penanganan,
+            'status_penanganan' => $penanganan->status_penanganan,
+        ];
+        $this->dispatch('open-modal-validation-ubah-status-penanganan',$data);
+    }
+    public function ActionUbahStatusPenanganan($id_penanganan,$status_penanganan){
+        $penanganan = M_penanganan::where('id_penanganan',$id_penanganan)
+                    ->first();
+        $data = [
+            'status_penanganan' => $status_penanganan,
+        ];
+        $penanganan->update($data);
+        // $this->mount();
+        $this->dispatch('open-notif-success-canvas-form');
     }
 }
