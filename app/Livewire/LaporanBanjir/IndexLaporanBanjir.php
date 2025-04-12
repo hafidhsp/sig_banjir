@@ -76,7 +76,14 @@ class IndexLaporanBanjir extends Component
            $status_penanganan
            ;
 
-    protected $listeners = ['hapusDaerahBanjir','hapusJalanDaerahBanjir','hapusBuktiJalanDaerahBanjir','gantiStatusJalanDaerahBanjir','ShowValidationStatusPenanganan','ActionUbahStatusPenanganan'];
+    protected $listeners = [
+        'hapusDaerahBanjir',
+        'hapusJalanDaerahBanjir',
+        'hapusBuktiJalanDaerahBanjir',
+        'gantiStatusJalanDaerahBanjir',
+        'ShowValidationStatusPenanganan',
+        'ActionUbahStatusPenanganan',
+        'hapusPenanganan'];
 
     public function mount(){
         $this->today = Carbon::now()->translatedFormat('d F Y');
@@ -203,6 +210,7 @@ class IndexLaporanBanjir extends Component
         return view('livewire.laporan-banjir.index-laporan-banjir',compact('data_daerah_banjir','data_jalan_daerah_banjir','data_kecamatan','no','title_modal','displayjalan'))->extends('app_admin',compact('title','today','user'))->section('content');
     }
 
+    //Laporan Banjir Utama
     public function save_laporan_banjir_pertama(){
        if($this->id_daerah_banjir != ''){
             $data_daerah_banjir = M_daerah_banjir::where('id_daerah_banjir',$this->id_daerah_banjir)->first();
@@ -287,6 +295,7 @@ class IndexLaporanBanjir extends Component
         $this->dispatch('open-canvas-detail-daerah-banjir');
     }
 
+    // Laporan Jalan daerah banjir alias Sub Daerah Banjir
     public function save_jalan_daerah_banjir(){
         $this->dispatch('render-canvas');
 
@@ -585,6 +594,7 @@ class IndexLaporanBanjir extends Component
         }
     }
 
+    // Lokasi All
     public function showDetailLokasiMapsAll($id_daerah_banjir = null){
         $detailDaerahBanjir = [];
         $data_kecamatan = [];
@@ -623,6 +633,7 @@ class IndexLaporanBanjir extends Component
         $this->dispatch('render-table');
     }
 
+    // Data Penanganan
     public function updatedBuktiFotoPenanganan()
     {
         sleep(3);
@@ -641,26 +652,24 @@ class IndexLaporanBanjir extends Component
     }
 
     public function save_penanganan(){
-        if($this->id_jalan_daerah_banjir != ''){
-        }else{
-            $this->validate([
-                'nama_penanganan' => 'required|regex:/^[a-zA-Z\s]+$/',
-                'waktu_mulai' => 'required|date',
-                'waktu_selesai' => 'date|after_or_equal:waktu_mulai|nullable',
-                'nama_petugas' => 'required|regex:/^[a-zA-Z\s]+$/',
-                'anggaran' => 'numeric',
-                'deskripsi' => 'nullable',
-            ], [
-                'nama_penanganan.required' => 'Nama Penanganan harus diisi.',
-                'nama_penanganan.regex' => 'Nama Penanganan berisi huruf.',
-                'waktu_mulai.required' => 'Waktu mulai harus diisi.',
-                'waktu_mulai.date' => 'Format tanggal tidak sesuai.',
-                'waktu_selesai.date' => 'Format tanggal tidak sesuai.',
-                'waktu_selesai.after_or_equal' => 'Format tanggal minimal dihari yang sama.',
-                'nama_petugas.required' => 'Nama Petugas harus diisi.',
-                'nama_petugas.regex' => 'Nama Petugas berisi huruf.',
-                'anggaran.numeric' => 'Anggaran berisi angka.',
-            ]);
+        $this->validate([
+            'nama_penanganan' => 'required|regex:/^[a-zA-Z\s]+$/',
+            'waktu_mulai' => 'required|date',
+            'waktu_selesai' => 'date|after_or_equal:waktu_mulai|nullable',
+            'nama_petugas' => 'required|regex:/^[a-zA-Z\s]+$/',
+            'anggaran' => 'numeric',
+            'deskripsi' => 'nullable',
+        ], [
+            'nama_penanganan.required' => 'Nama Penanganan harus diisi.',
+            'nama_penanganan.regex' => 'Nama Penanganan berisi huruf.',
+            'waktu_mulai.required' => 'Waktu mulai harus diisi.',
+            'waktu_mulai.date' => 'Format tanggal tidak sesuai.',
+            'waktu_selesai.date' => 'Format tanggal tidak sesuai.',
+            'waktu_selesai.after_or_equal' => 'Format tanggal minimal dihari yang sama.',
+            'nama_petugas.required' => 'Nama Petugas harus diisi.',
+            'nama_petugas.regex' => 'Nama Petugas berisi huruf.',
+            'anggaran.numeric' => 'Anggaran berisi angka.',
+        ]);
             $data = [
                 'id_jalan_daerah_banjir' => $this->hide_id_jalan_daerah_banjir,
                 'nama_penanganan' => $this->nama_penanganan,
@@ -687,13 +696,17 @@ class IndexLaporanBanjir extends Component
                 }
                 $data['bukti_penanganan'] = implode('#', $fileNames);
             }
+        if($this->id_penanganan != ''){
+            $data_penanganan = M_penanganan::where('id_penanganan',$this->id_penanganan)->first();
+            $data_penanganan->update($data);
+        }else{
             // dd($data);
             M_penanganan::insert($data);
             // $this->mount();
             // $this->dispatch('hide-canvas-all');
-            $this->dispatch('open-notif-success-canvas-form');
-            $this->dispatch('render-table');
         }
+        $this->dispatch('open-notif-success-canvas-form');
+        $this->dispatch('render-table');
     }
 
     public function ShowValidationStatusPenanganan($id_penanganan){
@@ -714,5 +727,28 @@ class IndexLaporanBanjir extends Component
         $penanganan->update($data);
         // $this->mount();
         $this->dispatch('open-notif-success-canvas-form');
+    }
+
+    public function show_delete_penanganan($id_penanganan){
+         $this->dispatch('open-modal-validation-hapus-penanganan',['id_penanganan'=>$id_penanganan]);
+    }
+
+    public function hapusPenanganan($id_penanganan){
+        $data_penanganan = M_penanganan::where('id_penanganan',$id_penanganan)->first();
+        $data_penanganan->delete();
+    }
+
+    public function showFormEditPenanganan($id_penanganan){
+        $detailPenanganan = M_penanganan::where('id_penanganan',$id_penanganan)
+                                ->first();
+        $this->id_penanganan = $id_penanganan;
+        $this->nama_penanganan = $detailPenanganan->nama_penanganan;
+        $this->waktu_mulai = $detailPenanganan->waktu_mulai;
+        $this->waktu_selesai = !empty($detailPenanganan->waktu_selesai)?$detailPenanganan->waktu_selesai->format('Y-m-d'):'';
+        $this->nama_petugas = $detailPenanganan->petugas;
+        $this->anggaran = $detailPenanganan->anggaran;
+        $this->deskripsi = $detailPenanganan->deskripsi_penanganan;
+        $this->title_modal = 'Ubah';
+        $this->dispatch('open-modal-form-penanganan');
     }
 }

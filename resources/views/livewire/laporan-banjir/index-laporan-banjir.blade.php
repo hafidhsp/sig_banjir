@@ -511,51 +511,51 @@
         </div>
         <div class="offcanvas-body position-relative  offcanvas-scroll">
             <p class="mb-3">
-            <table id="p_1">
-                <tr>
-                    <td class="fw-bold">Detail Jalan</td>
-                    <td>&nbsp;&nbsp;:&nbsp;&nbsp;</td>
-                    <td>
-                        <span style="font-size: 0.9em">
-                            Jl. {{ $label_nama_jalan ?? '-' }}, No. {{ $label_nomor_jalan ?? '-' }}
-                        </span>
-                    </td>
-                    <td width="30px"></td>
-                    <td class="fw-bold">Panjang Jalan</td>
-                    <td>&nbsp;&nbsp;:&nbsp;&nbsp;</td>
-                    <td>
-                        <span style="font-size: 0.9em">
-                            {{ $label_panjang_jalan ?? '-' }}
-                        </span>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="fw-bold">Waktu Banjir</td>
-                    <td>&nbsp;&nbsp;:&nbsp;&nbsp;</td>
-                    <td>
-                        <span style="font-size: 0.9em">
-                            {{ $label_waktu_mulai ?? '-' }}
-                        </span>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="fw-bold">Jenis Banjir</td>
-                    <td>&nbsp;&nbsp;:&nbsp;&nbsp;</td>
-                    <td>
-                        <span style="font-size: 0.9em">
-                            {{ $label_jenis_banjir ?? '-' }}
-                        </span>
-                    </td>
-                    <td></td>
-                    <td class="fw-bold">Tinggi Banjir</td>
-                    <td>&nbsp;&nbsp;:&nbsp;&nbsp;</td>
-                    <td>
-                        <span style="font-size: 0.9em">
-                            {{ $label_tinggi_banjir ?? '-' }}
-                        </span>
-                    </td>
-                </tr>
-            </table>
+                <table id="p_1">
+                    <tr>
+                        <td class="fw-bold">Detail Jalan</td>
+                        <td>&nbsp;&nbsp;:&nbsp;&nbsp;</td>
+                        <td>
+                            <span style="font-size: 0.9em">
+                                Jl. {{ $label_nama_jalan ?? '-' }}, No. {{ $label_nomor_jalan ?? '-' }}
+                            </span>
+                        </td>
+                        <td width="30px"></td>
+                        <td class="fw-bold">Panjang Jalan</td>
+                        <td>&nbsp;&nbsp;:&nbsp;&nbsp;</td>
+                        <td>
+                            <span style="font-size: 0.9em">
+                                {{ $label_panjang_jalan ?? '-' }}
+                            </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="fw-bold">Waktu Banjir</td>
+                        <td>&nbsp;&nbsp;:&nbsp;&nbsp;</td>
+                        <td>
+                            <span style="font-size: 0.9em">
+                                {{ $label_waktu_mulai ?? '-' }}
+                            </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="fw-bold">Jenis Banjir</td>
+                        <td>&nbsp;&nbsp;:&nbsp;&nbsp;</td>
+                        <td>
+                            <span style="font-size: 0.9em">
+                                {{ $label_jenis_banjir ?? '-' }}
+                            </span>
+                        </td>
+                        <td></td>
+                        <td class="fw-bold">Tinggi Banjir</td>
+                        <td>&nbsp;&nbsp;:&nbsp;&nbsp;</td>
+                        <td>
+                            <span style="font-size: 0.9em">
+                                {{ $label_tinggi_banjir ?? '-' }}
+                            </span>
+                        </td>
+                    </tr>
+                </table>
             </p>
             <p>
 
@@ -642,7 +642,7 @@
                             </div>
                         </div>
                         <div id="sec-3" class="d-none">
-                            <table class="table table-bordered table-hover" id="table_detail_daerah_banjir"
+                            <table class="table table-bordered table-hover" id="table_penanganan"
                                 wire:ignore.self>
                                 <thead>
                                     <tr>
@@ -679,7 +679,7 @@
                                             <tr>
                                                 <td class="text-center text-muted">{{ $no_penanganan++ }}</td>
                                                 <td class="text-left">{{ $item->nama_penanganan }}</td>
-                                                <td class="text-center">{{ $item->waktu_mulai.(!empty($item->waktu_selesai)?' - '.$item->waktu_selesai:'') }}</td>
+                                                <td class="text-center">{{ $item->waktu_mulai->translatedFormat('d F Y H:i:s').(!empty($item->waktu_selesai)?' - '.$item->waktu_selesai->translatedFormat('d F Y H:i:s'):'') }}</td>
                                                 <td class="text-center">
                                                     <button type="button"  wire:click="ShowValidationStatusPenanganan({{ $item->id_penanganan }})" class="btn btn-sm @if($item->status_penanganan === 1) btn-primary @elseif($item->status_penanganan === 2) btn-success @else btn-secondary @endif
                                                         " readonly>
@@ -692,7 +692,24 @@
                                                         @endif
                                                     </button>
                                                 </td>
-                                                <td class="text-center"></td>
+                                                <td class="text-center">
+                                                    <div class="btn-group">
+                                                        <button type="button" class="btn btn-outline-secondary dropdown-toggle"
+                                                            data-toggle="dropdown" aria-expanded="false">
+                                                            <i class="bi bi-hand-index-thumb"></i> Aksi
+                                                        </button>
+                                                        <div class="dropdown-menu" x-placement="top-start">
+                                                            <button type="button" class="dropdown-item text-danger"
+                                                                wire:click="show_delete_penanganan({{ $item->id_penanganan }})">
+                                                                <i class="bi bi-trash3"></i> Hapus
+                                                            </button>
+                                                            <button type="button" class="dropdown-item text-primary"
+                                                                wire:click="showFormEditPenanganan({{ $item->id_penanganan }})">
+                                                                <i class="bi bi-pencil-square"></i> Ubah
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </td>
                                             </tr>
                                         @endforeach
                                     @endif
@@ -1034,6 +1051,7 @@
                     //    updateMap(locations, "all");
                 }, 100);
             });
+            // Notif
             window.addEventListener('open-notif-success', function() {
                 setTimeout(function() {
                     $('#btn_close').click();
@@ -1088,11 +1106,7 @@
                     alertify.success('Berhasil Dihapus');
                 }, 600);
             });
-            window.addEventListener('open-modal-form-daerah-banjir', function() {
-                setTimeout(function() {
-                    $('#modalFormLaporanBanjirPertama').modal('show');
-                }, 500);
-            });
+            // Validasi Data
             window.addEventListener('open-modal-validation-hapus-daerah-banjir', function(event) {
                 var id_daerah_banjir = event.__livewire.params[0];
                 Swal.fire({
@@ -1187,6 +1201,118 @@
                 });
 
             });
+            window.addEventListener('open-modal-validation-hapus-foto-jalan-daerah-banjir', function(event) {
+                var id_jalan_daerah_banjir = event.__livewire.params[0].id_jalan_daerah_banjir;
+                var namaFile = event.__livewire.params[0].namaFile;
+
+                Swal.fire({
+                    title: "Apakah ingin menghapus gambar ini?",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Ya !",
+                    cancelButtonText: "Tidak"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Livewire.dispatch('hapusBuktiJalanDaerahBanjir', {
+                            id_jalan_daerah_banjir: id_jalan_daerah_banjir,
+                            namaFile: namaFile
+                        })
+                        Swal.fire({
+                            title: "Berhasil Dihapus",
+                            icon: "success",
+                            confirmButtonText: "OK"
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                setTimeout(function() {
+                                    $('#table_jalan_daerah_banjir').load(window
+                                        .location.href +
+                                        ' #table_jalan_daerah_banjir');
+                                }, 300);
+                            }
+                        });
+                    } else {
+                        Swal.fire("Dibatalkan!", "", "error");
+                        setTimeout(function() {
+                            destroyDataTable('#table_jalan_daerah_banjir');
+                            initializeDataTable('#table_jalan_daerah_banjir');
+                            $('#table_jalan_daerah_banjir').load(window.location.href +
+                                ' #table_jalan_daerah_banjir');
+                            offcanvas2.hide();
+                            offcanvas3.hide();
+                        }, 100);
+                        setTimeout(function() {
+                            offcanvas3.show();
+                        }, 300);
+                    }
+                });
+            });
+            window.addEventListener('open-modal-validation-hapus-penanganan', function(event) {
+                var id_penanganan = event.__livewire.params[0].id_penanganan;
+
+                Swal.fire({
+                    title: "Apakah ingin menghapus data ini?",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Ya !",
+                    cancelButtonText: "Tidak"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Livewire.dispatch('hapusPenanganan', {
+                            id_penanganan: id_penanganan,
+                        })
+                        Swal.fire({
+                            title: "Berhasil Dihapus",
+                            icon: "success",
+                            confirmButtonText: "OK"
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                setTimeout(function() {
+                                    destroyDataTable('#table_penanganan');
+                                    initializeDataTable('#table_penanganan');
+                                    $('#table_penanganan').load(window.location.href +
+                                        ' #table_penanganan');
+                                    offcanvas.hide();
+                                    offcanvas2.hide();
+                                    offcanvas3.hide();
+                                }, 100);
+                                setTimeout(function() {
+                                    offcanvas.show();
+                                }, 300);
+                            }
+                        });
+                    } else {
+                        Swal.fire("Dibatalkan!", "", "error");
+                        setTimeout(function() {
+                            destroyDataTable('#table_penanganan');
+                            initializeDataTable('#table_penanganan');
+                            $('#table_penanganan').load(window.location.href +
+                                ' #table_penanganan');
+                            offcanvas.hide();
+                            offcanvas2.hide();
+                            offcanvas3.hide();
+                        }, 100);
+                        setTimeout(function() {
+                            offcanvas.show();
+                        }, 300);
+                    }
+                });
+            });
+
+            // Open Modal
+            window.addEventListener('open-modal-form-daerah-banjir', function() {
+                setTimeout(function() {
+                    $('#modalFormLaporanBanjirPertama').modal('show');
+                }, 500);
+            });
+            window.addEventListener('open-modal-form-penanganan', function() {
+                setTimeout(function() {
+                    $('#modalFormPenanganan').modal('show');
+                }, 500);
+            });
             window.addEventListener('open-canvas-detail-daerah-banjir', function() {
                 setTimeout(function() {
                     offcanvas.show();
@@ -1269,53 +1395,6 @@
                     offcanvas2.hide();
                     offcanvas3.hide();
                 }, 100);
-            });
-            window.addEventListener('open-modal-validation-hapus-foto-jalan-daerah-banjir', function(event) {
-                var id_jalan_daerah_banjir = event.__livewire.params[0].id_jalan_daerah_banjir;
-                var namaFile = event.__livewire.params[0].namaFile;
-
-                Swal.fire({
-                    title: "Apakah ingin menghapus gambar ini?",
-                    icon: "warning",
-                    showCancelButton: true,
-                    confirmButtonColor: "#3085d6",
-                    cancelButtonColor: "#d33",
-                    confirmButtonText: "Ya !",
-                    cancelButtonText: "Tidak"
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        Livewire.dispatch('hapusBuktiJalanDaerahBanjir', {
-                            id_jalan_daerah_banjir: id_jalan_daerah_banjir,
-                            namaFile: namaFile
-                        })
-                        Swal.fire({
-                            title: "Berhasil Dihapus",
-                            icon: "success",
-                            confirmButtonText: "OK"
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                setTimeout(function() {
-                                    $('#table_jalan_daerah_banjir').load(window
-                                        .location.href +
-                                        ' #table_jalan_daerah_banjir');
-                                }, 300);
-                            }
-                        });
-                    } else {
-                        Swal.fire("Dibatalkan!", "", "error");
-                        setTimeout(function() {
-                            destroyDataTable('#table_jalan_daerah_banjir');
-                            initializeDataTable('#table_jalan_daerah_banjir');
-                            $('#table_jalan_daerah_banjir').load(window.location.href +
-                                ' #table_jalan_daerah_banjir');
-                            offcanvas2.hide();
-                            offcanvas3.hide();
-                        }, 100);
-                        setTimeout(function() {
-                            offcanvas3.show();
-                        }, 300);
-                    }
-                });
             });
 
             window.addEventListener('render-map', function(event) {

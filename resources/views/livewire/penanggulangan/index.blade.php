@@ -65,9 +65,9 @@
                                     {{ $penanggulangan->jenis_penanggulangan }}
                                 </td>
                                 <td>
-                                    {{ $penanggulangan->waktu_mulai->translatedFormat('d F Y') }}
+                                    {{ $penanggulangan->waktu_mulai->translatedFormat('d F Y H:i:s') }}
                                     @if (!empty($penanggulangan->waktu_selesai))
-                                        - {{ $penanggulangan->waktu_selesai->translatedFormat('d F Y') }}
+                                        - {{ $penanggulangan->waktu_selesai->translatedFormat('d F Y H:i:s') }}
                                     @endif
                                 </td>
                                 <td>
@@ -96,9 +96,9 @@
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="bi bi-hand-index-thumb"></i> Aksi</button>
                                     <div class="dropdown-menu" x-placement="top-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, -104px, 0px);">
-                                    <button type="button" class="dropdown-item text-danger"  wire:click="show_delete_penanggulangan('{{ $penanggulangan->id_penanggulangan }}')"><i class="bi bi-trash3"></i> Hapus</button>
-                                    <button type="button" class="dropdown-item text-primary" wire:click="showModalPenanggulangan({{ $penanggulangan->id_penanggulangan }})"><i class="bi bi-pencil-square"></i> Ubah</button>
-                                    <button type="button" class="dropdown-item text-info" wire:click="showModalBuktiPenanggulangan({{ $penanggulangan->id_penanggulangan }})"><i class="bi bi-camera"></i> Lihat Bukti</button>
+                                        <button type="button" class="dropdown-item text-danger"  wire:click="show_delete_penanggulangan('{{ $penanggulangan->id_penanggulangan }}')"><i class="bi bi-trash3"></i> Hapus</button>
+                                        <button type="button" class="dropdown-item text-primary" wire:click="showModalPenanggulangan({{ $penanggulangan->id_penanggulangan }})"><i class="bi bi-pencil-square"></i> Ubah</button>
+                                        <button type="button" class="dropdown-item text-info" wire:click="showModalBuktiPenanggulangan({{ $penanggulangan->id_penanggulangan }})"><i class="bi bi-camera"></i> Lihat Bukti</button>
                                     </div>
                                 </div>
                                 </div>
