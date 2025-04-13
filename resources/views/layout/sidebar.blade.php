@@ -44,7 +44,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{ url('penanganan') }}">
+                <a class="nav-link" href="{{ url('data-penanganan') }}">
                     <i class="bi bi-exclamation-triangle-fill menu-icon"></i>
                     <span class="menu-title">Data Penanganan</span>
                 </a>

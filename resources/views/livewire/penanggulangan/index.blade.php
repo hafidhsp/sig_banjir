@@ -171,14 +171,14 @@
                     </div>
                     <div class="form-group">
                         <label >Waktu Mulai</label>
-                        <input type="date" class="form-control @error('waktu_mulai') is-invalid @enderror" wire:model.defer="waktu_mulai" placeholder="Pilih Waktu" required>
+                        <input type="text" class="form-control @error('waktu_mulai') is-invalid @enderror" wire:model.defer="waktu_mulai" id="waktu_mulai" placeholder="Pilih Waktu" required>
                         @error('waktu_mulai')
                             <label class="text-danger">{{ $message }}</label>
                         @enderror
                     </div>
                     <div class="form-group">
                         <label >Waktu Selesai</label>
-                        <input type="date" class="form-control @error('waktu_selesai') is-invalid @enderror" wire:model.defer="waktu_selesai" placeholder="Pilih Waktu">
+                        <input type="text" class="form-control @error('waktu_selesai') is-invalid @enderror" wire:model.defer="waktu_selesai" id="waktu_selesai" placeholder="Pilih Waktu">
                         @error('waktu_selesai')
                             <label class="text-danger">{{ $message }}</label>
                         @enderror
@@ -336,164 +336,181 @@
 
 <script>
 
-function showModal(){
-    $('#modalFormPenanggulangan').modal('show');
-}
+    flatpickr("#waktu_mulai", {
+        enableTime: true,
+        time_24hr: true,
+        dateFormat: "Y-m-d H:i",
+        onChange: function(selectedDates, dateStr) {
+            @this.set('waktu_mulai', dateStr);
+        }
+    });
+    flatpickr("#waktu_selesai", {
+        enableTime: true,
+        time_24hr: true,
+        dateFormat: "Y-m-d H:i",
+        onChange: function(selectedDates, dateStr) {
+            @this.set('waktu_mulai', dateStr);
+        }
+    });
 
-function showModalBukti(){
-    $('#modalBuktiPenanggulangan').modal('show');
-}
-
-function changeBackgroundColor(select) {
-    select.classList.remove('bg-white', 'bg-primary', 'bg-success', 'bg-warning', 'bg-danger','text-dark','text-white');
-
-    if (select.value == '') {
-        select.classList.remove('bg-primary','text-white');
-        select.classList.remove('bg-success','text-white');
-        select.classList.remove('bg-warning','text-white');
-        select.classList.remove('bg-danger','text-white');
-        select.classList.add('bg-white','text-dark');
-    }else if(select.value == 1){
-        select.classList.add('bg-secondary','text-white');
-    }else if(select.value == 2){
-        select.classList.add('bg-success','text-white');
-    }else if(select.value == 0){
-        select.classList.add('bg-primary','text-white');
+    function showModal(){
+        $('#modalFormPenanggulangan').modal('show');
     }
-}
 
-document.addEventListener('DOMContentLoaded', function() {
-    initializeDataTable('#table_penanggulangan');
+    function showModalBukti(){
+        $('#modalBuktiPenanggulangan').modal('show');
+    }
 
-    window.addEventListener('render-table', function() {
-        setTimeout(function () {
-            destroyDataTable('#table_penanggulangan');
-            initializeDataTable('#table_penanggulangan');
-            $('#table_penanggulangan').load(window.location.href + ' #table_penanggulangan');
-        }, 100);
-    });
+    function changeBackgroundColor(select) {
+        select.classList.remove('bg-white', 'bg-primary', 'bg-success', 'bg-warning', 'bg-danger','text-dark','text-white');
 
-    document.addEventListener('updateSelectColor', function (event) {
-        const select = $('#select_status');
+        if (select.value == '') {
+            select.classList.remove('bg-primary','text-white');
+            select.classList.remove('bg-success','text-white');
+            select.classList.remove('bg-warning','text-white');
+            select.classList.remove('bg-danger','text-white');
+            select.classList.add('bg-white','text-dark');
+        }else if(select.value == 1){
+            select.classList.add('bg-secondary','text-white');
+        }else if(select.value == 2){
+            select.classList.add('bg-success','text-white');
+        }else if(select.value == 0){
+            select.classList.add('bg-primary','text-white');
+        }
+    }
 
-        select.removeClass('bg-white bg-primary bg-success bg-warning bg-danger text-dark text-white');
-        setTimeout(function () {
+    document.addEventListener('DOMContentLoaded', function() {
+        initializeDataTable('#table_penanggulangan');
 
-            if (event.detail == '') {
-                select.removeClass('bg-primary text-white');
-                select.removeClass('bg-success text-white');
-                select.removeClass('bg-warning text-white');
-                select.removeClass('bg-danger text-white');
-                select.addClass('bg-white text-dark');
-            }else if(event.detail == '1'){
-                select.addClass('bg-secondary text-white');
-            }else if(event.detail == '2'){
-                select.addClass('bg-success text-white');
-            }else if(event.detail == '0'){
-                select.addClass('bg-primary text-white');
-            }
-        }, 100);
-    });
-
-    window.addEventListener('open-notif-success', function() {
-        setTimeout(function () {
-            $('#btn_close').click();
-            destroyDataTable('#table_penanggulangan');
-            initializeDataTable('#table_penanggulangan');
-        }, 100);
-        setTimeout(function () {
-            alertify.success('Berhasil Disimpan');
-        }, 500);
-    });
-    window.addEventListener('open-notif-success-delete', function() {
-        setTimeout(function () {
-            $('#btn_close').click();
-            $('#btn_close_bukti').click();
-        }, 100);
-        setTimeout(function () {
-            destroyDataTable('#table_penanggulangan');
-            initializeDataTable('#table_penanggulangan');
-            alertify.success('Berhasil Dihapus');
-        }, 600);
-    });
-    window.addEventListener('open-modal-form-penanggulangan', function() {
-        setTimeout(function () {
-            $('#modalFormPenanggulangan').modal('show');
-        }, 500);
-    });
-    window.addEventListener('open-modal-bukti-penanggulangan', function() {
-        setTimeout(function () {
-            $('#modalBuktiPenanggulangan').modal('show');
-        }, 500);
-    });
-    window.addEventListener('open-modal-validation-hapus-penanggulangan', function(event) {
-        var id_penanggulangan = event.__livewire.params[0];
-        Swal.fire({
-            title: "Apakah ingin menghapus penanggulangan ini?",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Ya !",
-            cancelButtonText: "Tidak"
-        }).then((result) => {
-            if (result.isConfirmed) {
-                Livewire.dispatch('hapusPenanggulangan', {
-                    id_penanggulangan: id_penanggulangan
-                })
-                Swal.fire("Berhasil Dihapus", "", "success");
-            } else {
-                Swal.fire("Dibatalkan!", "", "error");
-                setTimeout(function () {
-                    destroyDataTable('#table_penanggulangan');
-                    initializeDataTable('#table_penanggulangan');
-                    $('#table_penanggulangan').load(window.location.href + ' #table_penanggulangan');
-                }, 100);
-            }
+        window.addEventListener('render-table', function() {
+            setTimeout(function () {
+                destroyDataTable('#table_penanggulangan');
+                initializeDataTable('#table_penanggulangan');
+                $('#table_penanggulangan').load(window.location.href + ' #table_penanggulangan');
+            }, 100);
         });
 
-    });
-    window.addEventListener('open-modal-validation-hapus-gambar-penanggulangan', function(event) {
-        var id_penanggulangan = event.__livewire.params[0].id_penanggulangan;
-        var namaFile = event.__livewire.params[0].namaFile;
+        document.addEventListener('updateSelectColor', function (event) {
+            const select = $('#select_status');
 
-        Swal.fire({
-            title: "Apakah ingin menghapus gambar ini?",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Ya !",
-            cancelButtonText: "Tidak"
-        }).then((result) => {
-            if (result.isConfirmed) {
-                Livewire.dispatch('hapusBuktiPenanggulangan', {
-                    id_penanggulangan: id_penanggulangan,
-                    namaFile: namaFile
-                })
-                Swal.fire({
-                    title: "Berhasil Dihapus",
-                    icon: "success",
-                    confirmButtonText: "OK"
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        setTimeout(function () {
-                            $('#table_penanggulangan').load(window.location.href + ' #table_penanggulangan');
-                        }, 300);
-                    }
-                });
-            } else {
-                Swal.fire("Dibatalkan!", "", "error");
-                setTimeout(function () {
-                    destroyDataTable('#table_penanggulangan');
-                    initializeDataTable('#table_penanggulangan');
-                    $('#table_penanggulangan').load(window.location.href + ' #table_penanggulangan');
-                }, 100);
-            }
+            select.removeClass('bg-white bg-primary bg-success bg-warning bg-danger text-dark text-white');
+            setTimeout(function () {
+
+                if (event.detail == '') {
+                    select.removeClass('bg-primary text-white');
+                    select.removeClass('bg-success text-white');
+                    select.removeClass('bg-warning text-white');
+                    select.removeClass('bg-danger text-white');
+                    select.addClass('bg-white text-dark');
+                }else if(event.detail == '1'){
+                    select.addClass('bg-secondary text-white');
+                }else if(event.detail == '2'){
+                    select.addClass('bg-success text-white');
+                }else if(event.detail == '0'){
+                    select.addClass('bg-primary text-white');
+                }
+            }, 100);
         });
 
+        window.addEventListener('open-notif-success', function() {
+            setTimeout(function () {
+                $('#btn_close').click();
+                destroyDataTable('#table_penanggulangan');
+                initializeDataTable('#table_penanggulangan');
+            }, 100);
+            setTimeout(function () {
+                alertify.success('Berhasil Disimpan');
+            }, 500);
+        });
+        window.addEventListener('open-notif-success-delete', function() {
+            setTimeout(function () {
+                $('#btn_close').click();
+                $('#btn_close_bukti').click();
+            }, 100);
+            setTimeout(function () {
+                destroyDataTable('#table_penanggulangan');
+                initializeDataTable('#table_penanggulangan');
+                alertify.success('Berhasil Dihapus');
+            }, 600);
+        });
+        window.addEventListener('open-modal-form-penanggulangan', function() {
+            setTimeout(function () {
+                $('#modalFormPenanggulangan').modal('show');
+            }, 500);
+        });
+        window.addEventListener('open-modal-bukti-penanggulangan', function() {
+            setTimeout(function () {
+                $('#modalBuktiPenanggulangan').modal('show');
+            }, 500);
+        });
+        window.addEventListener('open-modal-validation-hapus-penanggulangan', function(event) {
+            var id_penanggulangan = event.__livewire.params[0];
+            Swal.fire({
+                title: "Apakah ingin menghapus penanggulangan ini?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Ya !",
+                cancelButtonText: "Tidak"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Livewire.dispatch('hapusPenanggulangan', {
+                        id_penanggulangan: id_penanggulangan
+                    })
+                    Swal.fire("Berhasil Dihapus", "", "success");
+                } else {
+                    Swal.fire("Dibatalkan!", "", "error");
+                    setTimeout(function () {
+                        destroyDataTable('#table_penanggulangan');
+                        initializeDataTable('#table_penanggulangan');
+                        $('#table_penanggulangan').load(window.location.href + ' #table_penanggulangan');
+                    }, 100);
+                }
+            });
+
+        });
+        window.addEventListener('open-modal-validation-hapus-gambar-penanggulangan', function(event) {
+            var id_penanggulangan = event.__livewire.params[0].id_penanggulangan;
+            var namaFile = event.__livewire.params[0].namaFile;
+
+            Swal.fire({
+                title: "Apakah ingin menghapus gambar ini?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Ya !",
+                cancelButtonText: "Tidak"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Livewire.dispatch('hapusBuktiPenanggulangan', {
+                        id_penanggulangan: id_penanggulangan,
+                        namaFile: namaFile
+                    })
+                    Swal.fire({
+                        title: "Berhasil Dihapus",
+                        icon: "success",
+                        confirmButtonText: "OK"
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            setTimeout(function () {
+                                $('#table_penanggulangan').load(window.location.href + ' #table_penanggulangan');
+                            }, 300);
+                        }
+                    });
+                } else {
+                    Swal.fire("Dibatalkan!", "", "error");
+                    setTimeout(function () {
+                        destroyDataTable('#table_penanggulangan');
+                        initializeDataTable('#table_penanggulangan');
+                        $('#table_penanggulangan').load(window.location.href + ' #table_penanggulangan');
+                    }, 100);
+                }
+            });
+
+        });
     });
-});
 
 
 </script>

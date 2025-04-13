@@ -65,6 +65,10 @@
 
 {{-- Flat Picker --}}
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+{{-- select 2 --}}
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
 <style>
     .clickable-cell {
         cursor: pointer;
@@ -137,31 +141,61 @@
 
     #map { height: 60vh; }
 
-.icon-option {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-bottom: 5px;
-}
+    .icon-option {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-bottom: 5px;
+    }
 
-/* .icon-option input {
-    display: none;
-} */
+    /* .icon-option input {
+        display: none;
+    } */
 
-.icon-option i {
-    font-size: 24px;
-    color: #111111;
-}
+    .icon-option i {
+        font-size: 24px;
+        color: #111111;
+    }
 
-.icon-option input:checked + i {
-    color: #007bff;
-    font-weight: bold;
-}
+    .icon-option input:checked + i {
+        color: #007bff;
+        font-weight: bold;
+    }
 
+    .select2-container .select2-selection--single {
+        border: 1px solid #ced4da;
+        border-radius: .25rem;
+        height: calc(2.25rem + 2px);
+        padding: .375rem .75rem;
+        background-color: #fff;
+    }
+
+    .select2-container .select2-selection--single:not(.select2-selection--multiple) {
+        border-color: black;
+    }
+
+    .select2-container .select2-selection--single:focus {
+        border-color: #80bdff;
+        outline: 0;
+        box-shadow: 0 0 0 .2rem rgba(38, 143, 255, .25);
+    }
+
+    .select2-container .select2-dropdown {
+        border: 1px solid #ced4da;
+        border-radius: .25rem;
+    }
+
+    .select2-container .select2-search__field {
+        border: 1px solid black;
+        border-radius: .25rem;
+        height: calc(2.25rem + 2px);
+        padding: .375rem .75rem;
+        background-color: #fff;
+    }
 
 </style>
 
@@ -255,7 +289,8 @@
 {{-- flat picker --}}
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
-
+{{-- select2 --}}
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 
 
@@ -584,6 +619,12 @@ function updateMap(mapId, locations, filter = false) {
         });
     }
 }
+
+    $(document).ready(function() {
+        $('.select2').select2({
+             theme: 'bootstrap5'
+        });
+    });
 
 
 </script>

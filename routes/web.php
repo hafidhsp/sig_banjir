@@ -14,6 +14,7 @@ use App\Livewire\User\Index as UserIndex;
 use App\Livewire\Kecamatan\Index as KecamatanIndex;
 use App\Livewire\Penanggulangan\Index as PenanggulanganIndex;
 use App\Livewire\LaporanBanjir\IndexLaporanBanjir as LaporanBanjirIndex;
+use App\Livewire\Penanganan\IndexPenanganan as PenangananIndex;
 
 /*
 |--------------------------------------------------------------------------
@@ -52,6 +53,7 @@ Route::get('/user',UserIndex::class)->name('user')->middleware(['IsLogin','IsAdm
 Route::get('/kecamatan',KecamatanIndex::class)->name('kecamatan')->middleware(['IsLogin','IsAdmin']);
 Route::get('/data-penanggulangan',PenanggulanganIndex::class)->name('penanggulangan')->middleware(['IsLogin','IsAdmin']);
 Route::get('/data-laporan-banjir',LaporanBanjirIndex::class)->name('data-laporan-banjir')->middleware(['IsLogin','IsAdmin']);
+Route::get('/data-penanganan',PenangananIndex::class)->name('data-penanganan')->middleware(['IsLogin','IsAdmin']);
 
 
 //lokasi banjir

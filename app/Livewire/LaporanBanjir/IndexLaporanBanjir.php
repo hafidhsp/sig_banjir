@@ -73,7 +73,9 @@ class IndexLaporanBanjir extends Component
            $id_jalan_daerah_banjir_penanganan_info,
            $hide_id_jalan_daerah_banjir,
            $data_penanganan,
-           $status_penanganan
+           $status_penanganan,
+           $idbuktiGambar,
+           $buktiGambar
            ;
 
     protected $listeners = [
@@ -83,7 +85,9 @@ class IndexLaporanBanjir extends Component
         'gantiStatusJalanDaerahBanjir',
         'ShowValidationStatusPenanganan',
         'ActionUbahStatusPenanganan',
-        'hapusPenanganan'];
+        'hapusPenanganan',
+        'hapusBuktiPenanganan'
+        ];
 
     public function mount(){
         $this->today = Carbon::now()->translatedFormat('d F Y');
@@ -135,11 +139,14 @@ class IndexLaporanBanjir extends Component
         $this->hide_id_jalan_daerah_banjir = '';
         $this->data_penanganan = [];
         $this->status_penanganan = '';
+        $this->buktiGambar = '';
+        $this->idbuktiGambar = '';
     }
 
 
     public function refresh_inputan(){
         $this->mount();
+        $this->dispatch('hide-canvas-all');
         $this->dispatch('render-table');
     }
 
@@ -179,6 +186,7 @@ class IndexLaporanBanjir extends Component
         $this->anggaran = '';
         $this->deskripsi = '';
         $this->bukti_foto_penanganan = '';
+        $this->bukti_foto_penanganan_info = '';
         $this->id_jalan_daerah_banjir_penanganan_info = '';
         $this->hide_id_jalan_daerah_banjir = '';
         $this->status_penanganan = '';
@@ -540,8 +548,8 @@ class IndexLaporanBanjir extends Component
         $this->label_jenis_banjir = $jenis_banjir;
         $this->label_tinggi_banjir = $data__jalan_daerah_banjir->tinggi_banjir;
         $this->label_waktu_mulai = $data__jalan_daerah_banjir->waktu_mulai
-                                    ? $data__jalan_daerah_banjir->waktu_mulai->translatedFormat('d F Y') .
-                                    ($data__jalan_daerah_banjir->waktu_selesai ? ' - ' . $data__jalan_daerah_banjir->waktu_selesai->translatedFormat('d F Y') : '')
+                                    ? $data__jalan_daerah_banjir->waktu_mulai->translatedFormat('d F Y H:i:s') .
+                                    ($data__jalan_daerah_banjir->waktu_selesai ? ' - ' . $data__jalan_daerah_banjir->waktu_selesai->translatedFormat('d F Y H:i:s') : '')
                                     : '-';
         $this->label_konfirmasi_st = $data__jalan_daerah_banjir->konfirmasi_st;
         $this->hide_id_jalan_daerah_banjir = $data__jalan_daerah_banjir->id_jalan_daerah_banjir;
@@ -684,6 +692,29 @@ class IndexLaporanBanjir extends Component
             if(!empty($this->waktu_selesai)){
                 $data['waktu_selesai']=$this->waktu_selesai;
             }
+        if($this->id_penanganan != ''){
+            $data_penanganan = M_penanganan::where('id_penanganan',$this->id_penanganan)->first();
+            if (!empty($this->bukti_foto_penanganan)) {
+                $existingFiles = [];
+                if($data_penanganan->bukti_penanganan !=''){
+                    $existingFiles = explode('#', $data_penanganan->bukti_penanganan ?? '');
+                }
+
+                $newFileNames = [];
+                foreach ($this->bukti_foto_penanganan as $file) {
+                    $filePath = $file->storeAs(
+                        'penanganan',
+                        md5(uniqid() . time()) . '.' . $file->getClientOriginalExtension(),
+                        'asset'
+                    );
+                    $newFileNames[] = basename($filePath);
+                }
+                $allFileNames = array_merge($existingFiles, $newFileNames);
+                $data['bukti_penanganan'] = !empty($allFileNames) ? implode('#', $allFileNames) : '';
+            }
+            // dd($data['bukti_penanganan']);
+            $data_penanganan->update($data);
+        }else{
             if (!empty($this->bukti_foto_penanganan)) {
                 $fileNames = [];
                 foreach ($this->bukti_foto_penanganan as $file) {
@@ -696,10 +727,6 @@ class IndexLaporanBanjir extends Component
                 }
                 $data['bukti_penanganan'] = implode('#', $fileNames);
             }
-        if($this->id_penanganan != ''){
-            $data_penanganan = M_penanganan::where('id_penanganan',$this->id_penanganan)->first();
-            $data_penanganan->update($data);
-        }else{
             // dd($data);
             M_penanganan::insert($data);
             // $this->mount();
@@ -707,6 +734,7 @@ class IndexLaporanBanjir extends Component
         }
         $this->dispatch('open-notif-success-canvas-form');
         $this->dispatch('render-table');
+        $this->refresh_canvas(false);
     }
 
     public function ShowValidationStatusPenanganan($id_penanganan){
@@ -718,6 +746,7 @@ class IndexLaporanBanjir extends Component
         ];
         $this->dispatch('open-modal-validation-ubah-status-penanganan',$data);
     }
+
     public function ActionUbahStatusPenanganan($id_penanganan,$status_penanganan){
         $penanganan = M_penanganan::where('id_penanganan',$id_penanganan)
                     ->first();
@@ -750,5 +779,38 @@ class IndexLaporanBanjir extends Component
         $this->deskripsi = $detailPenanganan->deskripsi_penanganan;
         $this->title_modal = 'Ubah';
         $this->dispatch('open-modal-form-penanganan');
+    }
+
+    public function showModalBuktiPenanganan($id_penanganan){
+        $data_penanganan = M_penanganan::where('id_penanganan',$id_penanganan)->first();
+            if (!empty($data_penanganan->bukti_penanganan)) {
+                $this->buktiGambar = explode('#', $data_penanganan->bukti_penanganan ?? '');
+                $this->idbuktiGambar = $id_penanganan;
+            }
+        $this->dispatch('open-modal-bukti-penanganan');
+    }
+
+    public function show_delete_bukti_penanganan($id_penanganan,$namaFile){
+         $this->dispatch('open-modal-validation-hapus-gambar-penanganan',['id_penanganan'=>$id_penanganan,'namaFile'=>$namaFile]);
+    }
+
+    public function hapusBuktiPenanganan($id_penanganan,$namaFile){
+        // dd($id_penanganan);
+        $data_penanganan = M_penanganan::where('id_penanganan',$id_penanganan)->first();
+        $listGambar = explode('#', $data_penanganan->bukti_penanganan ?? '');
+        $index = array_search($namaFile, $listGambar);
+        if ($index !== false) {
+            unset($listGambar[$index]);
+
+            $filePath = 'penanganan/'.$namaFile;
+            if (Storage::disk('asset')->exists($filePath)) {
+                Storage::disk('asset')->delete($filePath);
+            }
+            $updatedList = implode('#', $listGambar);
+            $data_penanganan->update(['bukti_penanganan' => $updatedList]);
+
+            $this->dispatch('open-notif-success-delete');
+            $this->dispatch('hide-canvas-all');
+        }
     }
 }

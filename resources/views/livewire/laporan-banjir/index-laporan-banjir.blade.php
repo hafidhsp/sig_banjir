@@ -707,6 +707,9 @@
                                                                 wire:click="showFormEditPenanganan({{ $item->id_penanganan }})">
                                                                 <i class="bi bi-pencil-square"></i> Ubah
                                                             </button>
+                                                            <button type="button" class="dropdown-item text-info" wire:click="showModalBuktiPenanganan({{ $item->id_penanganan }})">
+                                                                <i class="bi bi-camera"></i> Lihat Bukti
+                                                            </button>
                                                         </div>
                                                     </div>
                                                 </td>
@@ -887,6 +890,71 @@
                     <button type="submit" class="btn btn-primary">Simpan</button>
                 </div>
                 </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Bukti Penanganan -->
+    <div class="modal fade"  tabindex="-1" aria-hidden="true" id="modalBuktiPenanganan" data-bs-backdrop="static" data-bs-backdrop="static" wire:ignore.self>
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title" id="staticBackdropLabel" style="font-size: 20px"></h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" wire:click="refresh_inputan()"></button>
+                </div>
+                <div class="modal-body bg-secondary bg-gradient  bg-opacity-50">
+                    <div class="container">
+                        <div class="row d-flex align-items-center">
+                            <!-- Previous Button -->
+                            <div class="col-auto">
+                                <button class="btn btn-outline-dark" data-bs-target="#carouselExample1" data-bs-slide="prev">
+                                    <i class="fa fa-chevron-left"></i>
+                                </button>
+                            </div>
+
+                            <!-- Carousel Images -->
+                            <div class="col text-center">
+                                <div id="carouselExample1" class="carousel slide" data-bs-ride="carousel">
+                                    <div class="carousel-inner">
+                                        @if (empty($buktiGambar))
+                                        <div class="carousel-item active">
+                                            <span>Tidak ada foto pada data ini.</span>
+                                        </div>
+                                        @else
+                                        @php
+                                            $no_gbr=1
+                                        @endphp
+                                            @foreach ($buktiGambar as $bukti)
+                                                    <div class="carousel-item {{ ($no_gbr==1)?'active':'' }}">
+                                                        <a href="{{ asset('storage/penanganan/'.$bukti) }}" data-lightbox="bukti-penanganan">
+                                                            <img src="{{ asset('storage/penanganan/'.$bukti) }}" class="d-block mx-auto w-50 shadow-lg" alt="Bukti {{ $no_gbr }}">
+                                                        </a>
+                                                        <br>
+                                                        <button class="btn btn-danger" type="button" wire:click="show_delete_bukti_penanganan({{ "'".$idbuktiGambar."'".","."'".$bukti."'" }})">
+                                                            <i class="fa fa-trash"></i>
+                                                        </button>
+                                                    </div>
+                                                    @php $no_gbr++; @endphp
+                                            @endforeach
+                                        @endif
+                                        <!-- Add more carousel items here -->
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Next Button -->
+                            <div class="col-auto">
+                                <button class="btn btn-outline-dark" data-bs-target="#carouselExample1" data-bs-slide="next">
+                                    <i class="fa fa-chevron-right"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close" id="btn_close_bukti" wire:click="refresh_inputan()">Tutup</button>
+                </div>
             </div>
         </div>
     </div>
@@ -1301,6 +1369,46 @@
                     }
                 });
             });
+            window.addEventListener('open-modal-validation-hapus-gambar-penanganan', function(event) {
+                var id_penanganan = event.__livewire.params[0].id_penanganan;
+                var namaFile = event.__livewire.params[0].namaFile;
+
+                Swal.fire({
+                    title: "Apakah ingin menghapus gambar ini?",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Ya !",
+                    cancelButtonText: "Tidak"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Livewire.dispatch('hapusBuktiPenanganan', {
+                            id_penanganan: id_penanganan,
+                            namaFile: namaFile
+                        })
+                        Swal.fire({
+                            title: "Berhasil Dihapus",
+                            icon: "success",
+                            confirmButtonText: "OK"
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                setTimeout(function () {
+                                    $('#table_penanganan').load(window.location.href + ' #table_penanganan');
+                                    $('#btn_close_bukti').click();
+                                }, 300);
+                            }
+                        });
+                    } else {
+                        Swal.fire("Dibatalkan!", "", "error");
+                        setTimeout(function () {
+                            destroyDataTable('#table_penanganan');
+                            initializeDataTable('#table_penanganan');
+                            $('#table_penanganan').load(window.location.href + ' #table_penanganan');
+                        }, 100);
+                    }
+                });
+            });
 
             // Open Modal
             window.addEventListener('open-modal-form-daerah-banjir', function() {
@@ -1340,7 +1448,13 @@
                     offcanvas3.show();
                 }, 300);
             });
+            window.addEventListener('open-modal-bukti-penanganan', function() {
+                setTimeout(function () {
+                    $('#modalBuktiPenanganan').modal('show');
+                }, 500);
+            });
 
+            // UI Canvas
             window.addEventListener('render-canvas', function() {
                 setTimeout(function() {
                     offcanvas.hide();
