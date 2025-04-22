@@ -11,7 +11,7 @@
     <!-- base:css -->
     <link rel="stylesheet" href="{{ asset('vendors/mdi/css/materialdesignicons.min.css') }}">
     <link rel="stylesheet" href="{{ asset('vendors/css/vendor.bundle.base.css') }}">
-    <link href="{{ asset('cdn/css/bootstrap.min.css') }}" rel="stylesheet">
+    {{-- <link href="{{ asset('cdn/css/bootstrap.min.css') }}" rel="stylesheet"> --}}
     {{-- <link href="{{ asset('scss/custom.scss') }}" rel="stylesheet"> --}}
 
     <!-- endinject -->
@@ -296,11 +296,14 @@
 
 <script>
 function initializeDataTable(tableSelector) {
+    // $(tableSelector).DataTable().ajax.reload();
     $(tableSelector).DataTable({
         ordering: true,
         pageLength: 10,
         info: true,
         lengthChange: true,
+        processing: true,
+        serverSide: false,
         language: {
             lengthMenu: "_MENU_ Data dimuat",
             info: "Menampilkan _START_ hingga _END_ dari total _TOTAL_ data"
@@ -309,12 +312,17 @@ function initializeDataTable(tableSelector) {
             topEnd: 'search'
         },
     });
+    // $(tableSelector).DataTable().ajax.reload();
 }
 
 function destroyDataTable(tableSelector) {
     if ($.fn.DataTable.isDataTable(tableSelector)) {
         $(tableSelector).DataTable().destroy();
         $(tableSelector).empty();
+            // Remove all DataTable-related elements like pagination, etc.
+        // $(tableSelector).children('thead').remove();
+        // $(tableSelector).children('tfoot').remove();
+        // $(tableSelector).children('tbody').empty();
     }
 }
 
@@ -381,24 +389,6 @@ function destroyDataTable(tableSelector) {
 // }
 
 
-var defaultLatitude = -7.712896;
-var defaultLongitude = 109.028118;
-var maps = {}; // Objek untuk menyimpan instance peta berdasarkan ID
-var currentLayers = {}; // Objek untuk menyimpan layer per ID
-
-function setBaseView(mapId, latitude, longitude, zoomLevel = 13) {
-    var baseLatitude = latitude ?? defaultLatitude;
-    var baseLongitude = longitude ?? defaultLongitude;
-
-    if (!maps[mapId]) {
-        maps[mapId] = L.map(mapId).setView([baseLatitude, baseLongitude], zoomLevel);
-        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; Sistem Informasi Geografis Kabupaten Cilacap'
-        }).addTo(maps[mapId]);
-    } else {
-        maps[mapId].setView([baseLatitude, baseLongitude], zoomLevel);
-    }
-}
 
 // function addLocationsToMap(locations, categoryFilter) {
 //     var layerGroup = L.layerGroup();
@@ -442,7 +432,25 @@ function setBaseView(mapId, latitude, longitude, zoomLevel = 13) {
 //     currentLayers[mapId].addTo(maps[mapId]);
 // }
 
-function addLocationsToMap(locations, categoryFilter) {
+var defaultLatitude = -7.712896;
+var defaultLongitude = 109.028118;
+var maps = {};
+var currentLayers = {};
+
+function setBaseView(mapId, latitude, longitude, zoomLevel = 13) {
+    var baseLatitude = latitude ?? defaultLatitude;
+    var baseLongitude = longitude ?? defaultLongitude;
+
+    if (!maps[mapId]) {
+        maps[mapId] = L.map(mapId).setView([baseLatitude, baseLongitude], zoomLevel);
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; Sistem Informasi Geografis Kabupaten Cilacap'
+        }).addTo(maps[mapId]);
+    } else {
+        maps[mapId].setView([baseLatitude, baseLongitude], zoomLevel);
+    }
+}
+function addLocationsToMap1(locations, categoryFilter) {
     var greenLayer = L.layerGroup();
     var yellowLayer = L.layerGroup();
     var redLayer = L.layerGroup();
@@ -537,9 +545,13 @@ function addLocationsToMap(locations) {
         var circle = L.circle([location.lat, location.lng], {
             color: location.color,
             fillColor: location.color,
-            fillOpacity: 0.2,
-            radius: location.radius
+            fillOpacity: 0.5,
+            radius: Number(location.radius)??0,
+            interactive: true,  // Memastikan circle bisa di-interact
+            zIndex: 1000
+            // radius: location.radius
         });
+        console.log(circle);
 
         if (visibleLayer[location.color] && visibleIcon[location.icon]) {
             if (location.color === 'green') {

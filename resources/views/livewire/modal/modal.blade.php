@@ -1,6 +1,6 @@
 <div>
      <!-- Modal User -->
-    <div class="modal fade" id="modalUser"  tabindex="-1" aria-hidden="true" data-bs-backdrop="static" wire:ignore.self>
+    <div class="modal fade" id="modalUser"  tabindex="-1" aria-hidden="false" data-bs-backdrop="static" wire:ignore>
         <div class="modal-dialog">
                     <div class="modal-content">
                     <div class="modal-header">
@@ -210,14 +210,15 @@
 
         document.addEventListener('DOMContentLoaded', function() {
             window.addEventListener('open-notif-success-profil', function() {
-            $('#nama_pengguna').load(window.location.href + ' #nama_pengguna');
-            setTimeout(function () {
-                $('#closeModal').click();
-            }, 100);
-            setTimeout(function () {
+                $('#nama_pengguna').load(window.location.href + ' #nama_pengguna');
+                setTimeout(function () {
+                    $('#closeModal').click();
                     alertify.success('Berhasil Disimpan');
-                }, 500);
-            });
+                }, 100);
+                setTimeout(function () {
+                    window.location.reload();
+                    }, 300);
+                });
         });
 
 

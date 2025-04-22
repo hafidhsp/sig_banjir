@@ -998,7 +998,7 @@
             time_24hr: true,
             dateFormat: "Y-m-d H:i",
             onChange: function(selectedDates, dateStr) {
-                @this.set('waktu_mulai', dateStr);
+                @this.set('waktu_selesai', dateStr);
             }
         });
 
