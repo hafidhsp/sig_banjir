@@ -124,8 +124,13 @@ class Index extends Component
         $data_banjir = M_jalan_daerah_banjir::
                                   leftJoin('tb_daerah_banjir','tb_jalan_daerah_banjir.id_daerah_banjir','=','tb_daerah_banjir.id_daerah_banjir')
                                 ->leftJoin('tb_kecamatan','tb_daerah_banjir.id_kecamatan','=','tb_kecamatan.id_kecamatan')
-                                ->whereBetween('tb_jalan_daerah_banjir.waktu_mulai', [$this->tanggal_awal, $this->tanggal_akhir])
+                                // ->whereBetween('tb_jalan_daerah_banjir.waktu_mulai', [$this->tanggal_awal.'00:00:00', $this->tanggal_akhir.'24:59:59'])
+                                ->whereBetween('tb_jalan_daerah_banjir.waktu_mulai', [
+                                    Carbon::parse($this->tanggal_awal)->startOfDay(),  // Memastikan tanggal_awal adalah mulai hari (00:00:00)
+                                    Carbon::parse($this->tanggal_akhir)->endOfDay()   // Memastikan tanggal_akhir adalah akhir hari (23:59:59)
+                                ])
                                 ->orderBy('tb_jalan_daerah_banjir.created_at', 'Desc')
+                                ->where('tb_jalan_daerah_banjir.konfirmasi_st',1)
                                 ->get();
         return $data_banjir;
     }
@@ -135,10 +140,16 @@ class Index extends Component
         $this->mount();
         $this->dispatch('hide-canvas-all');
         $this->dispatch('render-table');
+        $this->dispatch('refresh-table');
     }
-    public function refresh_canvas(){
-        $this->dispatch('hide-canvas-detail');
+    public function refresh_canvas($hide_all = false){
+        // if($hide_all) {
+            $this->dispatch('hide-canvas-all');
+        // }else{
+        //     $this->dispatch('hide-canvas-detail');
+        // }
         $this->dispatch('render-table');
+        $this->dispatch('refresh-table');
     }
 
 
@@ -260,4 +271,19 @@ class Index extends Component
         ];
         $this->dispatch('render-map-all',$data);
     }
+
+    public function showDetailLokasiMapsAllBase(){
+        $detailDaerahBanjir = [];
+        $data_kecamatan = [];
+            $detailDaerahBanjir = M_daerah_banjir::select('a.id_daerah_banjir','a.pemberi_informasi','b.*')
+                                    ->from('tb_daerah_banjir as a')
+                                    ->leftJoin('tb_jalan_daerah_banjir as b','a.id_daerah_banjir','=','b.id_daerah_banjir')
+                                    ->where('b.konfirmasi_st',1)
+                                    ->get();
+        $data = [
+            'jalan_daerah_banjir' => $detailDaerahBanjir,
+        ];
+        $this->dispatch('render-map-all-base',$data);
+    }
+
 }

@@ -253,6 +253,7 @@ class IndexLaporanBanjir extends Component
                 'nama_pemberi_informasi.regex' => 'Nama pemberi informasi berisi huruf.',
             ]);
             $data = [
+                'id_user' => Auth::user()->id,
                 'id_kecamatan' => $this->kecamatan_daerah_banjir,
                 'pemberi_informasi' => $this->nama_pemberi_informasi,
                 'batal_st' => 0,

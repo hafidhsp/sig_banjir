@@ -1,5 +1,5 @@
 <div>
-        <div class="content-wrapper">
+    <div class="content-wrapper">
         <div class="col-lg-12 grid-margin stretch-card">
             <div class="card">
                 <div class="card-header row">
@@ -37,7 +37,7 @@
                         <div class="col-md-2">
                             <div class="d-flex justify-content-center">
                                 <button type="button" class="btn btn-outline-success btn-icon-text mt-3 form-control"
-                                    onclick="showModal()">
+                                    wire:click="showDetailLokasiMapsAllBase()">
                                     <i class="mdi mdi-map-marker-multiple"></i>
                                     Peta Banjir
                                 </button>
@@ -252,7 +252,7 @@
     </div>
 
     <!-- Offcanvas Detail -->
-    <div class="offcanvas offcanvas-start h-100 w-50" tabindex="-1" id="canvasDetailLaporanJalanBanjir"
+    <div class="offcanvas offcanvas-start h-100" tabindex="-1" id="canvasDetailLaporanJalanBanjir"
         aria-labelledby="offcanvasRightLabel" wire:ignore.self>
         <div class="offcanvas-header">
             <div>
@@ -472,6 +472,24 @@
         </div>
     </div>
 
+    <!-- Modal Lokasi -->
+    <div class="modal fade"  tabindex="-1" aria-hidden="true" id="modalLokasiBanjir" data-bs-backdrop="static" data-bs-backdrop="static" wire:ignore.self>
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title" id="staticBackdropLabel" style="font-size: 20px">Titik Lokasi Banjir</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" wire:click="refresh_inputan()"></button>
+                </div>
+                <div class="modal-body" wire:ignore.self>
+                    <div id="map_banjir"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close" id="btn_close" wire:click="refresh_inputan()">Tutup</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 
 
@@ -559,10 +577,13 @@
             });
             window.addEventListener('open-canvas-detail-jalan-daerah-banjir', function() {
                 setTimeout(function() {
+                    $('#canvasDetailLaporanJalanBanjir').removeClass('w-50')
+                    $('#canvasDetailLaporanJalanBanjir').removeClass('w-75')
                     offcanvas3.hide();
 
                 }, 100);
                 setTimeout(function() {
+                    $('#canvasDetailLaporanJalanBanjir').addClass('w-50')
                     offcanvas3.show();
                 }, 300);
             });
@@ -613,18 +634,59 @@
                 setTimeout(function() {
                     offcanvas.hide();
                     offcanvas3.hide();
-                    $('#head_1').addClass('d-none')
-                    $('#p_1').addClass('d-none')
-                    $('#btn-display').addClass('d-none')
-                    $('#sec-1').addClass('d-none')
+                    $('#head_1').addClass('d-none');
+                    $('#p_1').addClass('d-none');
+                    $('#btn-display').addClass('d-none');
+                    $('#sec-1').addClass('d-none');
+                    $('#canvasDetailLaporanJalanBanjir').removeClass('w-50')
+                    $('#canvasDetailLaporanJalanBanjir').removeClass('w-75')
                 }, 100);
                 setTimeout(function() {
+                    $('#canvasDetailLaporanJalanBanjir').addClass('w-50')
                     offcanvas.show();
                     offcanvas3.show();
                 }, 300);
                 setTimeout(function() {
                     setBaseView("map", base.la_atitude, base.long_atitude, 13.2);
                     updateMap("map", locations, false);
+                    updateMap("map", locations, true);
+                }, 500);
+            });
+            window.addEventListener('render-map-all-base', function(event) {
+                var detail = event.detail[0];
+                var base = detail.baseView;
+                var jalanAll = detail.jalan_daerah_banjir;
+                var locations = jalanAll.map(item => ({
+                    lat: item.la_atitude,
+                    lng: item.long_atitude,
+                    name: "Jl. " + item.nama_jalan +
+                        ", No." + item.nomor_jalan +
+                        "<br> Panjang Jalan: " + item.panjang_jalan +
+                        "<br> Tinggi banjir: " + item.tinggi_banjir,
+                    category: item.icon,
+                    radius: item.radius,
+                    color: item.warna_radius,
+                    icon: item.icon
+                }));
+                setTimeout(function() {
+                    offcanvas.hide();
+                    offcanvas3.hide();
+                    $('#head_1').addClass('d-none')
+                    $('#p_1').addClass('d-none')
+                    $('#btn-display').addClass('d-none')
+                    $('#sec-1').addClass('d-none')
+                    $('#canvasDetailLaporanJalanBanjir').removeClass('w-50')
+                    $('#canvasDetailLaporanJalanBanjir').removeClass('w-75')
+                }, 100);
+                setTimeout(function() {
+                    $('#canvasDetailLaporanJalanBanjir').addClass('w-75')
+                    offcanvas3.show();
+                    // $('#modalLokasiBanjir').modal('show');
+                }, 300);
+                // console.log(document.getElementById("map_banjir"));
+                // console.log(locations);
+                setTimeout(function() {
+                    setBaseView("map", null, null, 13.2);
                     updateMap("map", locations, true);
                 }, 500);
             });
@@ -654,6 +716,12 @@
                 btn_carousel.classList.add("active");
             }
         }
+
+
+        function showModalLokasi(){
+            $('#modalLokasiBanjir').modal('show');
+        }
+
     </script>
 
 @endpush

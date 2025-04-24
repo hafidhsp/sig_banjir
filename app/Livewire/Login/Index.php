@@ -39,7 +39,7 @@ class Index extends Component
         ];
 
         if (Auth::attempt($login)) {
-            return redirect('dashboard');
+            return redirect('/dashboard');
         }else{
             session()->flash('error', 'Email atau password salah.');
         }
