@@ -54,10 +54,16 @@
                 <li class="nav-item sidebar-category">
                     <div class="border-top"></div>
                 </li>
-                <li class="nav-item ">
+                <li class="nav-item">
                     <a class="nav-link" href="{{ url('data-banjir') }}">
                         <i class="bi bi-water menu-icon"></i>
                         <span class="menu-title">Data Banjir</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " href="{{ url('laporkan-banjir') }}">
+                        <i class="fa-solid fa-house-flood-water-circle-arrow-right menu-icon"></i>
+                        <span class="menu-title">Laporkan Banjir</span>
                     </a>
                 </li>
             @endif

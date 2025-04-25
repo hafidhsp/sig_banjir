@@ -18,6 +18,7 @@ use App\Livewire\LaporanBanjir\IndexLaporanBanjir as LaporanBanjirIndex;
 use App\Livewire\Penanganan\IndexPenanganan as PenangananIndex;
 // IsUser
 use App\Livewire\User\DataBanjir\Index as UserDataBanjirIndex;
+use App\Livewire\User\LaporkanDataBanjir\Index as UserLaporkanDataBanjirIndex;
 
 /*
 |--------------------------------------------------------------------------
@@ -59,6 +60,7 @@ Route::get('/data-laporan-banjir',LaporanBanjirIndex::class)->name('data-laporan
 Route::get('/data-penanganan',PenangananIndex::class)->name('data-penanganan')->middleware(['IsLogin','IsAdmin']);
 //Role User
 Route::get('/data-banjir',UserDataBanjirIndex::class)->name('data-banjir')->middleware(['IsLogin','IsUser']);
+Route::get('/laporkan-banjir',UserLaporkanDataBanjirIndex::class)->name('laporkan-banjir')->middleware(['IsLogin','IsUser']);
 
 
 //lokasi banjir
