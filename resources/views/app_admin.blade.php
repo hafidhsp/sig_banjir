@@ -551,7 +551,7 @@ function addLocationsToMap(locations) {
             zIndex: 1000
             // radius: location.radius
         });
-        console.log(circle);
+        // console.log(circle);
 
         if (visibleLayer[location.color] && visibleIcon[location.icon]) {
             if (location.color === 'green') {

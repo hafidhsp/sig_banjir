@@ -16,16 +16,17 @@
                 <li class="nav-item sidebar-category">
                     <div class="border-top"></div>
                 </li>
-                <li class="nav-item">
+                {{-- <li class="nav-item">
                     <a class="nav-link" href="{{ url('user') }}">
                         <i class="mdi mdi-account menu-icon"></i>
                         <span class="menu-title">Data User</span>
                     </a>
-                </li>
+                </li> --}}
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ url('kecamatan') }}">
-                        <i class="bi bi-building-fill-exclamation menu-icon"></i>
-                        <span class="menu-title">Data Kecamatan</span>
+                    <a class="nav-link" href="{{ url('master-data') }}">
+                        <i class="bi bi-archive menu-icon"></i>
+                        {{-- <i class="bi bi-building-fill-exclamation menu-icon"></i> --}}
+                        <span class="">Master Data</span>
                     </a>
                 </li>
                 <li class="nav-item sidebar-category">

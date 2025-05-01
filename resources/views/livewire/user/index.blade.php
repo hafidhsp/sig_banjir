@@ -1,6 +1,6 @@
 <div>
     <div class="content-wrapper">
-         <div class="col-lg-12 grid-margin stretch-card">
+        <div class="col-lg-12 grid-margin stretch-card">
             <div class="card">
                 <div class="card-header row">
                     <div class="col-md-6">
@@ -72,7 +72,7 @@
             </div>
         </div>
     </div>
-         <!-- Modal User -->
+    <!-- Modal User -->
     <div class="modal fade"  tabindex="-1" aria-hidden="true" id="modalFormUser" data-bs-backdrop="static" aria-hidden="true" wire:ignore.self>
         <div class="modal-dialog">
             <div class="modal-content">

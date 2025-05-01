@@ -54,7 +54,8 @@ Route::get('/dashboard',DashboardIndex::class)->name('dashboard')->middleware(['
 
 //Role Admin
 Route::get('/user',UserIndex::class)->name('user')->middleware(['IsLogin','IsAdmin']);
-Route::get('/kecamatan',KecamatanIndex::class)->name('kecamatan')->middleware(['IsLogin','IsAdmin']);
+Route::get('/master-data',KecamatanIndex::class)->name('master-data')->middleware(['IsLogin','IsAdmin']);
+// Route::get('/kecamatan',KecamatanIndex::class)->name('kecamatan')->middleware(['IsLogin','IsAdmin']);
 Route::get('/data-penanggulangan',PenanggulanganIndex::class)->name('penanggulangan')->middleware(['IsLogin','IsAdmin']);
 Route::get('/data-laporan-banjir',LaporanBanjirIndex::class)->name('data-laporan-banjir')->middleware(['IsLogin','IsAdmin']);
 Route::get('/data-penanganan',PenangananIndex::class)->name('data-penanganan')->middleware(['IsLogin','IsAdmin']);
