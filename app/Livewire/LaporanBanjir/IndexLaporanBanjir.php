@@ -75,6 +75,7 @@ class IndexLaporanBanjir extends Component
            $data_penanganan,
            $status_penanganan,
            $idbuktiGambar,
+           $detailNamaKepala,
            $buktiGambar
            ;
 

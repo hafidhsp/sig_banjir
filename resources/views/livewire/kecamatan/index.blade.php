@@ -344,6 +344,7 @@
                             <option value="">-- Pilih --</option>
                             <option value="admin">Admin</option>
                             <option value="user">User</option>
+                            <option value="kepala">Kepala</option>
                         </select>
                         @error('role_user')
                             <label class="text-danger">{{ $message }}</label>

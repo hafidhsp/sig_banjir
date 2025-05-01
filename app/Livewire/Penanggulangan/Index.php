@@ -13,12 +13,35 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 
 class Index extends Component
 {
     use WithFileUploads;
 
-    public $today,$user,$id_penanggulangan,$nama_penanggulangan,$jenis_penanggulangan,$waktu_mulai,$waktu_selesai,$petugas,$kecamatan_penanggulangan,$anggaran_penanggulangan,$deskripsi_penanggulangan,$bukti_penanggulangan,$bukti_penanggulangan_info,$status_penanggulangan,$idbuktiGambar,$buktiGambar;
+    public  $today,
+            $user,
+            $id_penanggulangan,
+            $nama_penanggulangan,
+            $jenis_penanggulangan,
+            $waktu_mulai,
+            $waktu_selesai,
+            $petugas,
+            $kecamatan_penanggulangan,
+            $anggaran_penanggulangan,
+            $deskripsi_penanggulangan,
+            $bukti_penanggulangan,
+            $bukti_penanggulangan_info,
+            $status_penanggulangan,
+            $idbuktiGambar,
+            $penanggulangan_catatan_kepala,
+            $detailNamaKecamatan,
+            $detailNamaPenanggulangan,
+            $detailJenisPenanggulangan,
+            $detailCatatanPenanggulangan,
+            $detailNamaKepala,
+            $detailWaktu,
+            $buktiGambar;
 
     protected $listeners = ['hapusPenanggulangan','hapusBuktiPenanggulangan'];
 
@@ -40,6 +63,13 @@ class Index extends Component
         $this->status_penanggulangan = '';
         $this->buktiGambar = '';
         $this->idbuktiGambar = '';
+        $this->penanggulangan_catatan_kepala = '';
+        $this->detailNamaKecamatan = '';
+        $this->detailNamaPenanggulangan = '';
+        $this->detailJenisPenanggulangan = '';
+        $this->detailCatatanPenanggulangan = '';
+        $this->detailNamaKepala = '';
+        $this->detailWaktu = '';
         $this->resetValidation();
     }
 
@@ -56,7 +86,7 @@ class Index extends Component
         $today = $this->today;
         $title_modal = $this->title_modal;
         $title = 'Data Penanggulangan';
-        return view('livewire.penanggulangan.index',compact('data_penanggulangan','data_kecamatan','no','title_modal'))->extends('app_admin',compact('title','today','user'))->section('content');
+        return view('livewire.penanggulangan.index',compact('data_penanggulangan','data_kecamatan','no','title_modal','title'))->extends('app_admin',compact('title','today','user'))->section('content');
     }
 
     public function refresh_inputan(){
@@ -266,5 +296,22 @@ class Index extends Component
         $this->validate([
             'bukti_penanggulangan.*' => 'nullable|mimes:jpeg,jpg,png|max:2048',
         ]);
+    }
+
+    public function showDetailPenanggulanganBanjir($id_penanggulangan){
+        $detailPenanggulangan = M_penanggulangan::select('tb_penanggulangan.*','tb_kecamatan.nama_kecamatan','users.nama_lengkap')
+                                ->where('tb_penanggulangan.id_penanggulangan',$id_penanggulangan)
+                                ->leftJoin('tb_kecamatan','tb_kecamatan.id_kecamatan','=','tb_penanggulangan.id_kecamatan')
+                                ->leftJoin('users', DB::raw('CAST(users.id AS text)'), '=', second: DB::raw('CAST(tb_penanggulangan.penanggulangan_kepala_id AS text)'))
+                                ->first();
+        // dd($detailPenanggulangan);
+        $this->id_penanggulangan = $id_penanggulangan;
+        $this->detailNamaKecamatan = $detailPenanggulangan->nama_kecamatan;
+        $this->detailNamaPenanggulangan = $detailPenanggulangan->nama_penanggulangan;
+        $this->detailJenisPenanggulangan = $detailPenanggulangan->jenis_penanggulangan;
+        $this->detailNamaKepala = $detailPenanggulangan->users.$detailPenanggulangan->nama_lengkap;
+        $this->penanggulangan_catatan_kepala = $detailPenanggulangan->penanggulangan_catatan_kepala;
+        $this->detailWaktu = !empty($detailPenanggulangan->waktu_mulai)?$detailPenanggulangan->waktu_mulai->translatedformat('d F Y'):'-';
+        $this->dispatch('open-canvas-utama');
     }
 }

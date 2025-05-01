@@ -19,6 +19,9 @@ use App\Livewire\Penanganan\IndexPenanganan as PenangananIndex;
 // IsUser
 use App\Livewire\User\DataBanjir\Index as UserDataBanjirIndex;
 use App\Livewire\User\LaporkanDataBanjir\Index as UserLaporkanDataBanjirIndex;
+// IsKepala
+use App\Livewire\Kepala\InformasiBanjir\Index as KepalaInformasiBanjirIndex;
+use App\Livewire\Kepala\PenanggulanganBanjir\Index as KepalaPenanggulanganBanjirIndex;
 
 /*
 |--------------------------------------------------------------------------
@@ -62,7 +65,9 @@ Route::get('/data-penanganan',PenangananIndex::class)->name('data-penanganan')->
 //Role User
 Route::get('/data-banjir',UserDataBanjirIndex::class)->name('data-banjir')->middleware(['IsLogin','IsUser']);
 Route::get('/laporkan-banjir',UserLaporkanDataBanjirIndex::class)->name('laporkan-banjir')->middleware(['IsLogin','IsUser']);
-
+// Role Kepala
+Route::get('/informasi-banjir',KepalaInformasiBanjirIndex::class)->name('informasi-banjir')->middleware(['IsLogin','IsKepala']);
+Route::get('penanggulangan-banjir',KepalaPenanggulanganBanjirIndex::class)->name('penanggulangan-banjir')->middleware(['IsLogin','IsKepala']);
 
 //lokasi banjir
 Route::get('/formlokasibanjir',[lokasibanjirController::class, 'formlokasibanjir'])->name('formlokasibanjir');

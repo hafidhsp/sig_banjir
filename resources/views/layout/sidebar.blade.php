@@ -26,7 +26,7 @@
                     <a class="nav-link" href="{{ url('master-data') }}">
                         <i class="bi bi-archive menu-icon"></i>
                         {{-- <i class="bi bi-building-fill-exclamation menu-icon"></i> --}}
-                        <span class="">Master Data</span>
+                        <span class="menut-title">Master Data</span>
                     </a>
                 </li>
                 <li class="nav-item sidebar-category">
@@ -65,6 +65,23 @@
                     <a class="nav-link " href="{{ url('laporkan-banjir') }}">
                         <i class="fa-solid fa-house-flood-water-circle-arrow-right menu-icon"></i>
                         <span class="menu-title">Laporkan Banjir</span>
+                    </a>
+                </li>
+            @endif
+            @if ($user->role =='kepala')
+                <li class="nav-item sidebar-category">
+                    <div class="border-top"></div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url('informasi-banjir') }}">
+                        <i class="bi bi-water menu-icon"></i>
+                        <span class="menu-title">Informasi Banjir</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " href="{{ url('penanggulangan-banjir') }}">
+                        <i class="bi bi-house-gear-fill menu-icon"></i>
+                        <span class="menu-title">Penanggulangan Banjir</span>
                     </a>
                 </li>
             @endif

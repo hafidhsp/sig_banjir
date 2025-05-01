@@ -7,7 +7,7 @@
                     <div class="col-md-6">
                         <h2 >Data Penanggulangan</h2>
                         <p class="card-description">
-                            Dashboard /<code>Data Penanggulangan</code>
+                            Dashboard /<code>{{ $title }}</code>
                         </p>
                     </div>
                     <div class="col-md-6">
@@ -55,25 +55,25 @@
                                 <td class="text-center">
                                     {{ $no++ }}
                                 </td>
-                                <td>
+                                <td class="clickable-cell" wire:click="showDetailPenanggulanganBanjir({{ $penanggulangan->id_penanggulangan }})">
                                     {{ $penanggulangan->nama_kecamatan }}
                                 </td>
-                                <td>
+                                <td class="clickable-cell" wire:click="showDetailPenanggulanganBanjir({{ $penanggulangan->id_penanggulangan }})">
                                     {{ $penanggulangan->nama_penanggulangan }}
                                 </td>
-                                <td>
+                                <td class="clickable-cell" wire:click="showDetailPenanggulanganBanjir({{ $penanggulangan->id_penanggulangan }})">
                                     {{ $penanggulangan->jenis_penanggulangan }}
                                 </td>
-                                <td>
+                                <td class="clickable-cell" wire:click="showDetailPenanggulanganBanjir({{ $penanggulangan->id_penanggulangan }})">
                                     {{ $penanggulangan->waktu_mulai->translatedFormat('d F Y H:i:s') }}
                                     @if (!empty($penanggulangan->waktu_selesai))
                                         - {{ $penanggulangan->waktu_selesai->translatedFormat('d F Y H:i:s') }}
                                     @endif
                                 </td>
-                                <td>
+                                <td class="clickable-cell" wire:click="showDetailPenanggulanganBanjir({{ $penanggulangan->id_penanggulangan }})">
                                     {{ $penanggulangan->petugas }}
                                 </td>
-                                <td class="text-center
+                                <td class="text-center clickable-cell
                                     @if ($penanggulangan->status_penanggulangan == 0)
                                         bg-primary text-white
                                     @elseif($penanggulangan->status_penanggulangan == 1)
@@ -81,7 +81,7 @@
                                     @elseif($penanggulangan->status_penanggulangan == 2)
                                         bg-success text-white
                                     @endif
-                                ">
+                                " wire:click="showDetailPenanggulanganBanjir({{ $penanggulangan->id_penanggulangan }})">
                                 <b>
                                     @if ($penanggulangan->status_penanggulangan == 0)
                                         Terencana
@@ -114,7 +114,7 @@
 
     <!-- Modal Penanggulangan -->
     <div class="modal fade"  tabindex="-1" aria-hidden="true" id="modalFormPenanggulangan" data-bs-backdrop="static" data-bs-backdrop="static" wire:ignore.self>
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-xl">
             <div class="modal-content">
             <div class="modal-header">
                 <h1 class="modal-title" id="staticBackdropLabel" style="font-size: 20px">{{ $title_modal }} Data Penanggulangan</h1>
@@ -329,12 +329,101 @@
             </div>
         </div>
     </div>
+
+    <!-- Offcanvas -->
+    <div class="offcanvas offcanvas-end h-100 w-50" tabindex="-1" id="CanvasDetailPenanggulangan"
+        aria-labelledby="offcanvasRightLabel" aria-hidden="true" data-bs-backdrop="static" wire:ignore.self>
+        <div class="offcanvas-header">
+            <div class="d-flex justify-content-between">
+                <div class="align-items-start">
+                    <button type="button" id="button_detail_canvas" class="btn-close-custom-start text-reset"
+                        data-bs-dismiss="offcanvas" aria-label="Close" wire:click="refresh_inputan()">
+                        <i class="bi bi-arrow-right"></i>
+                    </button>
+                </div>
+                <div>
+                    <h3 id="offcanvasRightLabel"><b>Detail Penanggulangan</b></h3>
+                    <small class="text-muted fst-italic">{{ $detailWaktu ?? '-' }}</small>
+                </div>
+            </div>
+        </div>
+        <div class="offcanvas-body">
+            <p>
+                <table>
+                    <tr>
+                        <td class="fw-bold">Kecamatan</td>
+                        <td>&nbsp;&nbsp;:&nbsp;&nbsp;</td>
+                        <td >
+                            <span style="font-size: 0.9em">
+                                {{ $detailNamaKecamatan ?? '-' }}
+                            </span>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td class="fw-bold">Nama Penanggulangan</td>
+                        <td>&nbsp;&nbsp;:&nbsp;&nbsp;</td>
+                        <td >
+                            <span style="font-size: 0.9em">
+                                {{ $detailNamaPenanggulangan ?? '-' }}
+                            </span>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td class="fw-bold" width="30%">Jenis Penanggulangan</td>
+                        <td>&nbsp;&nbsp;:&nbsp;&nbsp;</td>
+                        <td >
+                            <span style="font-size: 0.9em">
+                                {{ $detailJenisPenanggulangan ?? '-' }}
+                            </span>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td class="fw-bold">Pemberi Catatan</td>
+                        <td>&nbsp;&nbsp;:&nbsp;&nbsp;</td>
+                        <td >
+                            <span style="font-size: 0.9em">
+                                {{ $detailNamaKepala ?? '-' }}
+                            </span>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td class="fw-bold align-top">
+                            Catatan
+                        </td>
+                        <td class="align-top">&nbsp;&nbsp;:&nbsp;&nbsp;</td>
+                        <td colspan="3" width="80%">
+                            <textarea class="form-control w-100 @error('penanggulangan_catatan_kepala') is-invalid @enderror" wire:model.defer="penanggulangan_catatan_kepala" rows="5" readonly>
+                            </textarea>
+                        </td>
+                    </tr>
+                </table>
+            </p>
+        </div>
+    </div>
 </div>
 
 
 @push('scripts')
 
 <script>
+
+    var offcanvasElement = document.getElementById('CanvasDetailPenanggulangan');
+    var offcanvas = new bootstrap.Offcanvas(offcanvasElement, {
+        backdrop: 'static',
+        keyboard: false
+    });
 
     flatpickr("#waktu_mulai", {
         enableTime: true,
@@ -509,6 +598,15 @@
                 }
             });
 
+        });
+
+        window.addEventListener('open-canvas-utama', function() {
+            setTimeout(function() {
+                offcanvas.hide();
+            }, 100);
+            setTimeout(function() {
+                offcanvas.show();
+            }, 300);
         });
     });
 

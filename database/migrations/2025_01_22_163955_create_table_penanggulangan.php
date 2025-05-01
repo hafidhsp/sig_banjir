@@ -24,6 +24,8 @@ return new class extends Migration
             $table->string('anggaran')->nullable();
             $table->text('deskripsi_penanggulangan')->nullable();
             $table->text('bukti_penanggulangan')->nullable();
+            $table->text('penanggulangan_catatan_kepala')->nullable();
+            $table->text('penanggulangan_kepala_id')->nullable();
             $table->timestamps();
         });
     }

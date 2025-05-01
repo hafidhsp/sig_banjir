@@ -27,5 +27,7 @@ class M_penanggulangan extends Model
         'anggaran',
         'deskripsi_penanggulangan',
         'bukti_penanggulangan',
+        'penanggulangan_catatan_kepala',
+        'penanggulangan_kepala_id',
     ];
 }

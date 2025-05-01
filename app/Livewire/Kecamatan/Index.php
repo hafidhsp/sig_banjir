@@ -51,7 +51,7 @@ class Index extends Component
         $data_user = User::orderBy('nama_lengkap', 'Asc')->get();
         $today = $this->today;
         $title_modal = $this->title_modal;
-        $title = 'Data Kecamatan dan User';
+        $title = 'Master Data';
         return view('livewire.kecamatan.index',compact('data_user','data_kecamatan','no','no_user','title_modal','title'))->extends('app_admin',compact('title','today','user'))->section('content');
     }
 
@@ -179,7 +179,7 @@ class Index extends Component
                     'id_user' => 'required|exists:users,id',
                     'email_user' => 'required|email',
                     'nama_lengkap_user' => 'required|regex:/^[a-zA-Z\s]+$/',
-                    'role_user' => 'required',
+                    'role_user' => 'required|in:admin,user,kepala',
                 ], [
                     'id_user.required' => 'Data masih kosong.',
                     'id_user.exist' => 'Data tidak ditemukan.',
@@ -203,7 +203,7 @@ class Index extends Component
                     'id_user' => 'required|exists:users,id',
                     'email_user' => 'required|email',
                     'nama_lengkap_user' => 'required|regex:/^[a-zA-Z\s]+$/',
-                    'role_user' => 'required',
+                    'role_user' => 'required|in:admin,user,kepala',
                     'password_user' => 'min:6',
                     'confirm_password_user' => 'same:password_user'
                 ], [
