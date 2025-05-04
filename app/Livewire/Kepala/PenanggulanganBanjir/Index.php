@@ -44,8 +44,8 @@ class Index extends Component
         $this->detailNamaKecamatan = '';
         $this->detailNamaPenanggulangan = '';
         $this->detailJenisPenanggulangan = '';
-        $this->detailWaktu = '';
         $this->detailCatatanPenanggulangan = '';
+        $this->detailWaktu = '';
         $this->resetValidation();
     }
 
