@@ -546,8 +546,9 @@
                 color: location.color,
                 fillColor: location.color,
                 fillOpacity: 0.5,
-                radius: Number(location.radius)??0,
-                interactive: true,  // Memastikan circle bisa di-interact
+                radius: location.radius??0,
+                // radius: Number(location.radius)??0,
+                interactive: true,
                 zIndex: 1000
                 // radius: location.radius
             });

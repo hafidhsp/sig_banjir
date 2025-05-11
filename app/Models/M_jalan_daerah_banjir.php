@@ -17,7 +17,7 @@ class M_jalan_daerah_banjir extends Model
         'waktu_selesai' => 'datetime',
     ];
     protected $fillable = [
-        'id_daerah_banjir',
+        // 'id_daerah_banjir',
         'nama_jalan',
         'nomor_jalan',
         'panjang_jalan',
@@ -32,5 +32,14 @@ class M_jalan_daerah_banjir extends Model
         'icon',
         'radius',
         'konfirmasi_st',
+        // Start Revisi Merge
+        'id_kecamatan',
+        'pemberi_informasi',
+        'batal_st',
+        // End Revisi Merge
+        // STart Revisi Catatan Kepala
+        'jalan_daerah_banjir_catatan_kepala',
+        'jalan_daerah_banjir_kepala_id',
+        // ENd Revisi Catatan Kepala
     ];
 }

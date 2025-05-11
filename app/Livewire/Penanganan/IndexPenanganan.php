@@ -87,17 +87,15 @@ class IndexPenanganan extends Component
         $query = M_penanganan::select(
                             'tb_penanganan.*',
                             'tb_jalan_daerah_banjir.*',
-                            'tb_daerah_banjir.pemberi_informasi',
                             'tb_kecamatan.nama_kecamatan',
                         )
                         ->leftJoin('tb_jalan_daerah_banjir', 'tb_jalan_daerah_banjir.id_jalan_daerah_banjir', '=', 'tb_penanganan.id_jalan_daerah_banjir')
-                        ->leftJoin('tb_daerah_banjir', 'tb_jalan_daerah_banjir.id_daerah_banjir', '=', 'tb_daerah_banjir.id_daerah_banjir')
-                        ->leftJoin('tb_kecamatan', 'tb_kecamatan.id_kecamatan', '=', 'tb_daerah_banjir.id_kecamatan')
+                        ->leftJoin('tb_kecamatan', 'tb_kecamatan.id_kecamatan', '=', 'tb_jalan_daerah_banjir.id_kecamatan')
                         ->orderBy('tb_penanganan.created_at', 'desc');
 
         // Jika ada nilai pada search, tambahkan filter berdasarkan kecamatan
         if ($this->search) {
-            $query->where('tb_daerah_banjir.id_kecamatan', 'like', '%'.$this->search.'%');
+            $query->where('tb_jalan_daerah_banjir.id_kecamatan', 'like', '%'.$this->search.'%');
         }
 
         $this->data_penanganan = !empty($query->get())?$query->get():[];

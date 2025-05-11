@@ -89,7 +89,7 @@ class Index extends Component
         $this->detailNamaKecamatan = $detailPenanggulangan->nama_kecamatan;
         $this->detailNamaPenanggulangan = $detailPenanggulangan->nama_penanggulangan;
         $this->detailJenisPenanggulangan = $detailPenanggulangan->jenis_penanggulangan;
-        $this->penanggulangan_catatan_kepala = $detailPenanggulangan->penanggulangan_catatan_kepala;
+        $this->penanggulangan_catatan_kepala = $detailPenanggulangan->penanggulangan_catatan_kepala??'-';
         $this->detailWaktu = !empty($detailPenanggulangan->waktu_mulai)?$detailPenanggulangan->waktu_mulai->translatedformat('d F Y'):'-';
         $this->dispatch('open-canvas-utama');
     }
