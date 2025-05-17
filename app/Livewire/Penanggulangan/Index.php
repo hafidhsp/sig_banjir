@@ -302,7 +302,7 @@ class Index extends Component
         $detailPenanggulangan = M_penanggulangan::select('tb_penanggulangan.*','tb_kecamatan.nama_kecamatan','users.nama_lengkap')
                                 ->where('tb_penanggulangan.id_penanggulangan',$id_penanggulangan)
                                 ->leftJoin('tb_kecamatan','tb_kecamatan.id_kecamatan','=','tb_penanggulangan.id_kecamatan')
-                                ->leftJoin('users', DB::raw('CAST(users.id AS text)'), '=', second: DB::raw('CAST(tb_penanggulangan.penanggulangan_kepala_id AS text)'))
+                                ->leftJoin('users', DB::raw('CAST(users.id AS CHAR)'), '=', second: DB::raw('CAST(tb_penanggulangan.penanggulangan_kepala_id AS CHAR)'))
                                 ->first();
         // dd($detailPenanggulangan);
         $this->id_penanggulangan = $id_penanggulangan;

@@ -454,10 +454,8 @@ class IndexLaporanBanjir extends Component
                 'warna_radius' => 'required',
 
                 // Start Revisi Merge
-                'kecamatan_daerah_banjir.required' => 'Kecamatan harus diisi.',
-                'kecamatan_daerah_banjir.exist' => 'Kecamatan tidak ditemukan.',
-                'nama_pemberi_informasi.required' => 'Nama pemberi informasi harus diisi.',
-                'nama_pemberi_informasi.regex' => 'Nama pemberi informasi berisi huruf.',
+                'kecamatan_daerah_banjir' => 'required|exists:tb_kecamatan,id_kecamatan',
+                'nama_pemberi_informasi' => 'required|regex:/^[a-zA-Z\s]+$/',
                 // End Revisi Merge
             ], [
                 'nama_jalan.required' => 'Nama Jalan harus diisi.',
@@ -585,7 +583,7 @@ class IndexLaporanBanjir extends Component
                                                             'users.nama_lengkap',
                                                         )
                                                         ->leftJoin('tb_kecamatan', 'tb_kecamatan.id_kecamatan', '=', 'tb_jalan_daerah_banjir.id_kecamatan')
-                                                        ->leftJoin('users', 'users.id', '=', DB::raw("CAST(tb_jalan_daerah_banjir.jalan_daerah_banjir_kepala_id AS BIGINT)"))
+                                                        ->leftJoin('users', 'users.id', '=', DB::raw("CAST(tb_jalan_daerah_banjir.jalan_daerah_banjir_kepala_id AS UNSIGNED)"))
                                                         ->where('tb_jalan_daerah_banjir.id_jalan_daerah_banjir', $id_jalan_daerah_banjir)
                                                         ->first();
         $data_kecamatan = M_daerah_banjir::from('tb_jalan_daerah_banjir as a')

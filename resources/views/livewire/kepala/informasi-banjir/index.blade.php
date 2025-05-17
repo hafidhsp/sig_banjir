@@ -593,11 +593,11 @@
                                                                 class="d-block mx-auto w-50 shadow-lg"
                                                                 alt="Bukti {{ $no_gbr }}">
                                                         </a>
-                                                        <br>
+                                                        {{-- <br>
                                                         <button class="btn btn-danger" type="button"
                                                             wire:click="show_delete_bukti_jalan_daerah_banjir({{ "'" . $idbuktiFoto . "'" . ',' . "'" . $bukti . "'" }})">
                                                             <i class="fa fa-trash"></i>
-                                                        </button>
+                                                        </button> --}}
                                                     </div>
                                                     @php $no_gbr++; @endphp
                                                 @endforeach
@@ -665,7 +665,9 @@
                                                 <td class="text-left">{{ $item->nama_penanganan }}</td>
                                                 <td class="text-center">{{ $item->waktu_mulai->translatedFormat('d F Y H:i:s').(!empty($item->waktu_selesai)?' - '.$item->waktu_selesai->translatedFormat('d F Y H:i:s'):'') }}</td>
                                                 <td class="text-center">
-                                                    <button type="button"  wire:click="ShowValidationStatusPenanganan({{ $item->id_penanganan }})" class="btn btn-sm @if($item->status_penanganan === 1) btn-primary @elseif($item->status_penanganan === 2) btn-success @else btn-secondary @endif
+                                                    <button type="button"
+                                                    {{-- wire:click="ShowValidationStatusPenanganan({{ $item->id_penanganan }})"  --}}
+                                                    class="btn btn-sm @if($item->status_penanganan === 1) btn-primary @elseif($item->status_penanganan === 2) btn-success @else btn-secondary @endif
                                                         " readonly>
                                                         @if ($item->status_penanganan === 1)
                                                             Proses
@@ -683,14 +685,14 @@
                                                             <i class="bi bi-hand-index-thumb"></i> Aksi
                                                         </button>
                                                         <div class="dropdown-menu" x-placement="top-start">
-                                                            <button type="button" class="dropdown-item text-danger"
+                                                            {{-- <button type="button" class="dropdown-item text-danger"
                                                                 wire:click="show_delete_penanganan({{ $item->id_penanganan }})">
                                                                 <i class="bi bi-trash3"></i> Hapus
                                                             </button>
                                                             <button type="button" class="dropdown-item text-primary"
                                                                 wire:click="showFormEditPenanganan({{ $item->id_penanganan }})">
                                                                 <i class="bi bi-pencil-square"></i> Ubah
-                                                            </button>
+                                                            </button> --}}
                                                             <button type="button" class="dropdown-item text-info" wire:click="showModalBuktiPenanganan({{ $item->id_penanganan }})">
                                                                 <i class="bi bi-camera"></i> Lihat Bukti
                                                             </button>
@@ -703,13 +705,13 @@
                                 </tbody>
 
                             </table>
-                            <div class="col text-end">
+                            {{-- <div class="col text-end">
                                 <button type="button" class="btn btn-primary btn-icon-text mt-3"
                                     onclick="showModalPenanganan()">
                                     <i class="mdi mdi-table-row-plus-before"></i>
                                     Tambah Penanganan
                                 </button>
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
                 </div>

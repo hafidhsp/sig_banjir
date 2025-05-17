@@ -208,7 +208,7 @@ class Index extends Component
                                                             'users.nama_lengkap',
                                                         )
                                                         ->leftJoin('tb_kecamatan', 'tb_kecamatan.id_kecamatan', '=', 'tb_jalan_daerah_banjir.id_kecamatan')
-                                                        ->leftJoin('users', 'users.id', '=', DB::raw("CAST(tb_jalan_daerah_banjir.jalan_daerah_banjir_kepala_id AS BIGINT)"))
+                                                        ->leftJoin('users', 'users.id', '=', DB::raw("CAST(tb_jalan_daerah_banjir.jalan_daerah_banjir_kepala_id AS CHAR)"))
                                                         ->where('tb_jalan_daerah_banjir.id_jalan_daerah_banjir', $id_jalan_daerah_banjir)
                                                         ->first();
         $data_kecamatan = M_daerah_banjir::from('tb_jalan_daerah_banjir as a')

@@ -59,42 +59,78 @@
                                     <th class="bg-info">
                                         Nama Pemberi Informasi
                                     </th>
+                                    <th class="bg-info">
+                                        Jalan
+                                    </th>
                                     <th class="bg-info text-center">
                                         Tanggal
                                     </th>
-                                    <th class="bg-info  text-center">
-
+                                    <th class="bg-info text-center">
+                                        Status
+                                    </th>
+                                    <th class="bg-info">
                                     </th>
                                 </tr>
                             </thead>
                             <tbody wire:ignore.self>
                                 @if (!empty($data_daerah_banjir_search))
                                     @foreach ($data_daerah_banjir_search as $daerah_banjir_search)
-                                        <tr wire:ignore>
+                                        <tr>
                                             <td class="text-center clickable-cell"
-                                                wire:click="detailDaerahBanjir('{{ $daerah_banjir_search->tb_daerah_banjir . $daerah_banjir_search->id_daerah_banjir }}')">
+                                                wire:click="detailJalanDaerahBanjir('{{ $daerah_banjir_search->id_jalan_daerah_banjir }}')">
                                                 {{ $no++ }}
                                             </td>
                                             <td class="clickable-cell"
-                                                wire:click="detailDaerahBanjir('{{ $daerah_banjir_search->tb_daerah_banjir . $daerah_banjir_search->id_daerah_banjir }}')">
+                                                wire:click="detailJalanDaerahBanjir('{{ $daerah_banjir_search->id_jalan_daerah_banjir }}')">
                                                 {{ $daerah_banjir_search->nama_kecamatan }}
                                             </td>
                                             <td class="clickable-cell"
-                                                wire:click="detailDaerahBanjir('{{ $daerah_banjir_search->tb_daerah_banjir . $daerah_banjir_search->id_daerah_banjir }}')">
+                                                wire:click="detailJalanDaerahBanjir('{{ $daerah_banjir_search->id_jalan_daerah_banjir }}')">
                                                 {{ $daerah_banjir_search->pemberi_informasi }}
                                             </td>
-                                            <td class="clickable-cell text-center" wire:ignore
-                                                wire:click="detailDaerahBanjir('{{ $daerah_banjir_search->tb_daerah_banjir . $daerah_banjir_search->id_daerah_banjir }}')">
-                                                {{ $daerah_banjir_search->tb_jalan_daerah_banjir . $daerah_banjir_search->waktu_mulai != '' ? $daerah_banjir_search->tb_jalan_daerah_banjir . $daerah_banjir_search->waktu_mulai->translatedFormat('d F Y H:i:s') : '' }}
+                                            <td class="clickable-cell"
+                                                wire:click="detailJalanDaerahBanjir('{{ $daerah_banjir_search->id_jalan_daerah_banjir }}')">
+                                                {{ 'Jl. '.$daerah_banjir_search->nama_jalan .' No.'.$daerah_banjir_search->nomor_jalan}}
                                             </td>
-                                            <td>
-                                                <button type="button" class="btn btn-outline-secondary" wire:ignore
-                                                    wire:click="detailDaerahBanjir('{{ $daerah_banjir_search->tb_daerah_banjir . $daerah_banjir_search->id_daerah_banjir }}')"
-                                                    wire:loading.class="disabled" wire:loading.attr="disabled"
-                                                    >
-                                                        <i class="bi bi-list-ul"></i>
-                                                        Detail
-                                                </button>
+                                            <td class="clickable-cell text-center"
+                                                wire:click="detailJalanDaerahBanjir('{{ $daerah_banjir_search->id_jalan_daerah_banjir }}')">
+
+                                                {{ $daerah_banjir_search->tb_jalan_daerah_banjir }}
+                                                {{ $daerah_banjir_search->waktu_mulai->translatedFormat('d F Y') }}
+
+                                                @if ($daerah_banjir_search->waktu_selesai)
+                                                    {{ $daerah_banjir_search->waktu_selesai->translatedFormat('d F Y') }}
+                                                @else
+                                                    -
+                                                @endif
+
+                                            </td>
+                                            <td align="center">
+                                                <div class="btn-group">
+                                                    <button type="button"
+                                                        class="btn  {{ $daerah_banjir_search->konfirmasi_st == 1 ? ' btn-outline-success' : ' btn-outline-danger' }} btn-icon-text"
+                                                        wire:click="showKonfirmasiJalanDaerahBanjir({{ $daerah_banjir_search->id_jalan_daerah_banjir }})">
+                                                        <i
+                                                            class="mdi  {{ $daerah_banjir_search->konfirmasi_st == 1 ? 'mdi-check-circle-outline' : 'mdi-close-circle-outline' }}"></i>
+                                                        {{ $daerah_banjir_search->konfirmasi_st == 1 ? 'Terkonfirmasi' : 'Belum Terkonfirmasi' }}
+                                                    </button>
+                                                </div>
+                                            </td>
+                                            <td align="center">
+                                                <div class="btn-group">
+                                                    <button type="button" class="btn btn-outline-secondary dropdown-toggle"
+                                                        data-toggle="dropdown" aria-expanded="false"><i
+                                                            class="bi bi-hand-index-thumb"></i> Aksi</button>
+                                                    <div class="dropdown-menu" x-placement="top-start"
+                                                        style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, -104px, 0px);">
+                                                        <button type="button" class="dropdown-item text-danger"
+                                                            wire:click="show_delete_jalan_daerah_banjir('{{ $daerah_banjir_search->id_jalan_daerah_banjir }}')"><i
+                                                                class="bi bi-trash3"></i> Hapus</button>
+                                                        <button type="button" class="dropdown-item text-primary"
+                                                            wire:click="showFormJalanDaerahBanjir({{ $daerah_banjir_search->id_jalan_daerah_banjir }})"><i
+                                                                class="bi bi-pencil-square"></i> Ubah</button>
+                                                    </div>
+                                                </div>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -102,29 +138,50 @@
                                     @foreach ($data_daerah_banjir as $daerah_banjir)
                                         <tr>
                                             <td class="text-center clickable-cell"
-                                                wire:click="detailDaerahBanjir('{{ $daerah_banjir->tb_daerah_banjir . $daerah_banjir->id_daerah_banjir }}')">
+                                                wire:click="detailJalanDaerahBanjir('{{ $daerah_banjir->id_jalan_daerah_banjir }}')">
                                                 {{ $no++ }}
                                             </td>
                                             <td class="clickable-cell"
-                                                wire:click="detailDaerahBanjir('{{ $daerah_banjir->tb_daerah_banjir . $daerah_banjir->id_daerah_banjir }}')">
+                                                wire:click="detailJalanDaerahBanjir('{{ $daerah_banjir->id_jalan_daerah_banjir }}')">
                                                 {{ $daerah_banjir->nama_kecamatan }}
                                             </td>
                                             <td class="clickable-cell"
-                                                wire:click="detailDaerahBanjir('{{ $daerah_banjir->tb_daerah_banjir . $daerah_banjir->id_daerah_banjir }}')">
+                                                wire:click="detailJalanDaerahBanjir('{{ $daerah_banjir->id_jalan_daerah_banjir }}')">
                                                 {{ $daerah_banjir->pemberi_informasi }}
                                             </td>
-                                            <td class="clickable-cell text-center"
-                                                wire:click="detailDaerahBanjir('{{ $daerah_banjir->tb_daerah_banjir . $daerah_banjir->id_daerah_banjir }}')">
-                                                {{ $daerah_banjir->tb_jalan_daerah_banjir . $daerah_banjir->waktu_mulai != '' ? $daerah_banjir->tb_jalan_daerah_banjir . $daerah_banjir->waktu_mulai->translatedFormat('d F Y H:i:s') : '' }}
+                                            <td class="clickable-cell"
+                                                wire:click="detailJalanDaerahBanjir('{{ $daerah_banjir->id_jalan_daerah_banjir }}')">
+                                                {{ 'Jl. '.$daerah_banjir->nama_jalan .' No.'.$daerah_banjir->nomor_jalan}}
                                             </td>
-                                            <td>
-                                                <button type="button" class="btn btn-outline-secondary" wire:ignore
-                                                    wire:click="detailDaerahBanjir('{{ $daerah_banjir->tb_daerah_banjir . $daerah_banjir->id_daerah_banjir }}')"
-                                                    wire:loading.class="disabled" wire:loading.attr="disabled"
-                                                    >
-                                                        <i class="bi bi-list-ul"></i>
-                                                        Detail
-                                                </button>
+                                            <td class="clickable-cell text-center"
+                                                wire:click="detailJalanDaerahBanjir('{{ $daerah_banjir->id_jalan_daerah_banjir }}')">
+
+                                                {{ $daerah_banjir->tb_jalan_daerah_banjir }}
+                                                {{ $daerah_banjir->waktu_mulai->translatedFormat('d F Y') }}
+
+                                                @if ($daerah_banjir->waktu_selesai)
+                                                    {{ $daerah_banjir->waktu_selesai->translatedFormat('d F Y') }}
+                                                @else
+                                                    -
+                                                @endif
+
+                                            </td>
+                                            <td align="center">
+                                                <div class="btn-group">
+                                                    <button type="button"
+                                                        class="btn  {{ $daerah_banjir->konfirmasi_st == 1 ? ' btn-outline-success' : ' btn-outline-danger' }} btn-icon-text">
+                                                        <i
+                                                            class="mdi  {{ $daerah_banjir->konfirmasi_st == 1 ? 'mdi-check-circle-outline' : 'mdi-close-circle-outline' }}"></i>
+                                                        {{ $daerah_banjir->konfirmasi_st == 1 ? 'Terkonfirmasi' : 'Belum Terkonfirmasi' }}
+                                                    </button>
+                                                </div>
+                                            </td>
+                                            <td align="center">
+                                                <div class="btn-group">
+                                                    <button type="button" class="btn btn-outline-secondary" aria-expanded="false" wire:click="detailJalanDaerahBanjir({{ $daerah_banjir->id_jalan_daerah_banjir }})"><i
+                                                            class="bi bi-list"></i> Detail</button>
+                                                    </div>
+                                                </div>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -139,7 +196,7 @@
 
 
     <!-- Offcanvas -->
-    <div class="offcanvas offcanvas-end h-100 w-auto" tabindex="-1" id="CanvasDetailBanjir"
+    <div class="offcanvas offcanvas-end h-100 w-75" tabindex="-1" id="CanvasDetailBanjir"
         aria-labelledby="offcanvasRightLabel" aria-hidden="true" data-bs-backdrop="static" wire:ignore.self>
         <div class="offcanvas-header">
             <div class="d-flex justify-content-between">
@@ -252,12 +309,13 @@
     </div>
 
     <!-- Offcanvas Detail -->
-    <div class="offcanvas offcanvas-start h-100" tabindex="-1" id="canvasDetailLaporanJalanBanjir"
+    <div class="offcanvas offcanvas-start h-100 w-75" tabindex="-1" id="canvasDetailLaporanJalanBanjir"
         aria-labelledby="offcanvasRightLabel" wire:ignore.self>
         <div class="offcanvas-header">
             <div>
-                {{-- <h3 id="offcanvasRightLabel"><b>Detail Laporan</b></h3> --}}
-                <h3 id="head_1"><b>{{ $baseLatitude }},{{ $baseLongtitude }}</b></h3>
+                <h3 id="offcanvasRightLabel"><b>Detail Laporan Banjir</b></h3>
+                {{-- <h3 id="head_1"><b>{{ $baseLatitude }},{{ $baseLongtitude }}</b></h3> --}}
+                    <small class="text-muted fst-italic">{{ $detailWaktu ?? '-' }}</small>
             </div>
             <div class="d-flex">
                 <div class="align-items-end">
@@ -314,6 +372,30 @@
                             </span>
                         </td>
                     </tr>
+                    <tr>
+                        <td class="fw-bold" width="20%">Pemberi Catatan</td>
+                        <td>&nbsp;&nbsp;:&nbsp;&nbsp;</td>
+                        <td >
+                            <span style="font-size: 0.9em">
+                                {{ $detailNamaKepala ?? '-' }}
+                            </span>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td class="fw-bold align-top">
+                            Catatan
+                        </td>
+                        <td class="align-top">&nbsp;&nbsp;:&nbsp;&nbsp;</td>
+                        <td colspan="3" width="80%">
+                            {{-- <form wire:submit.prevent="save_catatan_jalan_daerah_banjir" class="w-100"> --}}
+                                <textarea class="form-control w-100 @error('jalan_daerah_banjir_catatan_kepala') is-invalid @enderror" wire:model.defer="jalan_daerah_banjir_catatan_kepala" rows="5" readonly>
+                                </textarea>
+                            {{-- </form> --}}
+                        </td>
+                    </tr>
                 </table>
             </p>
             <p>
@@ -368,11 +450,6 @@
                                                                 class="d-block mx-auto w-50 shadow-lg"
                                                                 alt="Bukti {{ $no_gbr }}">
                                                         </a>
-                                                        <br>
-                                                        <button class="btn btn-danger d-none" type="button"
-                                                            wire:click="show_delete_bukti_jalan_daerah_banjir({{ "'" . $idbuktiFoto . "'" . ',' . "'" . $bukti . "'" }})">
-                                                            <i class="fa fa-trash"></i>
-                                                        </button>
                                                     </div>
                                                     @php $no_gbr++; @endphp
                                                 @endforeach
@@ -391,6 +468,11 @@
                             </div>
                         </div>
                         <div id="sec-2">
+                            {{-- <select id="categoryFilter">
+                                    <option value="all">Semua</option>
+                                    <option value="air">Sumber Air</option>
+                                    <option value="tanah">Wilayah Tanah</option>
+                                </select> --}}
                             <div class="col-md-12">
                                 <div id="map" wire:ignore></div>
                             </div>
@@ -435,7 +517,7 @@
                                                 <td class="text-left">{{ $item->nama_penanganan }}</td>
                                                 <td class="text-center">{{ $item->waktu_mulai->translatedFormat('d F Y H:i:s').(!empty($item->waktu_selesai)?' - '.$item->waktu_selesai->translatedFormat('d F Y H:i:s'):'') }}</td>
                                                 <td class="text-center">
-                                                    <button type="button"  wire:click="ShowValidationStatusPenanganan({{ $item->id_penanganan }})" class="btn btn-sm @if($item->status_penanganan === 1) btn-primary @elseif($item->status_penanganan === 2) btn-success @else btn-secondary @endif
+                                                    <button type="button" class="btn btn-sm @if($item->status_penanganan === 1) btn-primary @elseif($item->status_penanganan === 2) btn-success @else btn-secondary @endif
                                                         " readonly>
                                                         @if ($item->status_penanganan === 1)
                                                             Proses
@@ -463,6 +545,7 @@
                                         @endforeach
                                     @endif
                                 </tbody>
+
                             </table>
                         </div>
                     </div>
@@ -471,7 +554,6 @@
             </p>
         </div>
     </div>
-
     <!-- Modal Lokasi -->
     <div class="modal fade"  tabindex="-1" aria-hidden="true" id="modalLokasiBanjir" data-bs-backdrop="static" data-bs-backdrop="static" wire:ignore.self>
         <div class="modal-dialog modal-xl">
@@ -565,14 +647,14 @@
                     offcanvas3.hide();
                 }, 100);
                 setTimeout(function() {
-                    offcanvas.show();
+                    // offcanvas.show();
                 }, 300);
             });
 
             // Open Canvas
             window.addEventListener('open-canvas-detail-daerah-banjir', function() {
                 setTimeout(function() {
-                    offcanvas.show();
+                    // offcanvas.show();
                 }, 300);
             });
             window.addEventListener('open-canvas-detail-jalan-daerah-banjir', function() {
@@ -583,7 +665,7 @@
 
                 }, 100);
                 setTimeout(function() {
-                    $('#canvasDetailLaporanJalanBanjir').addClass('w-50')
+                    $('#canvasDetailLaporanJalanBanjir').addClass('w-75')
                     offcanvas3.show();
                 }, 300);
             });
@@ -643,7 +725,7 @@
                 }, 100);
                 setTimeout(function() {
                     $('#canvasDetailLaporanJalanBanjir').addClass('w-50')
-                    offcanvas.show();
+                    // offcanvas.show();
                     offcanvas3.show();
                 }, 300);
                 setTimeout(function() {

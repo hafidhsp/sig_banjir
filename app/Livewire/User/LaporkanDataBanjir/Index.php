@@ -195,9 +195,11 @@ class Index extends Component
         $this->hide_id_jalan_daerah_banjir = '';
         $this->status_penanganan = '';
         if($form == true){
-            $this->dispatch('render-canvas-form');
+            // $this->dispatch('render-canvas-form');
+            $this->dispatch('render-table');
         }else{
-            $this->dispatch('render-canvas-utama');
+            $this->dispatch('render-table');
+            // $this->dispatch('render-canvas-utama');
         }
     }
 
@@ -216,7 +218,16 @@ class Index extends Component
                                 ->leftJoin('tb_kecamatan','tb_kecamatan.id_kecamatan','=','tb_daerah_banjir.id_kecamatan')
                                 ->orderBy('tb_daerah_banjir.created_at', 'Desc')
                                 ->get();
-        $data_jalan_daerah_banjir =  $this->data_jalan_daerah_banjir;
+        $data_jalan_daerah_banjir =  M_jalan_daerah_banjir::select(
+                                        'tb_jalan_daerah_banjir.*',
+                                        'tb_kecamatan.nama_kecamatan',
+                                    )
+                                ->leftJoin('tb_kecamatan','tb_kecamatan.id_kecamatan','=','tb_jalan_daerah_banjir.id_kecamatan')
+                                ->where('tb_jalan_daerah_banjir.id_user', '=', $user->id)
+                                ->orderBy('tb_jalan_daerah_banjir.created_at', 'Desc')
+                                ->get();
+        // dd($data_jalan_daerah_banjir);
+        $this->data_jalan_daerah_banjir = $data_jalan_daerah_banjir;
         $data_kecamatan = kecamatan::orderBy('nama_kecamatan', 'Asc')
                                     ->get();
         $displayjalan = $this->displayjalan;
@@ -331,6 +342,11 @@ class Index extends Component
                 'long_atitude' => 'required|regex:/^-?\d+([,\.]\d+)?$/',
                 'la_atitude' => 'required|regex:/^-?\d+([,\.]\d+)?$/',
                 'warna_radius' => 'required',
+
+                // Start Revisi Merge
+                'kecamatan_daerah_banjir' => 'required|exists:tb_kecamatan,id_kecamatan',
+                'nama_pemberi_informasi' => 'required|regex:/^[a-zA-Z\s]+$/',
+                // End Revisi Merge
             ], [
                 'nama_jalan.required' => 'Nama Jalan harus diisi.',
                 'nama_jalan.regex' => 'Nama jalan berisi huruf.',
@@ -351,6 +367,13 @@ class Index extends Component
                 'la_atitude.required' => 'Latitude harus diisi.',
                 'la_atitude.regex' => 'Latitude tidak valid.',
                 'warna_radius.required' => 'Warna Radius harus diisi.',
+
+                // Start Revisi Merge
+                'kecamatan_daerah_banjir.required' => 'Kecamatan harus diisi.',
+                'kecamatan_daerah_banjir.exist' => 'Kecamatan tidak ditemukan.',
+                'nama_pemberi_informasi.required' => 'Nama pemberi informasi harus diisi.',
+                'nama_pemberi_informasi.regex' => 'Nama pemberi informasi berisi huruf.',
+                // End Revisi Merge
             ]);
             $data_jalan_daerah_banjir = M_jalan_daerah_banjir::where('id_jalan_daerah_banjir',$this->id_jalan_daerah_banjir)->first();
             // $data = [
@@ -370,7 +393,7 @@ class Index extends Component
             //     'warna_radius' => $this->warna_radius,
             // ];
             $data = [
-                'id_daerah_banjir' => $this->id_daerah_banjir_jalan,
+                // 'id_daerah_banjir' => $this->id_daerah_banjir_jalan,
                 'nama_jalan' => $this->nama_jalan,
                 'nomor_jalan' => $this->nomor_jalan,
                 'panjang_jalan' => $this->panjang_jalan,
@@ -384,6 +407,11 @@ class Index extends Component
                 'long_atitude' => $this->long_atitude,
                 'la_atitude' => $this->la_atitude,
                 'warna_radius' => $this->warna_radius,
+                // Start Revisi Merge
+                'id_kecamatan' => $this->kecamatan_daerah_banjir,
+                'pemberi_informasi' => $this->nama_pemberi_informasi,
+                'batal_st' => 0,
+                // End Revisi Merge
             ];
             if(!empty($this->waktu_selesai)){
                 $data['waktu_selesai']=$this->waktu_selesai;
@@ -425,6 +453,10 @@ class Index extends Component
                 'long_atitude' => 'required|regex:/^-?\d+([,\.]\d+)?$/',
                 'la_atitude' => 'required|regex:/^-?\d+([,\.]\d+)?$/',
                 'warna_radius' => 'required',
+                // Start Revisi Merge
+                'kecamatan_daerah_banjir' => 'required|exists:tb_kecamatan,id_kecamatan',
+                'nama_pemberi_informasi' => 'required|regex:/^[a-zA-Z\s]+$/',
+                // End Revisi Merge
             ], [
                 'nama_jalan.required' => 'Nama Jalan harus diisi.',
                 'nama_jalan.regex' => 'Nama jalan berisi huruf.',
@@ -445,9 +477,15 @@ class Index extends Component
                 'la_atitude.required' => 'Latitude harus diisi.',
                 'la_atitude.regex' => 'Latitude tidak valid.',
                 'warna_radius.required' => 'Warna Radius harus diisi.',
+                // Start Revisi Merge
+                'kecamatan_daerah_banjir.required' => 'Kecamatan harus diisi.',
+                'kecamatan_daerah_banjir.exist' => 'Kecamatan tidak ditemukan.',
+                'nama_pemberi_informasi.required' => 'Nama pemberi informasi harus diisi.',
+                'nama_pemberi_informasi.regex' => 'Nama pemberi informasi berisi huruf.',
+                // End Revisi Merge
             ]);
             $data = [
-                'id_daerah_banjir' => $this->id_daerah_banjir_jalan,
+                // 'id_daerah_banjir' => $this->id_daerah_banjir_jalan,
                 'nama_jalan' => $this->nama_jalan,
                 'nomor_jalan' => $this->nomor_jalan,
                 'panjang_jalan' => $this->panjang_jalan,
@@ -461,6 +499,13 @@ class Index extends Component
                 'long_atitude' => $this->long_atitude,
                 'la_atitude' => $this->la_atitude,
                 'warna_radius' => $this->warna_radius,
+
+                // Start Revisi Merge
+                'id_user' => Auth::user()->id,
+                'id_kecamatan' => $this->kecamatan_daerah_banjir,
+                'pemberi_informasi' => $this->nama_pemberi_informasi,
+                'batal_st' => 0,
+                // End Revisi Merge
             ];
             if(!empty($this->waktu_selesai)){
                 $data['waktu_selesai']=$this->waktu_selesai;
@@ -500,6 +545,8 @@ class Index extends Component
         $this->warna_radius = $detailJalanDaerahBanjir->warna_radius;
         $this->long_atitude = $detailJalanDaerahBanjir->long_atitude;
         $this->la_atitude = $detailJalanDaerahBanjir->la_atitude;
+        $this->kecamatan_daerah_banjir = $detailJalanDaerahBanjir->id_kecamatan;
+        $this->nama_pemberi_informasi = $detailJalanDaerahBanjir->pemberi_informasi;
         $this->title_modal = 'Ubah';
         $this->dispatch('updateSelectColor',$detailJalanDaerahBanjir->warna_radius);
         $this->dispatch('open-canvas-form-jalan-daerah-banjir');
@@ -532,12 +579,12 @@ class Index extends Component
     public function detailJalanDaerahBanjir($id_jalan_daerah_banjir){
         $this->refresh_canvas(false);
         $data__jalan_daerah_banjir = M_jalan_daerah_banjir::from('tb_jalan_daerah_banjir as a')
-                                        ->leftJoin('tb_daerah_banjir as b','b.id_daerah_banjir','=','a.id_daerah_banjir')
+                                        // ->leftJoin('tb_daerah_banjir as b','b.id_daerah_banjir','=','a.id_daerah_banjir')
                                         ->where('a.id_jalan_daerah_banjir',$id_jalan_daerah_banjir)
                                         ->first();
-        $data_kecamatan = M_daerah_banjir::from('tb_daerah_banjir as a')
+        $data_kecamatan = M_jalan_daerah_banjir::from('tb_jalan_daerah_banjir as a')
                                         ->leftJoin('tb_kecamatan as b','b.id_kecamatan','=','a.id_kecamatan')
-                                        ->where('a.id_daerah_banjir',$data__jalan_daerah_banjir->id_daerah_banjir)
+                                        ->where('a.id_jalan_daerah_banjir',$data__jalan_daerah_banjir->id_jalan_daerah_banjir)
                                         ->first();
         $jenis_banjir ='-';
         if($data__jalan_daerah_banjir->icon == 'mdi mdi-map-marker' ){
@@ -675,7 +722,7 @@ class Index extends Component
             'anggaran.numeric' => 'Anggaran berisi angka.',
         ]);
             $data = [
-                'id_jalan_daerah_banjir' => $this->hide_id_jalan_daerah_banjir,
+                'id_jalan_daerah_banjir' => $this->id_penanganan,
                 'nama_penanganan' => $this->nama_penanganan,
                 'waktu_mulai' => $this->waktu_mulai,
                 'petugas' => $this->nama_petugas,
@@ -786,6 +833,28 @@ class Index extends Component
             $this->dispatch('open-notif-success-delete');
             $this->dispatch('hide-canvas-all');
         }
+    }
+
+
+    public function ShowValidationStatusPenanganan($id_penanganan){
+        $penanganan = M_penanganan::where('id_penanganan',$id_penanganan)
+                        ->first();
+        $data = [
+            'id_penanganan' => $id_penanganan,
+            'status_penanganan' => $penanganan->status_penanganan,
+        ];
+        $this->dispatch('open-modal-validation-ubah-status-penanganan',$data);
+    }
+
+    public function ActionUbahStatusPenanganan($id_penanganan,$status_penanganan){
+        $penanganan = M_penanganan::where('id_penanganan',$id_penanganan)
+                    ->first();
+        $data = [
+            'status_penanganan' => $status_penanganan,
+        ];
+        $penanganan->update($data);
+        // $this->mount();
+        $this->dispatch('open-notif-success-canvas-form');
     }
 
 }

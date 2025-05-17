@@ -12,7 +12,7 @@
                     <div class="col-md-6">
                         <div class="d-flex justify-content-end">
                             <button type="button" class="btn btn-outline-primary btn-icon-text mt-3"
-                                onclick="showModal()">
+                                onclick="showModalJalanBanjir()">
                                 <i class="mdi mdi-account-plus"></i>
                                 Laporkan Banjir
                             </button>
@@ -33,31 +33,60 @@
                                     <th class="bg-info">
                                         Nama Pemberi Informasi
                                     </th>
+                                    <th class="bg-info">
+                                        Jalan
+                                    </th>
                                     <th class="bg-info text-center">
                                         Tanggal
+                                    </th>
+                                    <th class="bg-info text-center">
+                                        Status
                                     </th>
                                     <th class="bg-info">
                                     </th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($data_daerah_banjir as $daerah_banjir)
+                                @foreach ($data_jalan_daerah_banjir as $daerah_banjir)
                                     <tr>
                                         <td class="text-center clickable-cell"
-                                            wire:click="detailDaerahBanjir('{{ $daerah_banjir->id_daerah_banjir }}')">
+                                            wire:click="detailJalanDaerahBanjir('{{ $daerah_banjir->id_jalan_daerah_banjir }}')">
                                             {{ $no++ }}
                                         </td>
                                         <td class="clickable-cell"
-                                            wire:click="detailDaerahBanjir('{{ $daerah_banjir->id_daerah_banjir }}')">
+                                            wire:click="detailJalanDaerahBanjir('{{ $daerah_banjir->id_jalan_daerah_banjir }}')">
                                             {{ $daerah_banjir->nama_kecamatan }}
                                         </td>
                                         <td class="clickable-cell"
-                                            wire:click="detailDaerahBanjir('{{ $daerah_banjir->id_daerah_banjir }}')">
+                                            wire:click="detailJalanDaerahBanjir('{{ $daerah_banjir->id_jalan_daerah_banjir }}')">
                                             {{ $daerah_banjir->pemberi_informasi }}
                                         </td>
+                                        <td class="clickable-cell"
+                                            wire:click="detailJalanDaerahBanjir('{{ $daerah_banjir->id_jalan_daerah_banjir }}')">
+                                            {{ 'Jl. '.$daerah_banjir->nama_jalan .' No.'.$daerah_banjir->nomor_jalan}}
+                                        </td>
                                         <td class="clickable-cell text-center"
-                                            wire:click="detailDaerahBanjir('{{ $daerah_banjir->id_daerah_banjir }}')">
-                                            {{ $daerah_banjir->tb_daerah_banjir . $daerah_banjir->created_at != '' ? $daerah_banjir->tb_daerah_banjir . $daerah_banjir->created_at->translatedFormat('d F Y') : '' }}
+                                            wire:click="detailJalanDaerahBanjir('{{ $daerah_banjir->id_jalan_daerah_banjir }}')">
+
+                                            {{ $daerah_banjir->tb_jalan_daerah_banjir }}
+                                            {{ $daerah_banjir->waktu_mulai->translatedFormat('d F Y') }}
+
+                                            @if ($daerah_banjir->waktu_selesai)
+                                                {{ $daerah_banjir->waktu_selesai->translatedFormat('d F Y') }}
+                                            @else
+                                                -
+                                            @endif
+
+                                        </td>
+                                        <td align="center">
+                                            <div class="btn-group">
+                                                <button type="button"
+                                                    class="btn  {{ $daerah_banjir->konfirmasi_st == 1 ? ' btn-outline-success' : ' btn-outline-danger' }} btn-icon-text">
+                                                    <i
+                                                        class="mdi  {{ $daerah_banjir->konfirmasi_st == 1 ? 'mdi-check-circle-outline' : 'mdi-close-circle-outline' }}"></i>
+                                                    {{ $daerah_banjir->konfirmasi_st == 1 ? 'Terkonfirmasi' : 'Belum Terkonfirmasi' }}
+                                                </button>
+                                            </div>
                                         </td>
                                         <td align="center">
                                             <div class="btn-group">
@@ -67,10 +96,10 @@
                                                 <div class="dropdown-menu" x-placement="top-start"
                                                     style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, -104px, 0px);">
                                                     <button type="button" class="dropdown-item text-danger"
-                                                        wire:click="show_delete_daerah_banjir('{{ $daerah_banjir->id_daerah_banjir }}')"><i
+                                                        wire:click="show_delete_jalan_daerah_banjir('{{ $daerah_banjir->id_jalan_daerah_banjir }}')"><i
                                                             class="bi bi-trash3"></i> Hapus</button>
                                                     <button type="button" class="dropdown-item text-primary"
-                                                        wire:click="showModalLaporanBanjirPertama({{ $daerah_banjir->id_daerah_banjir }})"><i
+                                                        wire:click="showFormJalanDaerahBanjir({{ $daerah_banjir->id_jalan_daerah_banjir }})"><i
                                                             class="bi bi-pencil-square"></i> Ubah</button>
                                                 </div>
                                             </div>
@@ -284,7 +313,7 @@
     </div>
 
     <!-- Offcanvas FORM -->
-    <div class="offcanvas offcanvas-start h-100 w-50" tabindex="-1" id="canvasFormLaporanJalanBanjir"
+    <div class="offcanvas offcanvas-start h-100 w-75" tabindex="-1" id="canvasFormLaporanJalanBanjir"
         aria-labelledby="offcanvasRightLabel" wire:ignore.self>
         <div class="offcanvas-header">
             <div>
@@ -302,6 +331,31 @@
         <div class="offcanvas-body">
             <p>
             <form wire:submit.prevent="save_jalan_daerah_banjir" enctype="multipart/form-data">
+                            <div class="form-group">
+                    <input type="text" class="form-control " wire:model.defer="id_daerah_banjir" hidden>
+                    <label>Kecamatan</label>
+                    <select class="form-control @error('kecamatan_daerah_banjir') is-invalid @enderror"
+                        id="kecamatanChoices" wire:model.defer="kecamatan_daerah_banjir" required>
+                        <option value="" class="bg-white text-dark" selected>-- Pilih --</option>
+                        @foreach ($data_kecamatan as $kecamatan)
+                            <option value="{{ $kecamatan->id_kecamatan }}" class="form-control">
+                                {{ $kecamatan->nama_kecamatan }}</option>
+                        @endforeach
+                    </select>
+                    @error('kecamatan_daerah_banjir')
+                        <label class="text-danger">{{ $message }}</label>
+                    @enderror
+                </div>
+                <div class="form-group">
+                    <label>Nama Pemberi Informasi</label>
+                    <input type="text"
+                        class="form-control @error('nama_pemberi_informasi') is-invalid @enderror"
+                        wire:model.defer="nama_pemberi_informasi" placeholder="Masukkan Nama"
+                        required>
+                    @error('nama_pemberi_informasi')
+                        <label class="text-danger">{{ $message }}</label>
+                    @enderror
+                </div>
                 <div class="mb-3 form-group">
                     <label class="form-label fw-bold">Nama Jalan</label>
                     <input type="text" class="d-none" wire:model.defer="id_daerah_banjir_jalan" hidden>
@@ -480,12 +534,13 @@
     </div>
 
     <!-- Offcanvas Detail -->
-    <div class="offcanvas offcanvas-start h-100 w-50" tabindex="-1" id="canvasDetailLaporanJalanBanjir"
+    <div class="offcanvas offcanvas-start h-100 w-75" tabindex="-1" id="canvasDetailLaporanJalanBanjir"
         aria-labelledby="offcanvasRightLabel" wire:ignore.self>
         <div class="offcanvas-header">
             <div>
-                {{-- <h3 id="offcanvasRightLabel"><b>Detail Laporan</b></h3> --}}
-                <h3 id="head_1"><b>{{ $baseLatitude }},{{ $baseLongtitude }}</b></h3>
+                <h3 id="offcanvasRightLabel"><b>Detail Laporan Banjir</b></h3>
+                {{-- <h3 id="head_1"><b>{{ $baseLatitude }},{{ $baseLongtitude }}</b></h3> --}}
+                    <small class="text-muted fst-italic">{{ $detailWaktu ?? '-' }}</small>
             </div>
             <div class="d-flex">
                 <div class="align-items-end">
@@ -540,6 +595,30 @@
                             <span style="font-size: 0.9em">
                                 {{ $label_tinggi_banjir ?? '-' }}
                             </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="fw-bold" width="20%">Pemberi Catatan</td>
+                        <td>&nbsp;&nbsp;:&nbsp;&nbsp;</td>
+                        <td >
+                            <span style="font-size: 0.9em">
+                                {{ $detailNamaKepala ?? '-' }}
+                            </span>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td class="fw-bold align-top">
+                            Catatan
+                        </td>
+                        <td class="align-top">&nbsp;&nbsp;:&nbsp;&nbsp;</td>
+                        <td colspan="3" width="80%">
+                            {{-- <form wire:submit.prevent="save_catatan_jalan_daerah_banjir" class="w-100"> --}}
+                                <textarea class="form-control w-100 @error('jalan_daerah_banjir_catatan_kepala') is-invalid @enderror" wire:model.defer="jalan_daerah_banjir_catatan_kepala" rows="5" readonly>
+                                </textarea>
+                            {{-- </form> --}}
                         </td>
                     </tr>
                 </table>
@@ -668,7 +747,7 @@
                                                 <td class="text-left">{{ $item->nama_penanganan }}</td>
                                                 <td class="text-center">{{ $item->waktu_mulai->translatedFormat('d F Y H:i:s').(!empty($item->waktu_selesai)?' - '.$item->waktu_selesai->translatedFormat('d F Y H:i:s'):'') }}</td>
                                                 <td class="text-center">
-                                                    <button type="button" class="btn btn-sm @if($item->status_penanganan === 1) btn-primary @elseif($item->status_penanganan === 2) btn-success @else btn-secondary @endif
+                                                    <button type="button"  wire:click="ShowValidationStatusPenanganan({{ $item->id_penanganan }})" class="btn btn-sm @if($item->status_penanganan === 1) btn-primary @elseif($item->status_penanganan === 2) btn-success @else btn-secondary @endif
                                                         " readonly>
                                                         @if ($item->status_penanganan === 1)
                                                             Proses
@@ -1087,7 +1166,7 @@
                 }, 100);
                 setTimeout(function() {
                     $('#formCanvasJalanBanjir').click();
-                    offcanvas.show();
+                    // offcanvas.show();
                     alertify.success('Berhasil Disimpan');
                 }, 500);
             });
@@ -1108,7 +1187,7 @@
                 }, 100);
                 setTimeout(function() {
                     $('#formCanvasJalanBanjir').click();
-                    offcanvas.show();
+                    // offcanvas.show();
                     alertify.success('Berhasil Dihapus');
                 }, 600);
             });
@@ -1177,7 +1256,7 @@
                                 ' #table_jalan_daerah_banjir');
                         }, 100);
                         setTimeout(function() {
-                            offcanvas.show();
+                            // offcanvas.show();
                         }, 300);
                     }
                 });
@@ -1211,7 +1290,7 @@
                                 ' #table_jalan_daerah_banjir');
                         }, 100);
                         setTimeout(function() {
-                            offcanvas.show();
+                            // offcanvas.show();
                         }, 300);
                     }
                 });
@@ -1296,7 +1375,7 @@
                                     offcanvas3.hide();
                                 }, 100);
                                 setTimeout(function() {
-                                    offcanvas.show();
+                                    // offcanvas.show();
                                 }, 300);
                             }
                         });
@@ -1312,7 +1391,7 @@
                             offcanvas3.hide();
                         }, 100);
                         setTimeout(function() {
-                            offcanvas.show();
+                            // offcanvas.show();
                         }, 300);
                     }
                 });
@@ -1371,7 +1450,7 @@
             });
             window.addEventListener('open-canvas-detail-daerah-banjir', function() {
                 setTimeout(function() {
-                    offcanvas.show();
+                    // offcanvas.show();
                 }, 300);
             });
             window.addEventListener('open-canvas-form-jalan-daerah-banjir', function() {
@@ -1412,7 +1491,7 @@
 
                 }, 100);
                 setTimeout(function() {
-                    offcanvas.show();
+                    // offcanvas.show();
                     offcanvas2.show();
                 }, 300);
             });
@@ -1427,7 +1506,7 @@
                     destroyDataTable('#table_daerah_banjir');
                     initializeDataTable('#table_daerah_banjir');
                     $('#table_daerah_banjir').load(window.location.href + ' #table_daerah_banjir');
-                    offcanvas.show();
+                    // offcanvas.show();
                 }, 300);
             });
             window.addEventListener('render-canvas-form', function() {
@@ -1538,7 +1617,7 @@
                     $('#sec-1').addClass('d-none')
                 }, 100);
                 setTimeout(function() {
-                    offcanvas.show();
+                    // offcanvas.show();
                     offcanvas3.show();
                 }, 300);
                 setTimeout(function() {
@@ -1546,6 +1625,58 @@
                     updateMap("map", locations, false);
                     updateMap("map", locations, true);
                 }, 500);
+            });
+
+                        window.addEventListener('open-modal-validation-ubah-status-penanganan', function(event) {
+                let id_penanganan = event.__livewire.params[0].id_penanganan;
+                let status_penanganan = event.__livewire.params[0].status_penanganan;
+                Swal.fire({
+                    title: "Apakah ingin status?",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Ya !",
+                    cancelButtonText: "Tidak"
+                }).then(async (result) => {
+                    if (result.isConfirmed) {
+                        const { value: fruit } = await Swal.fire({
+                            title: "Status Penanganan",
+                            input: "select",
+                                inputOptions: {
+                                    0: "Terencana",
+                                    1: "Proses",
+                                    2: "Selesai"
+                                },
+                            inputValue: String(status_penanganan),
+                            inputPlaceholder: "-- Pilih Status -- ",
+                            showCancelButton: true,
+                            inputValidator: (value) => {
+                                return new Promise((resolve) => {
+                                if (value !== "") {
+                                    Livewire.dispatch('ActionUbahStatusPenanganan', {
+                                        id_penanganan: id_penanganan,
+                                        status_penanganan: value
+                                    })
+                                    // alertify.success('Berhasil Diubah');
+                                    resolve();
+                                } else {
+                                    resolve("Status Belum Terpilih :)");
+                                }
+                                });
+                            }
+                        });
+                    } else {
+                        Swal.fire("Dibatalkan!", "", "error");
+                        setTimeout(function() {
+                            destroyDataTable('#table_daerah_banjir');
+                            initializeDataTable('#table_daerah_banjir');
+                            $('#table_daerah_banjir').load(window.location.href +
+                                ' #table_daerah_banjir');
+                        }, 100);
+                    }
+                });
+
             });
         });
 
