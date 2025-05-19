@@ -291,10 +291,10 @@ class Index extends Component
     public function showDetailLokasiMapsAllBase(){
         $detailDaerahBanjir = [];
         $data_kecamatan = [];
-            $detailDaerahBanjir = M_daerah_banjir::select('a.id_daerah_banjir','a.pemberi_informasi','b.*')
-                                    ->from('tb_daerah_banjir as a')
-                                    ->leftJoin('tb_jalan_daerah_banjir as b','a.id_daerah_banjir','=','b.id_daerah_banjir')
-                                    ->where('b.konfirmasi_st',1)
+            $detailDaerahBanjir = M_jalan_daerah_banjir::select('a.*')
+                                    ->from('tb_jalan_daerah_banjir as a')
+                                    // ->leftJoin('tb_jalan_daerah_banjir as b','a.id_jalan_daerah_banjir','=','b.id_daerah_banjir')
+                                    ->where('a.konfirmasi_st',1)
                                     ->get();
         $data = [
             'jalan_daerah_banjir' => $detailDaerahBanjir,
