@@ -13,8 +13,9 @@
     <nav id="menu">
         <ul class="links">
             <li><a href="#banner">Beranda</a></li>
-            <li><a href="generic.html">Generic</a></li>
-            <li><a href="elements.html">Elements</a></li>
+            <li><a href="#two">Tentang</a></li>
+            <li><a href="#one">Fitur</a></li>
+            <li><a href="#peta">Peta</a></li>
         </ul>
         <ul class="actions vertical">
             <li><a href="#" class="button fit">Login</a></li>
@@ -89,7 +90,7 @@
         </div>
     </section>
     <!-- Page Content-->
-    <section>
+    <section id="peta">
         <div class="container">
             <!-- Heading Row-->
             <div class="row align-items-center my-5">
