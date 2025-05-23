@@ -1,6 +1,6 @@
 <div>
     <div class="content-wrapper">
-        <div class="row">
+        <div class="row d-none">
             <div class="col-xl-12 grid-margin stretch-card" >
                 <div class="w-100 flex-grow">
                     <div class="col-md-12 grid-margin stretch-card" >
@@ -57,7 +57,7 @@
                 </div>
             </div>
         </div>
-        <div class="row">
+        <div class="row d-none">
             <div class="col-xl-12 grid-margin stretch-card" >
                 <div class="w-100 flex-grow">
                     <div class="col-md-12 grid-margin stretch-card" >
