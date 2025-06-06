@@ -120,7 +120,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="d-flex justify-content-end">
-                                <button type="button" class="btn btn-outline-primary btn-icon-text mt-3" onclick="showModal()">
+                                <button type="button" class="btn btn-outline-primary btn-icon-text mt-3" onclick="showModalUser()">
                                 <i class="mdi mdi-account-plus"></i>
                                 Tambah User
                                 </button>
@@ -622,7 +622,7 @@ function showModal(){
 function showModalLokasi(){
         $('#modalLokasiKecamatan').modal('show');
 }
-function showModal(){
+function showModalUser(){
         $('#modalFormUser').modal('show');
 }
 </script>

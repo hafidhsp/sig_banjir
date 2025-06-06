@@ -1627,7 +1627,7 @@
                 }, 500);
             });
 
-                        window.addEventListener('open-modal-validation-ubah-status-penanganan', function(event) {
+            window.addEventListener('open-modal-validation-ubah-status-penanganan', function(event) {
                 let id_penanganan = event.__livewire.params[0].id_penanganan;
                 let status_penanganan = event.__livewire.params[0].status_penanganan;
                 Swal.fire({

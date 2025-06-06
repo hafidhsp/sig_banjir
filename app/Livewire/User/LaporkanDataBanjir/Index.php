@@ -77,6 +77,8 @@ class Index extends Component
             $data_penanganan,
             $status_penanganan,
             $idbuktiGambar,
+            $detailNamaKepala,
+            $jalan_daerah_banjir_catatan_kepala,
             $buktiGambar
         ;
 
@@ -722,7 +724,7 @@ class Index extends Component
             'anggaran.numeric' => 'Anggaran berisi angka.',
         ]);
             $data = [
-                'id_jalan_daerah_banjir' => $this->id_penanganan,
+                'id_jalan_daerah_banjir' => $this->id_jalan_daerah_banjir_info,
                 'nama_penanganan' => $this->nama_penanganan,
                 'waktu_mulai' => $this->waktu_mulai,
                 'petugas' => $this->nama_petugas,

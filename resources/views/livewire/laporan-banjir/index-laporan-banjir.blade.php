@@ -1304,14 +1304,14 @@
                     } else {
                         Swal.fire("Dibatalkan!", "", "error");
                         setTimeout(function() {
-                            offcanvas.hide();
-                            destroyDataTable('#table_jalan_daerah_banjir');
-                            initializeDataTable('#table_jalan_daerah_banjir');
-                            $('#table_jalan_daerah_banjir').load(window.location.href +
-                                ' #table_jalan_daerah_banjir');
+                            // offcanvas.hide();
+                            destroyDataTable('#table_daerah_banjir');
+                            initializeDataTable('#table_daerah_banjir');
                         }, 100);
                         setTimeout(function() {
-                            offcanvas.show();
+                            $('#table_daerah_banjir').load(window.location.href +
+                                ' #table_aerah_banjir');
+                            // offcanvas.show();
                         }, 300);
                     }
                 });
@@ -1338,14 +1338,14 @@
                     } else {
                         Swal.fire("Dibatalkan!", "", "error");
                         setTimeout(function() {
-                            offcanvas.hide();
-                            destroyDataTable('#table_jalan_daerah_banjir');
-                            initializeDataTable('#table_jalan_daerah_banjir');
-                            $('#table_jalan_daerah_banjir').load(window.location.href +
-                                ' #table_jalan_daerah_banjir');
+                            // offcanvas.hide();
+                            destroyDataTable('#table_daerah_banjir');
+                            initializeDataTable('#table_daerah_banjir');
                         }, 100);
                         setTimeout(function() {
-                            offcanvas.show();
+                            $('#table_daerah_banjir').load(window.location.href +
+                                ' #table_daerah_banjir');
+                            // offcanvas.show();
                         }, 300);
                     }
                 });
@@ -1552,7 +1552,7 @@
             });
             window.addEventListener('render-canvas-utama', function() {
                 setTimeout(function() {
-                    offcanvas.hide();
+                    // offcanvas.hide();
                     offcanvas2.hide();
                     offcanvas3.hide();
                     offcanvas4.hide();

@@ -49,6 +49,9 @@ class Index extends Component
             $displayjalan,
             $long_atitude,
             $la_atitude,
+            $detailNamaKepala,
+            $jalan_daerah_banjir_catatan_kepala,
+            $data_penanganan,
             $warna_radius
            ;
 
@@ -60,6 +63,7 @@ class Index extends Component
         $this->tanggal_awal = Carbon::now()->format('Y-m-d');
         $this->tanggal_akhir = Carbon::now()->format('Y-m-d');
         $this->data_daerah_banjir = [];
+        $this->data_penanganan = [];
         $this->data_jalan_daerah_banjir = [];
         $this->id_daerah_banjir_jalan = '';
         $this->detailNamaKecamatan = '';
@@ -247,6 +251,7 @@ class Index extends Component
         $this->data_penanganan = M_penanganan::where('id_jalan_daerah_banjir',$id_jalan_daerah_banjir)
                                 ->orderBy('created_at', 'Desc')
                                 ->get();
+        // dd($this->data_penanganan);
         $this->dispatch('open-canvas-detail-jalan-daerah-banjir');
         $detail = [
                     'Latitude'=> $data__jalan_daerah_banjir->la_atitude??null,
