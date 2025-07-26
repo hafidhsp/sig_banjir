@@ -9,7 +9,7 @@
                         </div>
                         <form wire:submit.prevent="tambah_akun" class="login-form">
                             <div class="d-flex align-items-center justify-content-center p-3">
-                                <h2 class="heading-section text-login fw-bold">Masuk</h2>
+                                <h2 class="heading-section text-login fw-bold">Daftar Akun</h2>
                             </div>
                             @if (session('error'))
                                 <div class="alert alert-warning" role="alert">
@@ -35,8 +35,12 @@
                             </div>
                             <div class="form-group">
                                 <input type="password"
-                                    class="form-control rounded-left  @error('email') is-invalid @enderror"
-                                    wire:model.defer="password" placeholder="Password" name="password" required>
+                                    class="form-control rounded-left  @error('password') is-invalid @enderror"
+                                    wire:model.defer="password" placeholder="Password" name="password" id="password" required>
+                                <span class="position-absolute" onclick="togglePassword()"
+                                    style="top: 50%; right: 10px; transform: translateY(-50%); cursor: pointer;">
+                                    <i id="toggleIcon" class="fas fa-eye"></i>
+                                </span>
                                 @error('password')
                                     <label class="text-danger">{{ $message }}</label>
                                 @enderror
@@ -59,3 +63,27 @@
         </div>
     </section>
 </div>
+
+@push('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        window.togglePassword = function () {
+            const input = document.getElementById("password");
+            const icon = document.getElementById("toggleIcon");
+
+            if (!input) return console.error("Password input not found");
+
+            if (input.type === "password") {
+                input.type = "text";
+                icon.classList.remove("fa-eye");
+                icon.classList.add("fa-eye-slash");
+            } else {
+                input.type = "password";
+                icon.classList.remove("fa-eye-slash");
+                icon.classList.add("fa-eye");
+            }
+        }
+    });
+</script>
+@endpush
+

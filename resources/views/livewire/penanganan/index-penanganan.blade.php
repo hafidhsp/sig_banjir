@@ -1,5 +1,5 @@
 <div>
-        <div class="content-wrapper">
+    <div class="content-wrapper">
         <div class="col-lg-12 grid-margin stretch-card">
             <div class="card">
                 <div class="card-header row">
@@ -140,7 +140,7 @@
                         <div class="form-group">
                             <label>Nama Penanganan</label>
                             <input type="text" class="form-control @error('nama_penanganan') is-invalid @enderror"
-                                wire:model.defer="nama_penanganan" placeholder="Masukkan Nama Penanganan" required>
+                                wire:model.defer="nama_penanganan" placeholder="Masukkan Nama Penanganan" oninput="filterLettersOnly(this)" required>
                             @error('nama_penanganan')
                                 <label class="text-danger">{{ $message }}</label>
                             @enderror
@@ -173,7 +173,7 @@
                             <div class="form-group col-4">
                                 <label>Nama Petugas</label>
                                 <input type="text"
-                                    class="form-control @error('nama_petugas') is-invalid @enderror"
+                                    class="form-control @error('nama_petugas') is-invalid @enderror" oninput="filterLettersOnly(this)"
                                     wire:model.defer="nama_petugas" placeholder="Masukkan Nama Petugas" required>
                                 @error('nama_petugas')
                                     <label class="text-danger">{{ $message }}</label>

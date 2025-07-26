@@ -91,8 +91,9 @@
                         @enderror
                     </div>
                     <div class="form-group">
-                        <label >Nama Lengkap</label>
-                        <input type="text" class="form-control  @error('nama_lengkap_user') is-invalid @enderror" wire:model.defer="nama_lengkap_user" placeholder="Nama Lengkap" required>
+                        <label >Nama Lengka</label>
+                        <input type="text" class="form-control  @error('nama_lengkap_user') is-invalid @enderror" wire:model.defer="nama_lengkap_user" placeholder="Nama Lengkap"
+                        oninput="filterLettersOnly(this)" required>
                         @error('nama_lengkap_user')
                             <label class="text-danger">{{ $message }}</label>
                         @enderror
@@ -111,6 +112,11 @@
                     <div class="form-group">
                         <label >Password</label>
                         <input type="password" class="form-control @error('password_user') is-invalid @enderror" placeholder="Password" wire:model.defer="password_user">
+                        <span class="position-absolute"
+                            onclick="togglePassword('password_user', 'toggleIconPassword')"
+                            style="top: 50%; right: 10px; transform: translateY(-50%); cursor: pointer;">
+                            <i id="toggleIconPassword" class="fas fa-eye"></i>
+                        </span>
                         @error('password_user')
                             <label class="text-danger">{{ $message }}</label>
                         @enderror
@@ -118,6 +124,11 @@
                     <div class="form-group">
                         <label >Ulangi Password</label>
                         <input type="password" class="form-control @error('confirm_password_user') is-invalid @enderror" placeholder="Password" wire:model.defer="confirm_password_user">
+                        <span class="position-absolute"
+                            onclick="togglePassword('confirm_password_user', 'toggleIconConfirm')"
+                            style="top: 50%; right: 10px; transform: translateY(-50%); cursor: pointer;">
+                            <i id="toggleIconConfirm" class="fas fa-eye"></i>
+                        </span>
                         @error('confirm_password_user')
                             <label class="text-danger">{{ $message }}</label>
                         @enderror
@@ -211,6 +222,23 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function showModal(){
         $('#modalFormUser').modal('show');
+}
+
+function togglePassword(inputId, iconId) {
+    const input = document.getElementById(inputId);
+    const icon = document.getElementById(iconId);
+
+    if (!input) return;
+
+    if (input.type === "password") {
+        input.type = "text";
+        icon.classList.remove("fa-eye");
+        icon.classList.add("fa-eye-slash");
+    } else {
+        input.type = "password";
+        icon.classList.remove("fa-eye-slash");
+        icon.classList.add("fa-eye");
+    }
 }
 
 </script>

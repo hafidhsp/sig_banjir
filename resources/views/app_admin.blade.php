@@ -640,6 +640,24 @@
         });
 
 
+
+    function filterLettersOnly(input) {
+        input.value = input.value.replace(/[^a-zA-Z\s]/g, '');
+    }
+
+    function filterLatLong(input) {
+        input.value = input.value
+            .replace(/[^0-9.\-]/g, '')
+            .replace(/(\..*?)\..*/g, '$1')
+            .replace(/(?!^)-/g, '');
+    }
+
+
+    function filterNumbersOnly(input) {
+        input.value = input.value.replace(/[^0-9]/g, '');
+    }
+
+
 </script>
     @stack('scripts')
 

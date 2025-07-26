@@ -157,7 +157,8 @@
                     </div>
                     <div class="form-group">
                         <label >Nama Penanggulangan</label>
-                        <input type="text" class="form-control @error('nama_penanggulangan') is-invalid @enderror" wire:model.defer="nama_penanggulangan" placeholder="Masukkan Nama Penanggulangan" required>
+                        <input type="text" class="form-control @error('nama_penanggulangan') is-invalid @enderror" wire:model.defer="nama_penanggulangan" placeholder="Masukkan Nama Penanggulangan"
+                        oninput="filterLettersOnly(this)" required>
                         @error('nama_penanggulangan')
                             <label class="text-danger">{{ $message }}</label>
                         @enderror
@@ -429,6 +430,7 @@
         enableTime: true,
         time_24hr: true,
         dateFormat: "Y-m-d H:i",
+        maxDate: "today",
         onChange: function(selectedDates, dateStr) {
             @this.set('waktu_mulai', dateStr);
         }
@@ -436,6 +438,7 @@
     flatpickr("#waktu_selesai", {
         enableTime: true,
         time_24hr: true,
+        maxDate: "today",
         dateFormat: "Y-m-d H:i",
         onChange: function(selectedDates, dateStr) {
             @this.set('waktu_mulai', dateStr);

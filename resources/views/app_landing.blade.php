@@ -50,8 +50,8 @@
     <script src="{{ asset('asset_landing/assets/js/util.js') }}"></script>
     <script src="{{ asset('asset_landing/assets/js/main.js') }}"></script>
 
-
     @stack('scripts')
+
     @livewireScripts
 
 </body>

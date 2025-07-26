@@ -158,7 +158,7 @@
                         <div class="form-group">
                             <label>Nama Pemberi Informasi</label>
                             <input type="text"
-                                class="form-control @error('nama_pemberi_informasi') is-invalid @enderror"
+                                class="form-control @error('nama_pemberi_informasi') is-invalid @enderror" oninput="filterLettersOnly(this)"
                                 wire:model.defer="nama_pemberi_informasi" placeholder="Masukkan Nama Penanggulangan"
                                 required>
                             @error('nama_pemberi_informasi')
@@ -349,7 +349,7 @@
                 <div class="form-group">
                     <label>Nama Pemberi Informasi</label>
                     <input type="text"
-                        class="form-control @error('nama_pemberi_informasi') is-invalid @enderror"
+                        class="form-control @error('nama_pemberi_informasi') is-invalid @enderror" oninput="filterLettersOnly(this)"
                         wire:model.defer="nama_pemberi_informasi" placeholder="Masukkan Nama"
                         required>
                     @error('nama_pemberi_informasi')
@@ -369,7 +369,8 @@
                     <div class="col-6">
                         <label class="form-label fw-bold">Nomor Jalan</label>
                         <input type="text" class="form-control  @error('nomor_jalan') is-invalid @enderror"
-                            wire:model.defer="nomor_jalan" placeholder="Masukkan Nomor">
+                            wire:model.defer="nomor_jalan" placeholder="Masukkan Nomor"
+                            oninput="filterNumbersOnly(this)">
                         @error('nomor_jalan')
                             <label class="text-danger">{{ $message }}</label>
                         @enderror
@@ -406,7 +407,8 @@
                         <div class="form-group">
                             <label class="form-label fw-bold">Latitude</label>
                             <input type="text" class="form-control @error('la_atitude') is-invalid @enderror"
-                                wire:model.defer="la_atitude" placeholder="Masukkan Latitude" required>
+                                wire:model.defer="la_atitude" placeholder="Masukkan Latitude"
+                                oninput="filterLatLong(this)" required>
                             @error('la_atitude')
                                 <label class="text-danger">{{ $message }}</label>
                             @enderror
@@ -416,7 +418,8 @@
                         <div class="form-group">
                             <label class="form-label fw-bold">Longatitude</label>
                             <input type="text" class="form-control @error('long_atitude') is-invalid @enderror"
-                                wire:model.defer="long_atitude" placeholder="Masukkan Longtitude" required>
+                                wire:model.defer="long_atitude" placeholder="Masukkan Longtitude"
+                                oninput="filterLatLong(this)" required>
                             @error('long_atitude')
                                 <label class="text-danger">{{ $message }}</label>
                             @enderror
@@ -869,7 +872,8 @@
                         <div class="form-group">
                             <label>Nama Penanganan</label>
                             <input type="text" class="form-control @error('nama_penanganan') is-invalid @enderror"
-                                wire:model.defer="nama_penanganan" placeholder="Masukkan Nama Penanganan" required>
+                                wire:model.defer="nama_penanganan" placeholder="Masukkan Nama Penanganan"
+                                 required>
                             @error('nama_penanganan')
                                 <label class="text-danger">{{ $message }}</label>
                             @enderror
@@ -903,7 +907,8 @@
                                 <label>Nama Petugas</label>
                                 <input type="text"
                                     class="form-control @error('nama_petugas') is-invalid @enderror"
-                                    wire:model.defer="nama_petugas" placeholder="Masukkan Nama Petugas" required>
+                                    wire:model.defer="nama_petugas" placeholder="Masukkan Nama Petugas"
+                                    oninput="filterLettersOnly(this)" required>
                                 @error('nama_petugas')
                                     <label class="text-danger">{{ $message }}</label>
                                 @enderror
@@ -1054,6 +1059,7 @@
             enableTime: true,
             time_24hr: true,
             dateFormat: "Y-m-d H:i",
+            maxDate: "today",
             onChange: function(selectedDates, dateStr) {
                 @this.set('waktu_mulai', dateStr);
             }
@@ -1062,6 +1068,7 @@
             enableTime: true,
             time_24hr: true,
             dateFormat: "Y-m-d H:i",
+            maxDate: "today",
             onChange: function(selectedDates, dateStr) {
                 @this.set('waktu_selesai', dateStr);
             }

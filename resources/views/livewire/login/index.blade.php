@@ -38,6 +38,10 @@
                                 <input id="password" type="password" wire:model.defer="password" name="password"
                                     class="form-control rounded-left @error('password') is-invalid @enderror"
                                     placeholder="Password" required>
+                                <span class="position-absolute" onclick="togglePassword()"
+                                    style="top: 50%; right: 10px; transform: translateY(-50%); cursor: pointer;">
+                                    <i id="toggleIcon" class="fas fa-eye"></i>
+                                </span>
                                 @error('password')
                                     <label class="text-danger">{{ $message }}</label>
                                 @enderror
@@ -61,11 +65,25 @@
     </section>
 
 @push('scripts')
-
     <script>
         const emailInput = document.getElementById('email');
         if (emailInput) {
             emailInput.focus();
+        }
+
+        function togglePassword() {
+            const input = document.getElementById("password");
+            const icon = document.getElementById("toggleIcon");
+
+            if (input.type === "password") {
+                input.type = "text";
+                icon.classList.remove("fa-eye");
+                icon.classList.add("fa-eye-slash");
+            } else {
+                input.type = "password";
+                icon.classList.remove("fa-eye-slash");
+                icon.classList.add("fa-eye");
+            }
         }
     </script>
 @endpush

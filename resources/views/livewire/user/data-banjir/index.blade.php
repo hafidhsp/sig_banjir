@@ -592,6 +592,7 @@
                 enableTime: false,
                 time_24hr: false,
                 dateFormat: "Y-m-d",
+                maxDate: "today",
                 onChange: function(selectedDates, dateStr) {
                     @this.set('tanggal_awal', dateStr);
                 }
@@ -600,6 +601,7 @@
                 enableTime: false,
                 time_24hr: false,
                 dateFormat: "Y-m-d",
+                maxDate: "today",
                 onChange: function(selectedDates, dateStr) {
                     @this.set('tanggal_akhir', dateStr);
                 }

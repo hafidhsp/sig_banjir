@@ -407,7 +407,7 @@
                             <label>Warna Radius</label>
                             <select class="form-control @error('warna_radius') is-invalid @enderror"
                                 id="exampleFormControlSelect2" wire:model.defer="warna_radius"
-                                onchange="changeBackgroundColor(this)" required>
+                                onchange="changeBackgroundColor(this)" oninput="filterLettersOnly(this)" required>
                                 <option value="" class="bg-white text-dark" selected>-- Pilih --</option>
                                 <option value="blue" class="bg-primary text-white">Default</option>
                                 <option value="green" class="bg-success text-white">Normal</option>
