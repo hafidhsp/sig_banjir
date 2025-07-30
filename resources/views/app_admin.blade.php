@@ -11,8 +11,10 @@
     <!-- base:css -->
     <link rel="stylesheet" href="{{ asset('vendors/mdi/css/materialdesignicons.min.css') }}">
     <link rel="stylesheet" href="{{ asset('vendors/css/vendor.bundle.base.css') }}">
-    {{-- <link href="{{ asset('cdn/css/bootstrap.min.css') }}" rel="stylesheet"> --}}
-    {{-- <link href="{{ asset('scss/custom.scss') }}" rel="stylesheet"> --}}
+    {{--
+    <link href="{{ asset('cdn/css/bootstrap.min.css') }}" rel="stylesheet"> --}}
+    {{--
+    <link href="{{ asset('scss/custom.scss') }}" rel="stylesheet"> --}}
 
     <!-- endinject -->
     <!-- plugin css for this page -->
@@ -20,7 +22,8 @@
     <!-- inject:css -->
     <link rel="stylesheet" href="{{ asset('css3/style.css') }}">
     <!-- endinject -->
-    {{-- <link rel="shortcut icon" href="images/favicon.png" /> --}}
+    {{--
+    <link rel="shortcut icon" href="images/favicon.png" /> --}}
 
     {{-- datatables --}}
     <link href="{{ asset('ajax/twitter-bootstrap/5.3.0/css/bootstrap.min.css') }}" rel="stylesheet">
@@ -29,39 +32,39 @@
 
     {{-- alertify --}}
     <!-- CSS -->
-    <link rel="stylesheet" href="{{ asset('alertify/css/alertify.min.css') }}"/>
+    <link rel="stylesheet" href="{{ asset('alertify/css/alertify.min.css') }}" />
     <!-- Default theme -->
-    <link rel="stylesheet" href="{{ asset('alertify/css/themes/default.min.css') }}"/>
+    <link rel="stylesheet" href="{{ asset('alertify/css/themes/default.min.css') }}" />
     <!-- Semantic UI theme -->
-    <link rel="stylesheet" href="{{ asset('alertify/css/themes/semantic.min.css') }}"/>
+    <link rel="stylesheet" href="{{ asset('alertify/css/themes/semantic.min.css') }}" />
     <!-- Bootstrap theme -->
-    <link rel="stylesheet" href="{{ asset('alertify/css/themes/bootstrap.min.css') }}"/>
+    <link rel="stylesheet" href="{{ asset('alertify/css/themes/bootstrap.min.css') }}" />
     {{-- FA Icon --}}
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 
     {{-- select option --}}
-    <link
-    rel="stylesheet"
-    href="{{ asset('choiceJs/choices.min.css') }}"
-    />
+    <link rel="stylesheet" href="{{ asset('choiceJs/choices.min.css') }}" />
     {{-- date timepicker --}}
-    <link rel="stylesheet" href="{{ asset('bootstrap-date-time-picker/bootstrap5/css/bootstrap-datetimepicker.css') }}" />
-    <link rel="stylesheet" href="{{ asset('bootstrap-date-time-picker/bootstrap5/css/bootstrap-datetimepicker.min.css') }}" />
+    <link rel="stylesheet"
+        href="{{ asset('bootstrap-date-time-picker/bootstrap5/css/bootstrap-datetimepicker.css') }}" />
+    <link rel="stylesheet"
+        href="{{ asset('bootstrap-date-time-picker/bootstrap5/css/bootstrap-datetimepicker.min.css') }}" />
 
-    {{-- <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"> --}}
-    {{-- <link rel="stylesheet" href="{{ asset('leaflet/leaflet.css') }}" /> --}}
+    {{--
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"> --}}
+    {{--
+    <link rel="stylesheet" href="{{ asset('leaflet/leaflet.css') }}" /> --}}
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
-        crossorigin=""/>
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
 
 
     {{-- <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script> --}}
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-        crossorigin=""></script>
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
     {{--
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/fontawesome.min.css"> --}}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/fontawesome.min.css">
+    --}}
 
     {{-- Flat Picker --}}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
@@ -73,6 +76,7 @@
         .clickable-cell {
             cursor: pointer;
         }
+
         .btn-close-custom {
             position: absolute;
             top: 0px;
@@ -84,6 +88,7 @@
             cursor: pointer;
             border-radius: 10%;
         }
+
         .btn-close-custom-start {
             position: absolute;
             left: -30px;
@@ -96,10 +101,11 @@
             cursor: pointer;
             border-radius: 10%;
         }
+
         .offcanvas-scroll {
-        max-height: 100vh;
-        overflow-y: auto;
-        padding-bottom: 20px;
+            max-height: 100vh;
+            overflow-y: auto;
+            padding-bottom: 20px;
         }
 
         .btn-secondary-custom {
@@ -133,13 +139,15 @@
 
 
         .bg-secondary-container {
-        background-color: rgba(108, 117, 125, 0.5) !important;
-        padding: 0 !important;
-        border: none !important;
-        margin-top: -1px;
+            background-color: rgba(108, 117, 125, 0.5) !important;
+            padding: 0 !important;
+            border: none !important;
+            margin-top: -1px;
         }
 
-        #map { height: 60vh; }
+        #map {
+            height: 60vh;
+        }
 
         .icon-option {
             display: flex;
@@ -161,7 +169,7 @@
             color: #111111;
         }
 
-        .icon-option input:checked + i {
+        .icon-option input:checked+i {
             color: #007bff;
             font-weight: bold;
         }
@@ -196,7 +204,6 @@
             padding: .375rem .75rem;
             background-color: #fff;
         }
-
     </style>
 
     @livewireStyles
@@ -233,8 +240,11 @@
     <!-- base:js -->
     <script src="{{ asset('vendors/js/vendor.bundle.base.js') }}"></script>
     {{-- <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script> --}}
-    {{-- <script src="https://cdn.datatables.net/v/bs5/jq-3.7.0/dt-2.2.1/af-2.7.0/cr-2.0.4/date-1.5.5/fc-5.0.4/fh-4.0.1/kt-2.12.1/r-3.0.3/rg-1.5.1/rr-1.5.0/sc-2.4.3/sb-1.8.1/sp-2.3.3/sl-3.0.0/sr-1.4.1/datatables.min.js"></script> --}}
-    {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script> --}}
+    {{-- <script
+        src="https://cdn.datatables.net/v/bs5/jq-3.7.0/dt-2.2.1/af-2.7.0/cr-2.0.4/date-1.5.5/fc-5.0.4/fh-4.0.1/kt-2.12.1/r-3.0.3/rg-1.5.1/rr-1.5.0/sc-2.4.3/sb-1.8.1/sp-2.3.3/sl-3.0.0/sr-1.4.1/datatables.min.js">
+    </script> --}}
+    {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js">
+    </script> --}}
     {{-- <script>
         var jQuery360 = $.noConflict(true); // Simpan versi jQuery yang lebih baru
     </script> --}}
@@ -259,7 +269,9 @@
     <script src="{{ asset('alertify/alertify.min.js') }}"></script>
     <script src="{{ asset('alertify/alertify.js') }}"></script>
     <!-- End custom js for this page-->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
+    </script>
 
     {{-- alertify --}}
     <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/alertify.min.js"></script>
@@ -267,7 +279,8 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-    {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script> --}}
+    {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js">
+    </script> --}}
     <script src="https://cdn.datatables.net/2.0.2/js/dataTables.js"></script>
     <script src="https://cdn.datatables.net/2.0.2/js/dataTables.bootstrap5.js"></script>
 
@@ -276,7 +289,7 @@
 
 
     {{-- date timepicker --}}
-    <script src="{{ asset('bootstrap-date-time-picker/bootstrap5/js/bootstrap-datetimepicker.js') }}" > </script>
+    <script src="{{ asset('bootstrap-date-time-picker/bootstrap5/js/bootstrap-datetimepicker.js') }}"> </script>
     <script src="{{ asset('bootstrap-date-time-picker/bootstrap5/js/bootstrap-datetimepicker.min.js') }}"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js"></script>
@@ -294,8 +307,8 @@
 
 
 
-<script>
-    function initializeDataTable(tableSelector) {
+    <script>
+        function initializeDataTable(tableSelector) {
         // $(tableSelector).DataTable().ajax.reload();
         $(tableSelector).DataTable({
             ordering: true,
@@ -658,7 +671,7 @@
     }
 
 
-</script>
+    </script>
     @stack('scripts')
 
     @livewireScripts

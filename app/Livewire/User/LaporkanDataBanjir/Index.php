@@ -348,6 +348,7 @@ class Index extends Component
                 // Start Revisi Merge
                 'kecamatan_daerah_banjir' => 'required|exists:tb_kecamatan,id_kecamatan',
                 'nama_pemberi_informasi' => 'required|regex:/^[a-zA-Z\s]+$/',
+                'bukti_foto' => 'required|array',
                 // End Revisi Merge
             ], [
                 'nama_jalan.required' => 'Nama Jalan harus diisi.',
@@ -375,6 +376,7 @@ class Index extends Component
                 'kecamatan_daerah_banjir.exist' => 'Kecamatan tidak ditemukan.',
                 'nama_pemberi_informasi.required' => 'Nama pemberi informasi harus diisi.',
                 'nama_pemberi_informasi.regex' => 'Nama pemberi informasi berisi huruf.',
+                'bukti_foto.required' => 'Minimal 1 foto harus diunggah.',
                 // End Revisi Merge
             ]);
             $data_jalan_daerah_banjir = M_jalan_daerah_banjir::where('id_jalan_daerah_banjir',$this->id_jalan_daerah_banjir)->first();
@@ -458,6 +460,7 @@ class Index extends Component
                 // Start Revisi Merge
                 'kecamatan_daerah_banjir' => 'required|exists:tb_kecamatan,id_kecamatan',
                 'nama_pemberi_informasi' => 'required|regex:/^[a-zA-Z\s]+$/',
+                'bukti_foto' => 'required|array',
                 // End Revisi Merge
             ], [
                 'nama_jalan.required' => 'Nama Jalan harus diisi.',
@@ -484,6 +487,7 @@ class Index extends Component
                 'kecamatan_daerah_banjir.exist' => 'Kecamatan tidak ditemukan.',
                 'nama_pemberi_informasi.required' => 'Nama pemberi informasi harus diisi.',
                 'nama_pemberi_informasi.regex' => 'Nama pemberi informasi berisi huruf.',
+                'bukti_foto.required' => 'Minimal 1 foto harus diunggah.',
                 // End Revisi Merge
             ]);
             $data = [

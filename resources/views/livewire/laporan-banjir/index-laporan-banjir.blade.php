@@ -49,64 +49,65 @@
                             <tbody>
 
                                 @foreach ($data_jalan_daerah_banjir as $daerah_banjir)
-                                    <tr>
-                                        <td class="text-center clickable-cell"
-                                            wire:click="detailJalanDaerahBanjir('{{ $daerah_banjir->id_jalan_daerah_banjir }}')">
-                                            {{ $no++ }}
-                                        </td>
-                                        <td class="clickable-cell"
-                                            wire:click="detailJalanDaerahBanjir('{{ $daerah_banjir->id_jalan_daerah_banjir }}')">
-                                            {{ $daerah_banjir->nama_kecamatan }}
-                                        </td>
-                                        <td class="clickable-cell"
-                                            wire:click="detailJalanDaerahBanjir('{{ $daerah_banjir->id_jalan_daerah_banjir }}')">
-                                            {{ $daerah_banjir->pemberi_informasi }}
-                                        </td>
-                                        <td class="clickable-cell"
-                                            wire:click="detailJalanDaerahBanjir('{{ $daerah_banjir->id_jalan_daerah_banjir }}')">
-                                            {{ 'Jl. '.$daerah_banjir->nama_jalan .' No.'.$daerah_banjir->nomor_jalan}}
-                                        </td>
-                                        <td class="clickable-cell text-center"
-                                            wire:click="detailJalanDaerahBanjir('{{ $daerah_banjir->id_jalan_daerah_banjir }}')">
+                                <tr>
+                                    <td class="text-center clickable-cell"
+                                        wire:click="detailJalanDaerahBanjir('{{ $daerah_banjir->id_jalan_daerah_banjir }}')">
+                                        {{ $no++ }}
+                                    </td>
+                                    <td class="clickable-cell"
+                                        wire:click="detailJalanDaerahBanjir('{{ $daerah_banjir->id_jalan_daerah_banjir }}')">
+                                        {{ $daerah_banjir->nama_kecamatan }}
+                                    </td>
+                                    <td class="clickable-cell"
+                                        wire:click="detailJalanDaerahBanjir('{{ $daerah_banjir->id_jalan_daerah_banjir }}')">
+                                        {{ $daerah_banjir->pemberi_informasi }}
+                                    </td>
+                                    <td class="clickable-cell"
+                                        wire:click="detailJalanDaerahBanjir('{{ $daerah_banjir->id_jalan_daerah_banjir }}')">
+                                        {{ 'Jl. '.$daerah_banjir->nama_jalan .' No.'.$daerah_banjir->nomor_jalan}}
+                                    </td>
+                                    <td class="clickable-cell text-center"
+                                        wire:click="detailJalanDaerahBanjir('{{ $daerah_banjir->id_jalan_daerah_banjir }}')">
 
-                                            {{ $daerah_banjir->tb_jalan_daerah_banjir }}
-                                            {{ $daerah_banjir->waktu_mulai->translatedFormat('d F Y') }}
+                                        {{ $daerah_banjir->tb_jalan_daerah_banjir }}
+                                        {{ $daerah_banjir->waktu_mulai->translatedFormat('d F Y') }}
 
-                                            @if ($daerah_banjir->waktu_selesai)
-                                                {{ $daerah_banjir->waktu_selesai->translatedFormat('d F Y') }}
-                                            @else
-                                                -
-                                            @endif
+                                        @if ($daerah_banjir->waktu_selesai)
+                                        {{ $daerah_banjir->waktu_selesai->translatedFormat('d F Y') }}
+                                        @else
+                                        -
+                                        @endif
 
-                                        </td>
-                                        <td align="center">
-                                            <div class="btn-group">
-                                                <button type="button"
-                                                    class="btn  {{ $daerah_banjir->konfirmasi_st == 1 ? ' btn-outline-success' : ' btn-outline-danger' }} btn-icon-text"
-                                                    wire:click="showKonfirmasiJalanDaerahBanjir({{ $daerah_banjir->id_jalan_daerah_banjir }})">
-                                                    <i
-                                                        class="mdi  {{ $daerah_banjir->konfirmasi_st == 1 ? 'mdi-check-circle-outline' : 'mdi-close-circle-outline' }}"></i>
-                                                    {{ $daerah_banjir->konfirmasi_st == 1 ? 'Terkonfirmasi' : 'Belum Terkonfirmasi' }}
-                                                </button>
+                                    </td>
+                                    <td align="center">
+                                        <div class="btn-group">
+                                            <button type="button"
+                                                class="btn  {{ $daerah_banjir->konfirmasi_st == 1 ? ' btn-outline-success' : ' btn-outline-danger' }} btn-icon-text"
+                                                wire:click="showKonfirmasiJalanDaerahBanjir({{ $daerah_banjir->id_jalan_daerah_banjir }})">
+                                                <i
+                                                    class="mdi  {{ $daerah_banjir->konfirmasi_st == 1 ? 'mdi-check-circle-outline' : 'mdi-close-circle-outline' }}"></i>
+                                                {{ $daerah_banjir->konfirmasi_st == 1 ? 'Terkonfirmasi' : 'Belum
+                                                Terkonfirmasi' }}
+                                            </button>
+                                        </div>
+                                    </td>
+                                    <td align="center">
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-outline-secondary dropdown-toggle"
+                                                data-toggle="dropdown" aria-expanded="false"><i
+                                                    class="bi bi-hand-index-thumb"></i> Aksi</button>
+                                            <div class="dropdown-menu" x-placement="top-start"
+                                                style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, -104px, 0px);">
+                                                <button type="button" class="dropdown-item text-danger"
+                                                    wire:click="show_delete_jalan_daerah_banjir('{{ $daerah_banjir->id_jalan_daerah_banjir }}')"><i
+                                                        class="bi bi-trash3"></i> Hapus</button>
+                                                <button type="button" class="dropdown-item text-primary"
+                                                    wire:click="showFormJalanDaerahBanjir({{ $daerah_banjir->id_jalan_daerah_banjir }})"><i
+                                                        class="bi bi-pencil-square"></i> Ubah</button>
                                             </div>
-                                        </td>
-                                        <td align="center">
-                                            <div class="btn-group">
-                                                <button type="button" class="btn btn-outline-secondary dropdown-toggle"
-                                                    data-toggle="dropdown" aria-expanded="false"><i
-                                                        class="bi bi-hand-index-thumb"></i> Aksi</button>
-                                                <div class="dropdown-menu" x-placement="top-start"
-                                                    style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, -104px, 0px);">
-                                                    <button type="button" class="dropdown-item text-danger"
-                                                        wire:click="show_delete_jalan_daerah_banjir('{{ $daerah_banjir->id_jalan_daerah_banjir }}')"><i
-                                                            class="bi bi-trash3"></i> Hapus</button>
-                                                    <button type="button" class="dropdown-item text-primary"
-                                                        wire:click="showFormJalanDaerahBanjir({{ $daerah_banjir->id_jalan_daerah_banjir }})"><i
-                                                            class="bi bi-pencil-square"></i> Ubah</button>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
+                                        </div>
+                                    </td>
+                                </tr>
                                 @endforeach
                             </tbody>
                         </table>
@@ -133,14 +134,14 @@
                     <form class="forms-sample" wire:submit.prevent="save_laporan_banjir_pertama"
                         enctype="multipart/form-data">
                         @if (session('error'))
-                            <div class="alert alert-warning" role="alert">
-                                {{ session('error') }}
-                            </div>
+                        <div class="alert alert-warning" role="alert">
+                            {{ session('error') }}
+                        </div>
                         @endif
                         @if (session('success'))
-                            <div class="alert alert-success" role="alert">
-                                {{ session('success') }}
-                            </div>
+                        <div class="alert alert-success" role="alert">
+                            {{ session('success') }}
+                        </div>
                         @endif
                         <div class="form-group">
                             <input type="text" class="form-control " wire:model.defer="id_daerah_banjir" hidden>
@@ -149,22 +150,22 @@
                                 id="kecamatanChoices" wire:model.defer="kecamatan_daerah_banjir" required>
                                 <option value="" class="bg-white text-dark" selected>-- Pilih --</option>
                                 @foreach ($data_kecamatan as $kecamatan)
-                                    <option value="{{ $kecamatan->id_kecamatan }}" class="form-control">
-                                        {{ $kecamatan->nama_kecamatan }}</option>
+                                <option value="{{ $kecamatan->id_kecamatan }}" class="form-control">
+                                    {{ $kecamatan->nama_kecamatan }}</option>
                                 @endforeach
                             </select>
                             @error('kecamatan_daerah_banjir')
-                                <label class="text-danger">{{ $message }}</label>
+                            <label class="text-danger">{{ $message }}</label>
                             @enderror
                         </div>
                         <div class="form-group">
                             <label>Nama Pemberi Informasi</label>
                             <input type="text"
                                 class="form-control @error('nama_pemberi_informasi') is-invalid @enderror"
-                                wire:model.defer="nama_pemberi_informasi" placeholder="Masukkan Nama Penanggulangan" oninput="filterLettersOnly(this)"
-                                required>
+                                wire:model.defer="nama_pemberi_informasi" placeholder="Masukkan Nama Penanggulangan"
+                                oninput="filterLettersOnly(this)" required>
                             @error('nama_pemberi_informasi')
-                                <label class="text-danger">{{ $message }}</label>
+                            <label class="text-danger">{{ $message }}</label>
                             @enderror
                         </div>
                 </div>
@@ -243,66 +244,71 @@
                     </thead>
                     <tbody>
                         @php
-                            $no_1 = 1;
+                        $no_1 = 1;
                         @endphp
 
                         @if (empty($data_jalan_daerah_banjir))
-                            <tr>
-                                <td colspan="4" class="text-center text-muted">Data tidak ada</td>
-                                <td class="d-none"></td>
-                                <td class="d-none"></td>
-                                <td class="d-none"></td>
-                            </tr>
+                        <tr>
+                            <td colspan="4" class="text-center text-muted">Data tidak ada</td>
+                            <td class="d-none"></td>
+                            <td class="d-none"></td>
+                            <td class="d-none"></td>
+                        </tr>
                         @else
-                            @foreach ($data_jalan_daerah_banjir as $jalan_banjir)
-                                <tr>
-                                    <td class="text-center clickable-cell"
-                                        wire:click="detailJalanDaerahBanjir({{ $jalan_banjir->id_jalan_daerah_banjir }})">
-                                        {{ $no_1 }}
-                                    </td>
-                                    <td class="clickable-cell"
-                                        wire:click="detailJalanDaerahBanjir({{ $jalan_banjir->id_jalan_daerah_banjir }})">
-                                        {{ $jalan_banjir->nama_jalan }}
-                                    </td>
-                                    <td class="clickable-cell"
-                                        wire:click="detailJalanDaerahBanjir({{ $jalan_banjir->id_jalan_daerah_banjir }})">
-                                        {{ $jalan_banjir->tinggi_banjir }}
-                                    </td>
-                                    <td align="center">
-                                        <div class="btn-group">
-                                            <button type="button"
-                                                class="btn  {{ $jalan_banjir->konfirmasi_st == 1 ? ' btn-outline-success' : ' btn-outline-danger' }} btn-icon-text"
-                                                wire:click="showKonfirmasiJalanDaerahBanjir({{ $jalan_banjir->id_jalan_daerah_banjir }})">
-                                                <i
-                                                    class="mdi  {{ $jalan_banjir->konfirmasi_st == 1 ? 'mdi-check-circle-outline' : 'mdi-close-circle-outline' }}"></i>
-                                                {{ $jalan_banjir->konfirmasi_st == 1 ? 'Terkonfirmasi' : 'Belum Terkonfirmasi' }}
-                                            </button>
-                                        </div>
-                                        <div class="btn-group">
-                                            <button type="button" class="btn btn-outline-secondary dropdown-toggle"
-                                                data-toggle="dropdown" aria-expanded="false">
-                                                <i class="bi bi-hand-index-thumb"></i> Aksi
-                                            </button>
-                                            <div class="dropdown-menu" x-placement="top-start">
-                                                <button type="button" class="dropdown-item text-danger"
-                                                    wire:click="show_delete_jalan_daerah_banjir({{ $jalan_banjir->id_jalan_daerah_banjir }})">
-                                                    <i class="bi bi-trash3"></i> Hapus
-                                                </button>
-                                                <button type="button" class="dropdown-item text-primary"
-                                                    wire:click="showFormJalanDaerahBanjir({{ $jalan_banjir->id_jalan_daerah_banjir }})">
-                                                    <i class="bi bi-pencil-square"></i> Ubah
-                                                </button>
-                                                {{-- <button type="button" class="dropdown-item {{ ($jalan_banjir->konfirmasi_st == 0)?'text-info':'text-warning' }}" wire:click="showKonfirmasiJalanDaerahBanjir({{ $jalan_banjir->id_jalan_daerah_banjir }})">
-                                                        <i class="{{ ($jalan_banjir->konfirmasi_st == 0)?'mdi mdi-check-circle-outline':'mdi mdi-close-circle-outline' }}"></i> Konfirmasi
-                                                    </button> --}}
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                                @php
-                                    $no_1++;
-                                @endphp
-                            @endforeach
+                        @foreach ($data_jalan_daerah_banjir as $jalan_banjir)
+                        <tr>
+                            <td class="text-center clickable-cell"
+                                wire:click="detailJalanDaerahBanjir({{ $jalan_banjir->id_jalan_daerah_banjir }})">
+                                {{ $no_1 }}
+                            </td>
+                            <td class="clickable-cell"
+                                wire:click="detailJalanDaerahBanjir({{ $jalan_banjir->id_jalan_daerah_banjir }})">
+                                {{ $jalan_banjir->nama_jalan }}
+                            </td>
+                            <td class="clickable-cell"
+                                wire:click="detailJalanDaerahBanjir({{ $jalan_banjir->id_jalan_daerah_banjir }})">
+                                {{ $jalan_banjir->tinggi_banjir }}
+                            </td>
+                            <td align="center">
+                                <div class="btn-group">
+                                    <button type="button"
+                                        class="btn  {{ $jalan_banjir->konfirmasi_st == 1 ? ' btn-outline-success' : ' btn-outline-danger' }} btn-icon-text"
+                                        wire:click="showKonfirmasiJalanDaerahBanjir({{ $jalan_banjir->id_jalan_daerah_banjir }})">
+                                        <i
+                                            class="mdi  {{ $jalan_banjir->konfirmasi_st == 1 ? 'mdi-check-circle-outline' : 'mdi-close-circle-outline' }}"></i>
+                                        {{ $jalan_banjir->konfirmasi_st == 1 ? 'Terkonfirmasi' : 'Belum Terkonfirmasi'
+                                        }}
+                                    </button>
+                                </div>
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-outline-secondary dropdown-toggle"
+                                        data-toggle="dropdown" aria-expanded="false">
+                                        <i class="bi bi-hand-index-thumb"></i> Aksi
+                                    </button>
+                                    <div class="dropdown-menu" x-placement="top-start">
+                                        <button type="button" class="dropdown-item text-danger"
+                                            wire:click="show_delete_jalan_daerah_banjir({{ $jalan_banjir->id_jalan_daerah_banjir }})">
+                                            <i class="bi bi-trash3"></i> Hapus
+                                        </button>
+                                        <button type="button" class="dropdown-item text-primary"
+                                            wire:click="showFormJalanDaerahBanjir({{ $jalan_banjir->id_jalan_daerah_banjir }})">
+                                            <i class="bi bi-pencil-square"></i> Ubah
+                                        </button>
+                                        {{-- <button type="button"
+                                            class="dropdown-item {{ ($jalan_banjir->konfirmasi_st == 0)?'text-info':'text-warning' }}"
+                                            wire:click="showKonfirmasiJalanDaerahBanjir({{ $jalan_banjir->id_jalan_daerah_banjir }})">
+                                            <i
+                                                class="{{ ($jalan_banjir->konfirmasi_st == 0)?'mdi mdi-check-circle-outline':'mdi mdi-close-circle-outline' }}"></i>
+                                            Konfirmasi
+                                        </button> --}}
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        @php
+                        $no_1++;
+                        @endphp
+                        @endforeach
                         @endif
                     </tbody>
                 </table>
@@ -338,14 +344,14 @@
             <p>
             <form wire:submit.prevent="save_jalan_daerah_banjir" enctype="multipart/form-data">
                 {{-- @if ($errors->any())
-                        <div class="alert alert-warning" role="alert">
-                            <ul>
-                                @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                    @endif --}}
+                <div class="alert alert-warning" role="alert">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+                @endif --}}
                 <div class="form-group">
                     <input type="text" class="form-control " wire:model.defer="id_daerah_banjir" hidden>
                     <label>Kecamatan</label>
@@ -353,22 +359,21 @@
                         id="kecamatanChoices" wire:model.defer="kecamatan_daerah_banjir" required>
                         <option value="" class="bg-white text-dark" selected>-- Pilih --</option>
                         @foreach ($data_kecamatan as $kecamatan)
-                            <option value="{{ $kecamatan->id_kecamatan }}" class="form-control">
-                                {{ $kecamatan->nama_kecamatan }}</option>
+                        <option value="{{ $kecamatan->id_kecamatan }}" class="form-control">
+                            {{ $kecamatan->nama_kecamatan }}</option>
                         @endforeach
                     </select>
                     @error('kecamatan_daerah_banjir')
-                        <label class="text-danger">{{ $message }}</label>
+                    <label class="text-danger">{{ $message }}</label>
                     @enderror
                 </div>
                 <div class="form-group">
                     <label>Nama Pemberi Informasi</label>
-                    <input type="text"
-                        class="form-control @error('nama_pemberi_informasi') is-invalid @enderror"
-                        wire:model.defer="nama_pemberi_informasi" placeholder="Masukkan Nama" oninput="filterLettersOnly(this)"
-                        required>
+                    <input type="text" class="form-control @error('nama_pemberi_informasi') is-invalid @enderror"
+                        wire:model.defer="nama_pemberi_informasi" placeholder="Masukkan Nama"
+                        oninput="filterLettersOnly(this)" required>
                     @error('nama_pemberi_informasi')
-                        <label class="text-danger">{{ $message }}</label>
+                    <label class="text-danger">{{ $message }}</label>
                     @enderror
                 </div>
                 <div class="mb-3 form-group">
@@ -377,42 +382,44 @@
                     <input type="text" class="form-control @error('nama_jalan') is-invalid @enderror"
                         wire:model.defer="nama_jalan" placeholder="Masukkan Nama Jalan" required>
                     @error('nama_jalan')
-                        <label class="text-danger">{{ $message }}</label>
+                    <label class="text-danger">{{ $message }}</label>
                     @enderror
                 </div>
                 <div class="mb-3 form-group row">
                     <div class="col-6">
                         <label class="form-label fw-bold">Nomor Jalan</label>
                         <input type="text" class="form-control  @error('nomor_jalan') is-invalid @enderror"
-                            wire:model.defer="nomor_jalan" placeholder="Masukkan Nomor" oninput="filterLettersOnly(this)">
+                            wire:model.defer="nomor_jalan" placeholder="Masukkan Nomor"
+                            oninput="filterNumbersOnly(this)">
                         @error('nomor_jalan')
-                            <label class="text-danger">{{ $message }}</label>
+                        <label class="text-danger">{{ $message }}</label>
                         @enderror
                     </div>
                     <div class="col-6">
                         <label class="form-label fw-bold">Panjang Jalan</label>
                         <input type="text" class="form-control @error('panjang_jalan') is-invalid @enderror"
-                            wire:model.defer="panjang_jalan" placeholder="Masukkan Panjang Jalan">
+                            wire:model.defer="panjang_jalan" placeholder="Masukkan Panjang Jalan"
+                            oninput="filterNumbersOnly(this)">
                         @error('panjang_jalan')
-                            <label class="text-danger">{{ $message }}</label>
+                        <label class="text-danger">{{ $message }}</label>
                         @enderror
                     </div>
                 </div>
                 <div class="mb-3 form-group row">
                     <div class="col-6">
                         <label class="form-label fw-bold">Waktu Mulai</label>
-                        <input type="text" class="form-control @error('waktu_mulai') is-invalid @enderror" id="waktu_mulai"
-                            wire:model.defer="waktu_mulai" placeholder="Pilih Waktu" required>
+                        <input type="text" class="form-control @error('waktu_mulai') is-invalid @enderror"
+                            id="waktu_mulai" wire:model.defer="waktu_mulai" placeholder="Pilih Waktu" required>
                         @error('waktu_mulai')
-                            <label class="text-danger">{{ $message }}</label>
+                        <label class="text-danger">{{ $message }}</label>
                         @enderror
                     </div>
                     <div class="col-6">
                         <label class="form-label fw-bold">Waktu Selesai</label>
-                        <input type="text" class="form-control @error('waktu_selesai') is-invalid @enderror" id="waktu_selesai"
-                            wire:model.defer="waktu_selesai" placeholder="Pilih Waktu">
+                        <input type="text" class="form-control @error('waktu_selesai') is-invalid @enderror"
+                            id="waktu_selesai" wire:model.defer="waktu_selesai" placeholder="Pilih Waktu">
                         @error('waktu_selesai')
-                            <label class="text-danger">{{ $message }}</label>
+                        <label class="text-danger">{{ $message }}</label>
                         @enderror
                     </div>
                 </div>
@@ -420,20 +427,22 @@
                     <div class="col-6">
                         <div class="form-group">
                             <label class="form-label fw-bold">Latitude</label>
-                            <input type="text" class="form-control @error('la_atitude') is-invalid @enderror" oninput="filterLatLong(this)"
-                                wire:model.defer="la_atitude" placeholder="Masukkan Latitude" required>
+                            <input type="text" class="form-control @error('la_atitude') is-invalid @enderror"
+                                oninput="filterLatLong(this)" wire:model.defer="la_atitude"
+                                placeholder="Masukkan Latitude" required>
                             @error('la_atitude')
-                                <label class="text-danger">{{ $message }}</label>
+                            <label class="text-danger">{{ $message }}</label>
                             @enderror
                         </div>
                     </div>
                     <div class="col-6">
                         <div class="form-group">
                             <label class="form-label fw-bold">Longatitude</label>
-                            <input type="text" class="form-control @error('long_atitude') is-invalid @enderror" oninput="filterLatLong(this)"
-                                wire:model.defer="long_atitude" placeholder="Masukkan Longtitude" required>
+                            <input type="text" class="form-control @error('long_atitude') is-invalid @enderror"
+                                oninput="filterLatLong(this)" wire:model.defer="long_atitude"
+                                placeholder="Masukkan Longtitude" required>
                             @error('long_atitude')
-                                <label class="text-danger">{{ $message }}</label>
+                            <label class="text-danger">{{ $message }}</label>
                             @enderror
                         </div>
                     </div>
@@ -444,58 +453,70 @@
                         <div class="row">
                             <div class="col-md-10 col-lg-10">
                                 <input type="text" class="form-control @error('radius') is-invalid @enderror"
-                                    wire:model.defer="radius" placeholder="Masukkan Radius" required>
+                                    wire:model.defer="radius" placeholder="Masukkan Radius"
+                                    oninput="filterNumbersOnly(this)" required>
                             </div>
                             <div class="col-md-2 col-lg-2 align-items-center align-middle d-flex">
                                 Meter
                             </div>
                         </div>
                         @error('radius')
-                            <label class="text-danger">{{ $message }}</label>
+                        <label class="text-danger">{{ $message }}</label>
                         @enderror
                     </div>
                     <div class="col-6">
-                        <label class="form-label fw-bold">Jenis Banjir</label>
-                        <div class="d-flex flex-wrap gap-3 p-3 border rounded">
-                            <label class="icon-option">
-                                <input type="radio" wire:model.defer="icon" value="mdi mdi-map-marker" required>
-                                <i class="mdi mdi-map-marker"></i> Normal
-                            </label>
-
-                            <label class="icon-option">
-                                <input type="radio" wire:model.defer="icon" value="fa-solid fa-water" required>
-                                <i class="fa-solid fa-water"></i> Banjir
-                            </label>
-                            <label class="icon-option">
-                                <input type="radio" wire:model.defer="icon" value="fa-solid fa-house-flood-water"
-                                    required>
-                                <i class="fa-solid fa-house-flood-water"></i> Banjir Bandang
-                            </label>
-                        </div>
-                        @error('icon')
+                        <div class="mb-3 form-group">
+                            <label class="form-label fw-bold">Tinggi Banjir</label>
+                            <div class="row">
+                                <div class="col-md-10 col-lg-10">
+                                    <input type="text"
+                                        class="form-control  @error('tinggi_banjir') is-invalid @enderror"
+                                        wire:model.defer="tinggi_banjir" placeholder="Masukkan Tinggi Banjir"
+                                        oninput="filterNumbersOnly(this)" onchange="updateJenisBanjir(this.value)">
+                                </div>
+                                <div class="col-md-2 col-lg-2 align-items-center align-middle d-flex">
+                                    Cm
+                                </div>
+                            </div>
+                            @error('tinggi_banjir')
                             <label class="text-danger">{{ $message }}</label>
-                        @enderror
+                            @enderror
+                        </div>
                     </div>
                 </div>
                 <div class="mb-3 form-group">
                 </div>
                 {{-- <div class="mb-3 form-group">
-                        <label class="form-label fw-bold">Jenis Banjir</label>
-                        <input type="text" class="form-control  @error('jenis_banjir') is-invalid @enderror" wire:model.defer="jenis_banjir" placeholder="Pilih Tingkat Banjir">
-                        @error('jenis_banjir')
-                            <label class="text-danger">{{ $message }}</label>
-                        @enderror
-                    </div> --}}
+                    <label class="form-label fw-bold">Jenis Banjir</label>
+                    <input type="text" class="form-control  @error('jenis_banjir') is-invalid @enderror"
+                        wire:model.defer="jenis_banjir" placeholder="Pilih Tingkat Banjir">
+                    @error('jenis_banjir')
+                    <label class="text-danger">{{ $message }}</label>
+                    @enderror
+                </div> --}}
                 <div class="mb-3 form-group row">
                     <div class="col-6">
-                        <div class="mb-3 form-group">
-                            <label class="form-label fw-bold">Tinggi Banjir</label>
-                            <input type="text" class="form-control  @error('tinggi_banjir') is-invalid @enderror"
-                                wire:model.defer="tinggi_banjir" placeholder="Masukkan Tinggi Banjir">
-                            @error('tinggi_banjir')
-                                <label class="text-danger">{{ $message }}</label>
-                            @enderror
+                        <label class="form-label fw-bold">Jenis Banjir</label>
+                        <div class="d-flex flex-wrap gap-3 p-3 border rounded" style="pointer-events: none;">
+                            <label class="icon-option">
+                                <input type="radio" id="icon-rendah" wire:model.defer="icon" value="mdi mdi-map-marker"
+                                    required>
+                                <i class="mdi mdi-map-marker"></i> Banjir Rendah
+                            </label>
+                            <label class="icon-option">
+                                <input type="radio" id="icon-sedang" wire:model.defer="icon" value="fa-solid fa-water"
+                                    required>
+                                <i class="fa-solid fa-water"></i> Banjir Sedang
+                            </label>
+                            <label class="icon-option">
+                                <input type="radio" id="icon-parah" wire:model.defer="icon"
+                                    value="fa-solid fa-house-flood-water" required>
+                                <i class="fa-solid fa-house-flood-water"></i> Banjir Parah
+                            </label>
                         </div>
+                        @error('icon')
+                        <label class="text-danger">{{ $message }}</label>
+                        @enderror
                     </div>
                     <div class="col-6">
                         <div class="form-group">
@@ -510,12 +531,11 @@
                                 <option value="red" class="bg-danger text-white">Bahaya</option>
                             </select>
                             @error('warna_radius')
-                                <label class="text-danger">{{ $message }}</label>
+                            <label class="text-danger">{{ $message }}</label>
                             @enderror
                         </div>
                     </div>
                 </div>
-
                 <div class="mb-3 form-group">
                     <label class="fw-bold">Bukti Foto</label>
                     <input type="file" class="file-upload-default @error('bukti_foto.*') is-invalid @enderror"
@@ -532,8 +552,11 @@
                             </button>
                         </span>
                     </div>
+                    @error('bukti_foto')
+                    <label class="text-danger">{{ $message }}</label>
+                    @enderror
                     @error('bukti_foto.*')
-                        <label class="text-danger">{{ $message }}</label>
+                    <label class="text-danger">{{ $message }}</label>
                     @enderror
                 </div>
 
@@ -555,7 +578,7 @@
             <div>
                 <h3 id="offcanvasRightLabel"><b>Detail Laporan Banjir</b></h3>
                 {{-- <h3 id="head_1"><b>{{ $baseLatitude }},{{ $baseLongtitude }}</b></h3> --}}
-                    <small class="text-muted fst-italic">{{ $detailWaktu ?? '-' }}</small>
+                <small class="text-muted fst-italic">{{ $detailWaktu ?? '-' }}</small>
             </div>
             <div class="d-flex">
                 <div class="align-items-end">
@@ -568,75 +591,78 @@
         </div>
         <div class="offcanvas-body position-relative  offcanvas-scroll">
             <p class="mb-3">
-                <table id="p_1">
-                    <tr>
-                        <td class="fw-bold">Detail Jalan</td>
-                        <td>&nbsp;&nbsp;:&nbsp;&nbsp;</td>
-                        <td>
-                            <span style="font-size: 0.9em">
-                                Jl. {{ $label_nama_jalan ?? '-' }}, No. {{ $label_nomor_jalan ?? '-' }}
-                            </span>
-                        </td>
-                        <td width="30px"></td>
-                        <td class="fw-bold">Panjang Jalan</td>
-                        <td>&nbsp;&nbsp;:&nbsp;&nbsp;</td>
-                        <td>
-                            <span style="font-size: 0.9em">
-                                {{ $label_panjang_jalan ?? '-' }}
-                            </span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="fw-bold">Waktu Banjir</td>
-                        <td>&nbsp;&nbsp;:&nbsp;&nbsp;</td>
-                        <td>
-                            <span style="font-size: 0.9em">
-                                {{ $label_waktu_mulai ?? '-' }}
-                            </span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="fw-bold">Jenis Banjir</td>
-                        <td>&nbsp;&nbsp;:&nbsp;&nbsp;</td>
-                        <td>
-                            <span style="font-size: 0.9em">
-                                {{ $label_jenis_banjir ?? '-' }}
-                            </span>
-                        </td>
-                        <td></td>
-                        <td class="fw-bold">Tinggi Banjir</td>
-                        <td>&nbsp;&nbsp;:&nbsp;&nbsp;</td>
-                        <td>
-                            <span style="font-size: 0.9em">
-                                {{ $label_tinggi_banjir ?? '-' }}
-                            </span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="fw-bold" width="20%">Pemberi Catatan</td>
-                        <td>&nbsp;&nbsp;:&nbsp;&nbsp;</td>
-                        <td >
-                            <span style="font-size: 0.9em">
-                                {{ $detailNamaKepala ?? '-' }}
-                            </span>
-                        </td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td class="fw-bold align-top">
-                            Catatan
-                        </td>
-                        <td class="align-top">&nbsp;&nbsp;:&nbsp;&nbsp;</td>
-                        <td colspan="3" width="80%">
-                            {{-- <form wire:submit.prevent="save_catatan_jalan_daerah_banjir" class="w-100"> --}}
-                                <textarea class="form-control w-100 @error('jalan_daerah_banjir_catatan_kepala') is-invalid @enderror" wire:model.defer="jalan_daerah_banjir_catatan_kepala" rows="5" readonly>
+            <table id="p_1">
+                <tr>
+                    <td class="fw-bold">Detail Jalan</td>
+                    <td>&nbsp;&nbsp;:&nbsp;&nbsp;</td>
+                    <td>
+                        <span style="font-size: 0.9em">
+                            Jl. {{ $label_nama_jalan ?? '-' }}, No. {{ $label_nomor_jalan ?? '-' }}
+                        </span>
+                    </td>
+                    <td width="30px"></td>
+                    <td class="fw-bold">Panjang Jalan</td>
+                    <td>&nbsp;&nbsp;:&nbsp;&nbsp;</td>
+                    <td>
+                        <span style="font-size: 0.9em">
+                            {{ $label_panjang_jalan ?? '-' }}
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="fw-bold">Waktu Banjir</td>
+                    <td>&nbsp;&nbsp;:&nbsp;&nbsp;</td>
+                    <td>
+                        <span style="font-size: 0.9em">
+                            {{ $label_waktu_mulai ?? '-' }}
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="fw-bold">Jenis Banjir</td>
+                    <td>&nbsp;&nbsp;:&nbsp;&nbsp;</td>
+                    <td>
+                        <span style="font-size: 0.9em">
+                            {{ $label_jenis_banjir ?? '-' }}
+                        </span>
+                    </td>
+                    <td></td>
+                    <td class="fw-bold">Tinggi Banjir</td>
+                    <td>&nbsp;&nbsp;:&nbsp;&nbsp;</td>
+                    <td>
+                        <span style="font-size: 0.9em">
+                            {{ $label_tinggi_banjir ?? '-' }}
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="fw-bold" width="20%">Pemberi Catatan</td>
+                    <td>&nbsp;&nbsp;:&nbsp;&nbsp;</td>
+                    <td>
+                        <span style="font-size: 0.9em">
+                            {{ $detailNamaKepala ?? '-' }}
+                        </span>
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="fw-bold align-top">
+                        Catatan
+                    </td>
+                    <td class="align-top">&nbsp;&nbsp;:&nbsp;&nbsp;</td>
+                    <td colspan="3" width="80%">
+                        {{-- <form wire:submit.prevent="save_catatan_jalan_daerah_banjir" class="w-100"> --}}
+                            <textarea
+                                class="form-control w-100 @error('jalan_daerah_banjir_catatan_kepala') is-invalid @enderror"
+                                wire:model.defer="jalan_daerah_banjir_catatan_kepala" rows="5" readonly>
                                 </textarea>
-                            {{-- </form> --}}
-                        </td>
-                    </tr>
-                </table>
+                            {{--
+                        </form> --}}
+                    </td>
+                </tr>
+            </table>
             </p>
             <p>
 
@@ -677,27 +703,27 @@
                                     <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
                                         <div class="carousel-inner">
                                             @if (empty($buktiFoto))
-                                                <div class="carousel-item active">
-                                                    <span>Tidak ada foto pada data ini.</span>
-                                                </div>
+                                            <div class="carousel-item active">
+                                                <span>Tidak ada foto pada data ini.</span>
+                                            </div>
                                             @else
-                                                @php $no_gbr=1 @endphp
-                                                @foreach ($buktiFoto as $bukti)
-                                                    <div class="carousel-item {{ $no_gbr == 1 ? 'active' : '' }}">
-                                                        <a href="{{ asset('storage/jalanbanjir/' . $bukti) }}"
-                                                            data-lightbox="bukti-jalan_daerah_banjir">
-                                                            <img src="{{ asset('storage/jalanbanjir/' . $bukti) }}"
-                                                                class="d-block mx-auto w-50 shadow-lg"
-                                                                alt="Bukti {{ $no_gbr }}">
-                                                        </a>
-                                                        <br>
-                                                        <button class="btn btn-danger" type="button"
-                                                            wire:click="show_delete_bukti_jalan_daerah_banjir({{ "'" . $idbuktiFoto . "'" . ',' . "'" . $bukti . "'" }})">
-                                                            <i class="fa fa-trash"></i>
-                                                        </button>
-                                                    </div>
-                                                    @php $no_gbr++; @endphp
-                                                @endforeach
+                                            @php $no_gbr=1 @endphp
+                                            @foreach ($buktiFoto as $bukti)
+                                            <div class="carousel-item {{ $no_gbr == 1 ? 'active' : '' }}">
+                                                <a href="{{ asset('storage/jalanbanjir/' . $bukti) }}"
+                                                    data-lightbox="bukti-jalan_daerah_banjir">
+                                                    <img src="{{ asset('storage/jalanbanjir/' . $bukti) }}"
+                                                        class="d-block mx-auto w-50 shadow-lg"
+                                                        alt="Bukti {{ $no_gbr }}">
+                                                </a>
+                                                <br>
+                                                <button class="btn btn-danger" type="button"
+                                                    wire:click="show_delete_bukti_jalan_daerah_banjir({{ "'" . $idbuktiFoto . "'" . ',' . "'" . $bukti . "'" }})">
+                                                    <i class="fa fa-trash"></i>
+                                                </button>
+                                            </div>
+                                            @php $no_gbr++; @endphp
+                                            @endforeach
                                             @endif
                                         </div>
                                     </div>
@@ -714,17 +740,16 @@
                         </div>
                         <div id="sec-2">
                             {{-- <select id="categoryFilter">
-                                    <option value="all">Semua</option>
-                                    <option value="air">Sumber Air</option>
-                                    <option value="tanah">Wilayah Tanah</option>
-                                </select> --}}
+                                <option value="all">Semua</option>
+                                <option value="air">Sumber Air</option>
+                                <option value="tanah">Wilayah Tanah</option>
+                            </select> --}}
                             <div class="col-md-12">
                                 <div id="map" wire:ignore></div>
                             </div>
                         </div>
                         <div id="sec-3" class="d-none">
-                            <table class="table table-bordered table-hover" id="table_penanganan"
-                                wire:ignore.self>
+                            <table class="table table-bordered table-hover" id="table_penanganan" wire:ignore.self>
                                 <thead>
                                     <tr>
                                         <th class="bg-info text-center align-middle">
@@ -745,57 +770,62 @@
                                 </thead>
                                 <tbody>
                                     @if (empty($data_penanganan))
-                                        <tr>
-                                            <td colspan="5" class="text-center text-muted">Data tidak ada</td>
-                                            <td class="d-none"></td>
-                                            <td class="d-none"></td>
-                                            <td class="d-none"></td>
-                                            <td class="d-none"></td>
-                                        </tr>
+                                    <tr>
+                                        <td colspan="5" class="text-center text-muted">Data tidak ada</td>
+                                        <td class="d-none"></td>
+                                        <td class="d-none"></td>
+                                        <td class="d-none"></td>
+                                        <td class="d-none"></td>
+                                    </tr>
                                     @else
                                     @php
-                                        $no_penanganan = 1;
+                                    $no_penanganan = 1;
                                     @endphp
-                                        @foreach ($data_penanganan as $item)
-                                            <tr>
-                                                <td class="text-center text-muted">{{ $no_penanganan++ }}</td>
-                                                <td class="text-left">{{ $item->nama_penanganan }}</td>
-                                                <td class="text-center">{{ $item->waktu_mulai->translatedFormat('d F Y H:i:s').(!empty($item->waktu_selesai)?' - '.$item->waktu_selesai->translatedFormat('d F Y H:i:s'):'') }}</td>
-                                                <td class="text-center">
-                                                    <button type="button"  wire:click="ShowValidationStatusPenanganan({{ $item->id_penanganan }})" class="btn btn-sm @if($item->status_penanganan === 1) btn-primary @elseif($item->status_penanganan === 2) btn-success @else btn-secondary @endif
+                                    @foreach ($data_penanganan as $item)
+                                    <tr>
+                                        <td class="text-center text-muted">{{ $no_penanganan++ }}</td>
+                                        <td class="text-left">{{ $item->nama_penanganan }}</td>
+                                        <td class="text-center">{{ $item->waktu_mulai->translatedFormat('d F Y
+                                            H:i:s').(!empty($item->waktu_selesai)?' -
+                                            '.$item->waktu_selesai->translatedFormat('d F Y H:i:s'):'') }}</td>
+                                        <td class="text-center">
+                                            <button type="button"
+                                                wire:click="ShowValidationStatusPenanganan({{ $item->id_penanganan }})"
+                                                class="btn btn-sm @if($item->status_penanganan === 1) btn-primary @elseif($item->status_penanganan === 2) btn-success @else btn-secondary @endif
                                                         " readonly>
-                                                        @if ($item->status_penanganan === 1)
-                                                            Proses
-                                                        @elseif($item->status_penanganan === 2)
-                                                            Selesai
-                                                        @else
-                                                            Terencana
-                                                        @endif
+                                                @if ($item->status_penanganan === 1)
+                                                Proses
+                                                @elseif($item->status_penanganan === 2)
+                                                Selesai
+                                                @else
+                                                Terencana
+                                                @endif
+                                            </button>
+                                        </td>
+                                        <td class="text-center">
+                                            <div class="btn-group">
+                                                <button type="button" class="btn btn-outline-secondary dropdown-toggle"
+                                                    data-toggle="dropdown" aria-expanded="false">
+                                                    <i class="bi bi-hand-index-thumb"></i> Aksi
+                                                </button>
+                                                <div class="dropdown-menu" x-placement="top-start">
+                                                    <button type="button" class="dropdown-item text-danger"
+                                                        wire:click="show_delete_penanganan({{ $item->id_penanganan }})">
+                                                        <i class="bi bi-trash3"></i> Hapus
                                                     </button>
-                                                </td>
-                                                <td class="text-center">
-                                                    <div class="btn-group">
-                                                        <button type="button" class="btn btn-outline-secondary dropdown-toggle"
-                                                            data-toggle="dropdown" aria-expanded="false">
-                                                            <i class="bi bi-hand-index-thumb"></i> Aksi
-                                                        </button>
-                                                        <div class="dropdown-menu" x-placement="top-start">
-                                                            <button type="button" class="dropdown-item text-danger"
-                                                                wire:click="show_delete_penanganan({{ $item->id_penanganan }})">
-                                                                <i class="bi bi-trash3"></i> Hapus
-                                                            </button>
-                                                            <button type="button" class="dropdown-item text-primary"
-                                                                wire:click="showFormEditPenanganan({{ $item->id_penanganan }})">
-                                                                <i class="bi bi-pencil-square"></i> Ubah
-                                                            </button>
-                                                            <button type="button" class="dropdown-item text-info" wire:click="showModalBuktiPenanganan({{ $item->id_penanganan }})">
-                                                                <i class="bi bi-camera"></i> Lihat Bukti
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        @endforeach
+                                                    <button type="button" class="dropdown-item text-primary"
+                                                        wire:click="showFormEditPenanganan({{ $item->id_penanganan }})">
+                                                        <i class="bi bi-pencil-square"></i> Ubah
+                                                    </button>
+                                                    <button type="button" class="dropdown-item text-info"
+                                                        wire:click="showModalBuktiPenanganan({{ $item->id_penanganan }})">
+                                                        <i class="bi bi-camera"></i> Lihat Bukti
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    @endforeach
                                     @endif
                                 </tbody>
 
@@ -836,8 +866,7 @@
                 <!-- Wrapper untuk memastikan posisi elemen tepat -->
             <div class="position-absolute start-50 translate-middle-x w-100 h-auto">
 
-                <div class="bg-secondary bg-gradient bg-opacity-50 p-3 w-100 h-100 mx-auto"
-                    id="section_gambar_lokasi">
+                <div class="bg-secondary bg-gradient bg-opacity-50 p-3 w-100 h-100 mx-auto" id="section_gambar_lokasi">
                     <div class="">
                         <div id="sec-2">
                             <select class="d-none" id="categoryFilter">
@@ -870,23 +899,24 @@
                 <div class="modal-body">
                     <form class="forms-sample" wire:submit.prevent="save_penanganan" enctype="multipart/form-data">
                         <input type="text" class="d-none" wire:model.defer="id_penanganan" hidden>
-                        {{-- <input type="text" class="d-none" wire:model.defer="id_jalan_daerah_banjir_penanganan_info" value="{{ $hide_id_jalan_daerah_banjir }}" hidden> --}}
+                        {{-- <input type="text" class="d-none" wire:model.defer="id_jalan_daerah_banjir_penanganan_info"
+                            value="{{ $hide_id_jalan_daerah_banjir }}" hidden> --}}
                         @if (session('error'))
-                            <div class="alert alert-warning" role="alert">
-                                {{ session('error') }}
-                            </div>
+                        <div class="alert alert-warning" role="alert">
+                            {{ session('error') }}
+                        </div>
                         @endif
                         @if (session('success'))
-                            <div class="alert alert-success" role="alert">
-                                {{ session('success') }}
-                            </div>
+                        <div class="alert alert-success" role="alert">
+                            {{ session('success') }}
+                        </div>
                         @endif
                         <div class="form-group">
                             <label>Nama Penanganan</label>
                             <input type="text" class="form-control @error('nama_penanganan') is-invalid @enderror"
                                 wire:model.defer="nama_penanganan" placeholder="Masukkan Nama Penanganan" required>
                             @error('nama_penanganan')
-                                <label class="text-danger">{{ $message }}</label>
+                            <label class="text-danger">{{ $message }}</label>
                             @enderror
                         </div>
                         <div class="row">
@@ -897,18 +927,18 @@
                                         class="form-control datetimepicker @error('waktu_mulai') is-invalid @enderror"
                                         wire:model.defer="waktu_mulai" placeholder="Pilih Waktu" required>
                                     @error('waktu_mulai')
-                                        <label class="text-danger">{{ $message }}</label>
+                                    <label class="text-danger">{{ $message }}</label>
                                     @enderror
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>Waktu Selesai</label>
-                                    <input type="text"  id="waktu_selesai"
+                                    <input type="text" id="waktu_selesai"
                                         class="form-control @error('waktu_selesai') is-invalid @enderror"
                                         wire:model.defer="waktu_selesai" placeholder="Pilih Waktu">
                                     @error('waktu_selesai')
-                                        <label class="text-danger">{{ $message }}</label>
+                                    <label class="text-danger">{{ $message }}</label>
                                     @enderror
                                 </div>
                             </div>
@@ -916,11 +946,10 @@
                         <div class="form-group row">
                             <div class="form-group col-4">
                                 <label>Nama Petugas</label>
-                                <input type="text"
-                                    class="form-control @error('nama_petugas') is-invalid @enderror"
+                                <input type="text" class="form-control @error('nama_petugas') is-invalid @enderror"
                                     wire:model.defer="nama_petugas" placeholder="Masukkan Nama Petugas" required>
                                 @error('nama_petugas')
-                                    <label class="text-danger">{{ $message }}</label>
+                                <label class="text-danger">{{ $message }}</label>
                                 @enderror
                             </div>
                             <div class="form-group col-8">
@@ -930,15 +959,16 @@
                                     onkeydown="return hanyaAngka(event)"
                                     oninput="this.value = this.value.replace(/[^0-9]/g, '')" required>
                                 @error('anggaran')
-                                    <label class="text-danger">{{ $message }}</label>
+                                <label class="text-danger">{{ $message }}</label>
                                 @enderror
                             </div>
                         </div>
                         <div class="form-group">
                             <label>Deskripsi</label>
-                            <textarea type="text" class="form-control @error('deskripsi') is-invalid @enderror" wire:model.defer="deskripsi"></textarea>
+                            <textarea type="text" class="form-control @error('deskripsi') is-invalid @enderror"
+                                wire:model.defer="deskripsi"></textarea>
                             @error('deskripsi')
-                                <label class="text-danger">{{ $message }}</label>
+                            <label class="text-danger">{{ $message }}</label>
                             @enderror
                         </div>
 
@@ -946,7 +976,8 @@
                             <label class="fw-bold">Bukti Foto</label>
                             <input type="file"
                                 class="file-upload-default @error('bukti_foto_penanganan.*') is-invalid @enderror"
-                                wire:model="bukti_foto_penanganan" multiple hidden id="bukti_foto_penanganan_input" wire:key="bukti_foto_penanganan_input">
+                                wire:model="bukti_foto_penanganan" multiple hidden id="bukti_foto_penanganan_input"
+                                wire:key="bukti_foto_penanganan_input">
                             <div class="input-group">
                                 <input type="text"
                                     class="form-control file-upload-info @error('bukti_foto_penanganan.*') is-invalid @enderror"
@@ -961,7 +992,7 @@
                                 </span>
                             </div>
                             @error('bukti_foto_penanganan.*')
-                                <label class="text-danger">{{ $message }}</label>
+                            <label class="text-danger">{{ $message }}</label>
                             @enderror
                         </div>
                 </div>
@@ -976,19 +1007,22 @@
     </div>
 
     <!-- Modal Bukti Penanganan -->
-    <div class="modal fade"  tabindex="-1" aria-hidden="true" id="modalBuktiPenanganan" data-bs-backdrop="static" data-bs-backdrop="static" wire:ignore.self>
+    <div class="modal fade" tabindex="-1" aria-hidden="true" id="modalBuktiPenanganan" data-bs-backdrop="static"
+        data-bs-backdrop="static" wire:ignore.self>
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
                     <h1 class="modal-title" id="staticBackdropLabel" style="font-size: 20px"></h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" wire:click="refresh_inputan()"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                        wire:click="refresh_inputan()"></button>
                 </div>
                 <div class="modal-body bg-secondary bg-gradient  bg-opacity-50">
                     <div class="container">
                         <div class="row d-flex align-items-center">
                             <!-- Previous Button -->
                             <div class="col-auto">
-                                <button class="btn btn-outline-dark" data-bs-target="#carouselExample1" data-bs-slide="prev">
+                                <button class="btn btn-outline-dark" data-bs-target="#carouselExample1"
+                                    data-bs-slide="prev">
                                     <i class="fa fa-chevron-left"></i>
                                 </button>
                             </div>
@@ -1003,20 +1037,24 @@
                                         </div>
                                         @else
                                         @php
-                                            $no_gbr=1
+                                        $no_gbr=1
                                         @endphp
-                                            @foreach ($buktiGambar as $bukti)
-                                                    <div class="carousel-item {{ ($no_gbr==1)?'active':'' }}">
-                                                        <a href="{{ asset('storage/penanganan/'.$bukti) }}" data-lightbox="bukti-penanganan">
-                                                            <img src="{{ asset('storage/penanganan/'.$bukti) }}" class="d-block mx-auto w-50 shadow-lg" alt="Bukti {{ $no_gbr }}">
-                                                        </a>
-                                                        <br>
-                                                        <button class="btn btn-danger" type="button" wire:click="show_delete_bukti_penanganan({{ "'".$idbuktiGambar."'".","."'".$bukti."'" }})">
-                                                            <i class="fa fa-trash"></i>
-                                                        </button>
-                                                    </div>
-                                                    @php $no_gbr++; @endphp
-                                            @endforeach
+                                        @foreach ($buktiGambar as $bukti)
+                                        <div class="carousel-item {{ ($no_gbr==1)?'active':'' }}">
+                                            <a href="{{ asset('storage/penanganan/'.$bukti) }}"
+                                                data-lightbox="bukti-penanganan">
+                                                <img src="{{ asset('storage/penanganan/'.$bukti) }}"
+                                                    class="d-block mx-auto w-50 shadow-lg" alt="Bukti {{ $no_gbr }}">
+                                            </a>
+                                            <br>
+                                            <button class="btn btn-danger" type="button"
+                                                wire:click="show_delete_bukti_penanganan({{ "'".$idbuktiGambar."'"."
+                                                ,"."'".$bukti."'" }})">
+                                                <i class="fa fa-trash"></i>
+                                            </button>
+                                        </div>
+                                        @php $no_gbr++; @endphp
+                                        @endforeach
                                         @endif
                                         <!-- Add more carousel items here -->
                                     </div>
@@ -1025,7 +1063,8 @@
 
                             <!-- Next Button -->
                             <div class="col-auto">
-                                <button class="btn btn-outline-dark" data-bs-target="#carouselExample1" data-bs-slide="next">
+                                <button class="btn btn-outline-dark" data-bs-target="#carouselExample1"
+                                    data-bs-slide="next">
                                     <i class="fa fa-chevron-right"></i>
                                 </button>
                             </div>
@@ -1034,7 +1073,8 @@
                 </div>
 
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close" id="btn_close_bukti" wire:click="refresh_inputan()">Tutup</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close"
+                        id="btn_close_bukti" wire:click="refresh_inputan()">Tutup</button>
                 </div>
             </div>
         </div>
@@ -1043,8 +1083,8 @@
 </div>
 
 @push('scripts')
-    <script>
-        var offcanvasElement = document.getElementById('CanvasDetailBanjir');
+<script>
+    var offcanvasElement = document.getElementById('CanvasDetailBanjir');
         var offcanvas = new bootstrap.Offcanvas(offcanvasElement, {
             backdrop: 'static',
             keyboard: false
@@ -1776,5 +1816,23 @@
             }
             return true;
         }
-    </script>
+
+        function updateJenisBanjir(tinggi) {
+            document.getElementById('icon-rendah').checked = false;
+            document.getElementById('icon-sedang').checked = false;
+            document.getElementById('icon-parah').checked = false;
+            if (isNaN(tinggi)) return;
+
+            if (tinggi >= 10 && tinggi <= 50) {
+                document.getElementById('icon-rendah').checked = true;
+            } else if (tinggi >= 51 && tinggi <= 150) {
+                document.getElementById('icon-sedang').checked = true;
+            } else if (tinggi > 150) {
+                document.getElementById('icon-parah').checked = true;
+            } else {
+                // Kosongkan pilihan jika tidak dalam rentang
+                document.querySelectorAll('input[name="icon"]').forEach(r => r.checked = false);
+            }
+        }
+</script>
 @endpush

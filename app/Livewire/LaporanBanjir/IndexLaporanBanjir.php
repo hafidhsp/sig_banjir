@@ -345,6 +345,8 @@ class IndexLaporanBanjir extends Component
                 // Start Revisi Merge
                 'kecamatan_daerah_banjir' => 'required|exists:tb_kecamatan,id_kecamatan',
                 'nama_pemberi_informasi' => 'required|regex:/^[a-zA-Z\s]+$/',
+                'bukti_foto.*' => 'required',
+                'bukti_foto' => 'required|array',
                 // End Revisi Merge
             ], [
                 'nama_jalan.required' => 'Nama Jalan harus diisi.',
@@ -372,6 +374,8 @@ class IndexLaporanBanjir extends Component
                 'kecamatan_daerah_banjir.exist' => 'Kecamatan tidak ditemukan.',
                 'nama_pemberi_informasi.required' => 'Nama pemberi informasi harus diisi.',
                 'nama_pemberi_informasi.regex' => 'Nama pemberi informasi berisi huruf.',
+                'bukti_foto.*.required' => 'Foto harus diisi.',
+                'bukti_foto.required' => 'Minimal 1 foto harus diunggah.',
                 // End Revisi Merge
             ]);
             $data_jalan_daerah_banjir = M_jalan_daerah_banjir::where('id_jalan_daerah_banjir',$this->id_jalan_daerah_banjir)->first();
@@ -456,6 +460,8 @@ class IndexLaporanBanjir extends Component
                 // Start Revisi Merge
                 'kecamatan_daerah_banjir' => 'required|exists:tb_kecamatan,id_kecamatan',
                 'nama_pemberi_informasi' => 'required|regex:/^[a-zA-Z\s]+$/',
+                'bukti_foto.*' => 'required',
+                'bukti_foto' => 'required',
                 // End Revisi Merge
             ], [
                 'nama_jalan.required' => 'Nama Jalan harus diisi.',
@@ -472,6 +478,7 @@ class IndexLaporanBanjir extends Component
                 'tinggi_banjir.required' => 'Tinggi Banjir harus diisi.',
                 'bukti_foto.*.mimes' => 'Gambar harus berformat jpeg, jpg, atau png.',
                 'bukti_foto.*.max' => 'Ukuran gambar maksimal 2MB.',
+                'bukti_foto.*.required' => 'Foto harus diisi.',
                 'long_atitude.required' => 'Longatitude harus diisi.',
                 'long_atitude.regex' => 'Longatitude tidak valid.',
                 'la_atitude.required' => 'Latitude harus diisi.',
@@ -482,6 +489,7 @@ class IndexLaporanBanjir extends Component
                 'kecamatan_daerah_banjir.exist' => 'Kecamatan tidak ditemukan.',
                 'nama_pemberi_informasi.required' => 'Nama pemberi informasi harus diisi.',
                 'nama_pemberi_informasi.regex' => 'Nama pemberi informasi berisi huruf.',
+                'bukti_foto.required' => 'Minimal 1 foto harus diunggah.',
                 // End Revisi Merge
             ]);
             $data = [
@@ -556,10 +564,11 @@ class IndexLaporanBanjir extends Component
         sleep(3);
         $this->dispatch('render-canvas');
         $this->validate([
-            'bukti_foto.*' => 'nullable|mimes:jpeg,jpg,png|max:2048',
+            'bukti_foto.*' => 'required|mimes:jpeg,jpg,png|max:2048',
         ],[
             'bukti_foto.*.mimes' => 'Gambar harus berformat jpeg, jpg, atau png.',
             'bukti_foto.*.max' => 'Ukuran gambar maksimal 2MB.',
+            'bukti_foto.*.required' => 'Foto harus diisi.',
         ]);
 
     }
@@ -709,7 +718,7 @@ class IndexLaporanBanjir extends Component
         sleep(3);
         try {
             $this->validate([
-                'bukti_foto_penanganan.*' => 'nullable|mimes:jpeg,jpg,png|max:2048',
+                'bukti_foto_penanganan.*' => 'required|mimes:jpeg,jpg,png|max:2048',
             ],[
                 'bukti_foto_penanganan.*.mimes' => 'Gambar harus berformat jpeg, jpg, atau png.',
                 'bukti_foto_penanganan.*.max' => 'Ukuran gambar maksimal 2MB.',
@@ -729,6 +738,7 @@ class IndexLaporanBanjir extends Component
             'nama_petugas' => 'required|regex:/^[a-zA-Z\s]+$/',
             'anggaran' => 'numeric',
             'deskripsi' => 'nullable',
+            'bukti_foto_penanganan' => 'requried',
         ], [
             'nama_penanganan.required' => 'Nama Penanganan harus diisi.',
             'nama_penanganan.regex' => 'Nama Penanganan berisi huruf.',
@@ -739,6 +749,7 @@ class IndexLaporanBanjir extends Component
             'nama_petugas.required' => 'Nama Petugas harus diisi.',
             'nama_petugas.regex' => 'Nama Petugas berisi huruf.',
             'anggaran.numeric' => 'Anggaran berisi angka.',
+            'bukti_foto_penanganan.required' => 'Foto harus diisi.',
         ]);
             $data = [
                 'id_jalan_daerah_banjir' => $this->hide_id_jalan_daerah_banjir,
